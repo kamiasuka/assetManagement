@@ -4,10 +4,14 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "IndexView"
-}
+<script setup>
+    import {ref} from "vue";
+    import axios from 'axios';
+    import qs from 'qs';
+    import {ElMessage} from 'element-plus'
+    const user = ref({username:"",password:"",nickname:""});
+
+
 </script>
 
 <style scoped>

@@ -112,14 +112,60 @@
     </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script setup>
+    import { ArrowRight } from '@element-plus/icons-vue'
+    import {onMounted, ref} from "vue";
+    import axios from "axios";
+    const asideMenu = ref ( [
+        {title: "系统主页", index: "user",},
+        {title: "文章", subs: [{title: "文章列表", index: "articleList",},],},
+        {title: "测试", index: "test",},])
+    onMounted(() => {
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+    })
+
+
 </script>
+
+<style scoped>
+
+    .logoBox {
+        position: absolute;
+        top: -3px;
+        left: 25px;
+        font-size: 24px;
+        color: #fff;
+    }
+
+    .box {
+        width: 100vw;
+        height: 100vh;
+    }
+    .header {
+        padding: 0;
+        height: 50px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        border-top: 0.8px solid #D7D7D7;
+        border-right: 0.8px solid #D7D7D7;
+        border-left: 0.8px solid #D7D7D7;
+    }
+    .el-aside {
+        width: 200px;
+        background: #333 ;
+        padding-top: 58px;
+    }
+    .div-tags{
+        padding: 0;
+        height: 28px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        border: 0.8px solid #D7D7D7;
+        border-radius: 1px;
+        box-shadow:  0 5px 5px -5px rgba(0, 0, 0, 0.4);
+    }
+
+
+</style>
