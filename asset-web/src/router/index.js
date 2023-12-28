@@ -9,7 +9,8 @@ const routes = [
     redirect:'/index',
     children:[
       {path:'/index', component: () => import( '../views/home/IndexView')},
-      {path:'/dept', component: () => import( '../views/home/DeptView')}
+      {path:'/dept', component: () => import( '../views/home/DeptView')},
+      {path:'/user', component: () => import( '../views/home/UserView')}
     ]
   },
   {path:'/login', component: () => import( '../views/home/LoginView')}
