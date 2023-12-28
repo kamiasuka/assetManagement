@@ -6,19 +6,13 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+    redirect:'/index',
     children:[
-
-        ]
+      {path:'/index', component: () => import( '../views/home/IndexView')},
+      {path:'/dept', component: () => import( '../views/home/DeptView')}
+    ]
   },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import( '../views/AboutView.vue')
-  },
-  {path:'/login',component:()=> import('../views/home/LoginView')},
-  {path:'/user',component:()=> import('../views/home/UserView')},
-  {path:'/department',component:()=> import('../views/home/DepartmentView')},
-
+  {path:'/login', component: () => import( '../views/home/LoginView')}
 ]
 
 const router = createRouter({
