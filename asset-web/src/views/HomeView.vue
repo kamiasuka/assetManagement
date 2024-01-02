@@ -6,10 +6,10 @@
                 <h1 class="logoBox">资产管理系统</h1>
                 <el-row class="tac" style="width: 201px;">
 
-                    <el-col>
+                    <el-col >
                         <el-menu
                                 active-text-color="#ffd04b"
-                                background-color="#353535"
+                                background-color="#304156"
                                 class="el-menu-vertical-demo"
                                 default-active="1-1"
                                 text-color="#D5D5D5"
@@ -93,7 +93,7 @@
                     </el-col>
                     <el-col :span="20">
                         <el-breadcrumb :separator-icon="ArrowRight" style="margin-left: 30px;">
-                            <el-breadcrumb-item v-for="(breadcrumb, index) in breadcrumbs" :key="index">
+                            <el-breadcrumb-item v-for="(breadcrumb, index) in breadcrumbs" :key="index"  :to="getBreadcrumbLink(breadcrumb)">
                                 {{ breadcrumb }}
                             </el-breadcrumb-item>
                         </el-breadcrumb>
@@ -151,6 +151,21 @@
         { immediate: true }
     );
 
+    const getBreadcrumbLink = (breadcrumb) => {
+        // 根据面包屑内容返回相应的路由信息
+        switch (breadcrumb) {
+            case '系统首页':
+                return '/index';
+            case '部门管理':
+                return '/dept';
+            // 添加其他面包屑项的路由映射
+            // ...
+
+            default:
+                return '/';
+        }
+    };
+
 
 
 
@@ -183,7 +198,7 @@
     }
     .el-aside {
         width: 200px;
-        background: #353535 ;
+        background: #304156 ;
         padding-top: 58px;
     }
     .div-tags{
@@ -197,7 +212,7 @@
         box-shadow:  0 5px 5px -5px rgba(0, 0, 0, 0.4);
     }
     .b1{
-        background-color: #222222 ;
+        background-color: #1F2D3D ;
     }
 
 
