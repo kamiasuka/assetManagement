@@ -8,9 +8,10 @@ const routes = [
     component: HomeView,
     redirect:'/index',
     children:[
-      {path:'/index', component: () => import( '../views/home/IndexView')},
-      {path:'/dept', component: () => import( '../views/home/DeptView')},
-      {path:'/user', component: () => import( '../views/home/UserView')},
+      {path:'/index', component: () => import( '../views/home/IndexView'), meta: { breadcrumb: ['系统首页'] }},
+      {path:'/dept', component: () => import( '../views/home/DeptView'), meta: { breadcrumb: ['基础信息', '部门管理'] }},
+      {path:'/user', component: () => import( '../views/home/UserView'),  meta: { breadcrumb: ['基础信息', '用户管理'] } },
+      {path:'/annex', component: () => import( '../views/home/AnnexView'),  meta: { breadcrumb: ['附件管理', '增加查询'] } },
       {path:'/asset-category', component: () => import( '../views/home/AssetCategoryView')},
       {path:'/attachment', component: () => import( '../views/home/AttachmentView')},
       {path:'/asset-manage', component: () => import( '../views/home/AssetManageView')},

@@ -13,7 +13,7 @@
         </el-col>
     </el-row>
     <el-row :gutter="8" style="margin-top: 8px;" >
-        <el-col :span="4" v-for="(item, index) in recipeArr" :key="index">
+        <el-col :span="4" v-for="(item, index) in recipe" :key="index">
             <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                 <router-link to="#" style="color: #333;text-decoration: none">
                     <p class="card-title">9999999</p>
@@ -25,6 +25,7 @@
             </el-card>
         </el-col>
     </el-row>
+
 
 </template>
 
@@ -40,7 +41,16 @@
         { title: 'Recipe 3', description: 'Description 3', color: '#45B6B0' },
         { title: 'Recipe 4', description: 'Description 4', color: '#8775A9' },
         { title: 'Recipe 5', description: 'Description 5', color: '#4F5C65' },
-        { title: 'Recipe 1', description: 'Description 1', color: '#13AAE3' },
+        { title: 'Recipe 6', description: 'Description 6', color: '#13AAE3' },
+    ])
+
+    const recipe = ref(   [
+        { title: 'Recipe 1', description: 'Description 1', color: '#939EB0' },
+        { title: 'Recipe 2', description: 'Description 2', color: '#F29603' },
+        { title: 'Recipe 3', description: 'Description 3', color: '#9BCC34' },
+        { title: 'Recipe 4', description: 'Description 4', color: '#BC8F8C' },
+        { title: 'Recipe 5', description: 'Description 5', color: '#FDB35C' },
+        { title: 'Recipe 6', description: 'Description 6', color: '#49C0BE' },
     ])
 
 

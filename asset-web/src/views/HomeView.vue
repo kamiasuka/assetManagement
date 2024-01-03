@@ -45,7 +45,7 @@
                                     <el-icon><location /></el-icon>
                                     <span>附件管理</span>
                                 </template>
-                                <el-menu-item-group  class="b1">
+                                <el-menu-item-group  class="b1" @click="router.push('/annex')">
                                     <el-menu-item index="3-1">增加查询</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -117,7 +117,6 @@
                             <div style="text-align: center">
                                 <!--                 设置头像展示 -->
                                 <el-avatar :src="BASE_URL+user.imgUrl"></el-avatar><br>
-
                                 <el-button type="info" size="small" @click="router.push('/personal')">个人中心</el-button>
                                 <el-button type="warning" size="small" @click="logout()">退出登录</el-button><br>
                                 <el-button v-if="user.isAdmin==1" type="danger" size="small"
@@ -129,7 +128,10 @@
                 <div  class="div-tags">
                 </div>
                 <!-- main主体模块：标签页 + 当前路由内容 -->
-                <el-main class="el-main"><router-view/></el-main>
+                <el-main class="el-main" style="
+    padding: 3px;
+
+"><router-view/></el-main>
             </el-container>
         </el-container>
     </div>
@@ -158,15 +160,26 @@
                 return '/index';
             case '部门管理':
                 return '/dept';
-            // 添加其他面包屑项的路由映射
-            // ...
-
+            case '增加查询':
+                return '/annex';
             default:
                 return '/';
         }
     };
 
+    const wd = ref('');
+    const search = ()=>{
+        router.push('/list?wd='+wd.value);
+    }
 
+    const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+    const logout = ()=>{
+        if (confirm("您确认退出登录吗?")){
+            localStorage.clear();
+            user.value=null;
+            router.push('/login');
+        }
+    }
 
 
 
@@ -197,6 +210,7 @@
         border-left: 0.8px solid #D7D7D7;
     }
     .el-aside {
+        overflow: hidden;
         width: 200px;
         background: #304156 ;
         padding-top: 58px;
