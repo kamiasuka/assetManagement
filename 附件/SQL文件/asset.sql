@@ -51,8 +51,31 @@ CREATE TABLE asset_info
     use_status    varchar(30)    DEFAULT '闲置' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
     approval_date datetime       DEFAULT NULL COMMENT '审核通过日期',
-    note          text           DEFAULT '' COMMENT '备注'
+    note          text COMMENT '备注'
 ) COMMENT '资产信息' CHARSET = utf8mb4;
+
+# 附件分类表
+DROP TABLE IF EXISTS attachment_category;
+CREATE TABLE attachment_category
+(
+    id          varchar(30) primary key COMMENT '批次号',
+    type        varchar(50) not null COMMENT '名称',
+    name        varchar(50) not null COMMENT '类型',
+    number      int      DEFAULT 0 COMMENT '附件数量',
+    update_time datetime DEFAULT NULL COMMENT '更新时间',
+    note        text COMMENT '备注'
+) COMMENT '附件分类' CHARSET = utf8mb4;
+
+# 附件信息表
+DROP TABLE IF EXISTS attachment_info;
+CREATE TABLE attachment_info
+(
+    id          varchar(30) primary key COMMENT '编号',
+    name        varchar(50)  not null COMMENT '名称',
+    file_url    varchar(100) not null COMMENT '文件路径',
+    update_time datetime DEFAULT NULL COMMENT '更新时间',
+    cat_id      varchar(30) COMMENT '批次号'
+) COMMENT '附件信息' CHARSET = utf8mb4;
 
 # 修改记录表
 DROP TABLE IF EXISTS modify_record;
@@ -67,7 +90,12 @@ CREATE TABLE modify_record
     past_time   datetime     not null COMMENT '审核通过时间'
 ) COMMENT '修改记录' CHARSET = utf8mb4;
 
-
 # 用户表操作
-INSERT INTO asset.user(username, password, identity, tel, email, dept, unit) VALUES ('admin','admin','管理员','12345678901','1232@aa.com','资产部','宝相公司'),
-                                                                                    ('auditor','auditor','审核员','11111111555','4542@aa.com','资产部','宝相公司');
+INSERT INTO asset.user(username, password, identity, tel, email, dept, unit)
+VALUES ('admin', 'admin', '管理员', '12345678901', '1232@aa.com', '资产部', '宝相公司'),
+       ('auditor', 'auditor', '审核员', '11111111555', '4542@aa.com', '资产部', '宝相公司');
+
+# 部门表操作
+INSERT INTO asset.dept(id, name, tel, unit)
+VALUES ('000001', '资产部', '', ''),
+       ('000002', '测试部', '', '');
