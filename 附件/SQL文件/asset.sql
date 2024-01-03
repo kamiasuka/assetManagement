@@ -50,7 +50,8 @@ CREATE TABLE asset_info
     amount        decimal(10, 2) DEFAULT 0.00 COMMENT '资产价值',
     use_status    varchar(30)    DEFAULT '闲置' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
-    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
+    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期',
+    note          text           DEFAULT '' COMMENT '备注'
 ) COMMENT '资产信息' CHARSET = utf8mb4;
 
 # 修改记录表
