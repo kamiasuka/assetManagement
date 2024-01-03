@@ -32,9 +32,9 @@ public class Knife4jConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 // 文档标题
-                .title("微博项目")
+                .title("资产系统")
                 // 文档描述信息
-                .description("微博项目在线API文档")
+                .description("资产系统在线API文档")
                 // 文档版本号
                 .version("1.0")
                 .build();
