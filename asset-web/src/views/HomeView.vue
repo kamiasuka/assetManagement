@@ -15,6 +15,7 @@
                                 text-color="#D5D5D5"
                                 @open="handleOpen"
                                 @close="handleClose"
+                                unique-opened="true"
                         >
                             <el-sub-menu index="1" >
                                 <template #title  >
@@ -45,7 +46,7 @@
                                     <el-icon><location /></el-icon>
                                     <span>附件管理</span>
                                 </template>
-                                <el-menu-item-group  class="b1">
+                                <el-menu-item-group  class="b1" @click="router.push('/annex')">
                                     <el-menu-item index="3-1">增加查询</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -98,38 +99,34 @@
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                     </el-col>
-
-
-                    <el-col :span="1">
-                        <el-popover v-if="user==null" placement="bottom" title="资产管理系统" :width="200">
-                            <template #reference>
-                                <el-icon style="margin-top: 12px" size="25"><User/></el-icon>
+                    <el-col :span="2.5" >
+                        <el-dropdown :hide-on-click="false" >
+                         <span class="el-dropdown-link" style="padding-top: 3px;">
+                            你好，资产管理员
+                           <el-icon><CaretBottom /></el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item @click="router.push('/personal')">个人中心</el-dropdown-item>
+                                    <el-dropdown-item ></el-dropdown-item>
+                                    <el-dropdown-item divided>修改密码</el-dropdown-item>
+                                </el-dropdown-menu>
                             </template>
-                            <div style="text-align: center">
-                                <el-button type="info" @click="router.push('/reg')">注册</el-button>
-                                <el-button type="warning" @click="router.push('/login')">登录</el-button>
-                            </div>
-                        </el-popover>
-                        <el-popover v-else placement="bottom" title="欢迎访问烘焙坊" :width="200">
-                            <template #reference>
-                                <el-icon style="margin-top: 28px" size="25"><User/></el-icon>
-                            </template>
-                            <div style="text-align: center">
-                                <!--                 设置头像展示 -->
-                                <el-avatar :src="BASE_URL+user.imgUrl"></el-avatar><br>
-
-                                <el-button type="info" size="small" @click="router.push('/personal')">个人中心</el-button>
-                                <el-button type="warning" size="small" @click="logout()">退出登录</el-button><br>
-                                <el-button v-if="user.isAdmin==1" type="danger" size="small"
-                                           @click="router.push('/admin')">后台管理</el-button>
-                            </div>
-                        </el-popover>
+                        </el-dropdown>
+                    </el-col>
+                    <el-col :span="1" >
+                        <div class="hoverable-icon">
+                        <el-icon size="20px" @click="logout()" ><SwitchButton /></el-icon>
+                        </div>
                     </el-col>
                 </el-header>
                 <div  class="div-tags">
                 </div>
                 <!-- main主体模块：标签页 + 当前路由内容 -->
-                <el-main class="el-main"><router-view/></el-main>
+                <el-main class="el-main" style="
+    padding: 3px;
+
+"><router-view/></el-main>
             </el-container>
         </el-container>
     </div>
@@ -158,15 +155,26 @@
                 return '/index';
             case '部门管理':
                 return '/dept';
-            // 添加其他面包屑项的路由映射
-            // ...
-
+            case '增加查询':
+                return '/annex';
             default:
                 return '/';
         }
     };
 
+    const wd = ref('');
+    const search = ()=>{
+        router.push('/list?wd='+wd.value);
+    }
 
+    const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+    const logout = ()=>{
+        if (confirm("您确认退出登录吗?")){
+            localStorage.clear();
+            user.value=null;
+            router.push('/login');
+        }
+    }
 
 
 
@@ -197,6 +205,7 @@
         border-left: 0.8px solid #D7D7D7;
     }
     .el-aside {
+        overflow: hidden;
         width: 200px;
         background: #304156 ;
         padding-top: 58px;
@@ -212,7 +221,28 @@
         box-shadow:  0 5px 5px -5px rgba(0, 0, 0, 0.4);
     }
     .b1{
-        background-color: #1F2D3D ;
+        background-color: #1F2D3D;
+        --el-menu-hover-bg-color:#1a2334;
+
+    }
+    .el-menu-item is-active{
+        height: 64px;
+    }
+
+.hoverable-icon:hover {
+    /* 在这里设置鼠标悬停时的样式 */
+    /* 例如，改变背景色或添加阴影效果 */
+    background-color: #eee;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
+}
+    .hoverable-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 50px;
+        cursor: pointer;
+
     }
 
 
