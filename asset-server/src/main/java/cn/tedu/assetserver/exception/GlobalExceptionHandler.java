@@ -1,7 +1,7 @@
 package cn.tedu.assetserver.exception;
 
-import cn.tedu.assetserver.response.JsonResult;
-import cn.tedu.assetserver.response.StatusCode;
+import cn.tedu.assetserver.common.response.JsonResult;
+import cn.tedu.assetserver.common.response.StatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -87,12 +87,6 @@ public class GlobalExceptionHandler {
      * 能处理控制器抛出的所有异常;
      * 如果没有任何一个异常处理方法处理异常时,则会执行此方法处理异常.
      */
-    @ExceptionHandler
-    public JsonResult doHandleThrowableException(Throwable ex){
-        String message = ex.getMessage();
-
-        return new JsonResult(StatusCode.THROWABLE_ERROR, message);
-    }
 }
 
 

@@ -1,6 +1,7 @@
 package cn.tedu.assetserver.exception;
 
-import cn.tedu.assetserver.response.StatusCode;
+
+import cn.tedu.assetserver.common.response.StatusCode;
 import lombok.Getter;
 
 public class ServiceException extends RuntimeException{
