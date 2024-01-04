@@ -50,16 +50,16 @@
                     <el-button @click="clearFilter" type="primary" size="small">查询</el-button>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="date" label="单位" width="180"></el-table-column>
-                <el-table-column prop="name" label="批次号" width="180"></el-table-column>
-                <el-table-column prop="address" label="类型"></el-table-column>
-                <el-table-column prop="address" label="名称"></el-table-column>
-                <el-table-column prop="address" label="使用状态"></el-table-column>
-                <el-table-column prop="address" label="数量"></el-table-column>
-                <el-table-column prop="address" label="备注"></el-table-column>
-                <el-table-column prop="address" label="更新时间"></el-table-column>
-                <el-table-column prop="address" label="操作">
+            <el-table :data="tableData" stripe style="width: 100%; margin-top: 5px;"  >
+                <el-table-column :span="2" prop="date" label="单位" width="180"></el-table-column>
+                <el-table-column :span="4" prop="name" label="批次号" width="180"></el-table-column>
+                <el-table-column :span="2" prop="address" label="类型"></el-table-column>
+                <el-table-column :span="2" prop="address" label="名称"></el-table-column>
+                <el-table-column :span="2" prop="address" label="使用状态"></el-table-column>
+                <el-table-column :span="2" prop="address" label="数量"></el-table-column>
+                <el-table-column :span="2" prop="address" label="备注"></el-table-column>
+                <el-table-column :span="4" prop="address" label="更新时间"></el-table-column>
+                <el-table-column :span="4" prop="address" label="操作">
                     <span>查看</span>
                     <span>添加附件</span>
                     <span>附件浏览</span>
@@ -130,6 +130,11 @@
         {value: '1', label: '好看的',},
         {value: '2', label: '好吃的',},
     ]
+
+    const tableData = [
+        {date: '2016-05-03', name: 'Tom', address: 'No. 189',},
+        {date: '2016-05-02', name: 'Tom', address: 'No. 189',},
+        {date: '2016-05-04', name: 'Tom', address: 'No. 189',},]
 </script>
 
 <style >
@@ -139,8 +144,10 @@
         align-items: center;
     }
     .m-2{
-        width: 100px
-    ;
+        width: 100px;
+    }
+    .table{
+        height: 20px;
     }
 
 </style>
