@@ -19,31 +19,34 @@
                     <el-input style="width: 150px" size="small" ></el-input>
 
                 </el-col>
-                <el-col :span="4.5" >
+                <el-col :span="5" >
                 附件名称：
                 <el-input style="width: 150px" size="small" ></el-input>
 
                 </el-col>
-                <el-col :span="2.5">
+                <el-col :span="4">
                      附件类型：
-                    <el-dropdown popper-class="custom-dropdown" >
-                        <el-button type="primary" size="small" style="width: 100px;" >
-                            {{ selectedOption }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                        </el-button>
-                        <template #dropdown>
-                            <el-dropdown-menu style="background-color: white;">
-                                <el-dropdown-item @click="handleDropdownItemClick('全部')">全部</el-dropdown-item>
-                                <el-dropdown-item @click="handleDropdownItemClick('Action 2')">Action 2</el-dropdown-item>
-                                <el-dropdown-item @click="handleDropdownItemClick('Action 3')">Action 3</el-dropdown-item>
-                                <el-dropdown-item @click="handleDropdownItemClick('Action 4')">Action 4</el-dropdown-item>
-                                <el-dropdown-item @click="handleDropdownItemClick('Action 5')">Action 5</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                    <el-select v-model="value" class="m-2" placeholder="Select" size="small">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                        />
+                    </el-select>
+                </el-col>
+                    <el-col :span="4">
+                        使用状态：
+                        <el-select v-model="value1" class="m-2" placeholder="Select" size="small">
+                            <el-option
+                                    v-for="item in options1"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                            />
+                        </el-select>
                 </el-col>
                 <el-col :span="2" >
-
-
                     <el-button @click="clearFilter" type="primary" size="small">查询</el-button>
                 </el-col>
             </el-row>
@@ -66,13 +69,23 @@
         <el-tab-pane label="附件添加">
             <el-form label-width="100px" style="margin: 50px 150px">
                 <el-form-item label="所属单位:">
-                    <el-input style="width: 300px;"><template #append>
+                    <el-input style="width: 400px;"><template #append>
                         <el-button :icon="Search" />
                     </template></el-input>
                 </el-form-item>
+                <el-form-item label="附件类型:">
+                        <el-select v-model="value2" class="m-2" placeholder="Select"  style="width: 400px;">
+                            <el-option
+                                    v-for="item in options2"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"/>
+                        </el-select>
+
+                </el-form-item>
                 <el-form-item label="附件备注:">
                     <el-input
-                            style="width: 300px;"
+                            style="width: 400px;"
                             v-model="textarea"
                             :rows="2"
                             type="textarea"
@@ -99,6 +112,24 @@
     const handleDropdownItemClick = (action) => {
         selectedOption.value = action;
     };
+
+    const value = ref('')
+    const options = [
+        {value: '1', label: '全部',},
+        {value: '2', label: 'Option2',},
+        {value: '3', label: 'Option3',},
+        {value: '4', label: 'Option4',},
+        {value: '5', label: 'Option5',},]
+    const value1 = ref('')
+    const options1 = [
+        {value: '1', label: '已使用',},
+        {value: '2', label: '未使用',},
+    ]
+    const value2 = ref('')
+    const options2 = [
+        {value: '1', label: '好看的',},
+        {value: '2', label: '好吃的',},
+    ]
 </script>
 
 <style >
@@ -107,6 +138,9 @@
         display: flex;
         align-items: center;
     }
-
+    .m-2{
+        width: 100px
+    ;
+    }
 
 </style>
