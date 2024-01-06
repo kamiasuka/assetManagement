@@ -30,6 +30,7 @@
     import router from "@/router";
 
     const user = ref({username:'',password:''});
+   /* const  BASE_URL = 'http://localhost:8080';*/
     const login = ()=>{
         let data = qs.stringify(user.value);
         axios.post(BASE_URL+'/v1/users/login',data)

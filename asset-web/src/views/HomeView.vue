@@ -103,11 +103,11 @@
                         <el-dropdown :hide-on-click="false" >
                          <span class="el-dropdown-link" style="padding-top: 3px;">
                             你好，资产管理员
-                           <el-icon><CaretBottom /></el-icon>
+<!--                           <el-icon><CaretBottom /></el-icon>-->
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item @click="router.push('/personal')">个人中心</el-dropdown-item>
+                                    <el-dropdown-item @click="router.push('/user')">个人中心</el-dropdown-item>
                                     <el-dropdown-item ></el-dropdown-item>
                                     <el-dropdown-item divided>修改密码</el-dropdown-item>
                                 </el-dropdown-menu>
@@ -123,10 +123,10 @@
                 <div  class="div-tags">
                 </div>
                 <!-- main主体模块：标签页 + 当前路由内容 -->
-                <el-main class="el-main" style="
-    padding: 3px;
-
-"><router-view/></el-main>
+                <el-main class="el-main"
+                         style="padding: 3px;">
+                    <router-view/>
+                </el-main>
             </el-container>
         </el-container>
     </div>
@@ -172,12 +172,10 @@
         if (confirm("您确认退出登录吗?")){
             localStorage.clear();
             user.value=null;
+            console.log("")
             router.push('/login');
         }
     }
-
-
-
 </script>
 
 <style scoped>
@@ -244,6 +242,4 @@
         cursor: pointer;
 
     }
-
-
 </style>

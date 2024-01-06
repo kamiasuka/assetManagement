@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements IUserService {
     @Autowired
-    UserMapper mapper;
+    UserMapper userMapper;
 
     @Override
     public UserVO login(UserLoginDTO userLoginDTO) {
-        UserVO userVO = mapper.selectByUsername(userLoginDTO.getUsername());
+        UserVO userVO = userMapper.selectByUsername(userLoginDTO.getUsername());
         if (userVO==null){
             throw new ServiceException(StatusCode.USERNAME_ERROR);
         }
@@ -30,9 +30,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void update(UserUpdateDTO userUpdateDTO) {
+    public void updateUser(UserUpdateDTO userUpdateDTO) {
         User user = new User();
         BeanUtils.copyProperties(userUpdateDTO,user);
-        mapper.update(user);
+        userMapper.updateUser(user);
     }
 }
