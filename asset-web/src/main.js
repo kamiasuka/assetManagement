@@ -17,6 +17,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 const BASE_URL = 'http://localhost:8080';
+window.BASE_URL = BASE_URL;
 
 app.config.globalProperties.BASE_URL = BASE_URL;
 

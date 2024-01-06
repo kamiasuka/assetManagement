@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
     UserVO selectByUsername(String username);
-    int update(User user);
+    int updateUser(User user);
 }
