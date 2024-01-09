@@ -34,7 +34,7 @@
                                 <el-menu-item-group class="b1" @click="router.push('/dept')">
                                     <el-menu-item index="2-1">部门管理</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group  class="b1">
+                                <el-menu-item-group  class="b1" @click="router.push('/asset-category')">
                                     <el-menu-item index="2-2">资产分类</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group  class="b1">
@@ -46,7 +46,7 @@
                                     <el-icon><location /></el-icon>
                                     <span>附件管理</span>
                                 </template>
-                                <el-menu-item-group  class="b1" @click="router.push('/annex')">
+                                <el-menu-item-group  class="b1" @click="router.push('/attachment')">
                                     <el-menu-item index="3-1">增加查询</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -55,20 +55,23 @@
                                     <el-icon><location /></el-icon>
                                     <span>资产管理</span>
                                 </template>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-1">资产录入</el-menu-item>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-manage')">
+                                    <el-menu-item index="4-1">资产管理</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-2">资产查询</el-menu-item>
+                                    <el-menu-item index="4-2">资产录入</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-3">资产上报</el-menu-item>
+                                    <el-menu-item index="4-3">资产查询</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-4">资产报损</el-menu-item>
+                                    <el-menu-item index="4-4">资产上报</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-5">价值变更</el-menu-item>
+                                    <el-menu-item index="4-5">资产报损</el-menu-item>
+                                </el-menu-item-group>
+                                <el-menu-item-group class="b1" >
+                                    <el-menu-item index="4-6">价值变更</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-sub-menu index="5">
@@ -93,8 +96,13 @@
                         <el-icon :size="25" style="left: 20px"><HomeFilled /></el-icon>
                     </el-col>
                     <el-col :span="20">
+
                         <el-breadcrumb :separator-icon="ArrowRight" style="margin-left: 30px;">
-                            <el-breadcrumb-item v-for="(breadcrumb, index) in breadcrumbs" :key="index"  :to="getBreadcrumbLink(breadcrumb)">
+                            <!-- 首页固定为系统首页 -->
+                            <el-breadcrumb-item :to="{ path: '/index' }">系统首页</el-breadcrumb-item>
+
+                            <!-- 遍历动态生成的面包屑项 -->
+                            <el-breadcrumb-item v-for="(breadcrumb, index) in breadcrumbs" :key="index" :to="getBreadcrumbLink(breadcrumb)">
                                 {{ breadcrumb }}
                             </el-breadcrumb-item>
                         </el-breadcrumb>
@@ -137,16 +145,9 @@
     import { ArrowRight, HomeFilled, User,Icon } from '@element-plus/icons-vue';
     import { onMounted, ref, watch,computed } from 'vue';
     import axios from 'axios';
-    //面包屑
+    import { useRoute } from 'vue-router';
     const breadcrumbs = ref([]);
-
-    watch(
-        () => router.currentRoute.value.matched,
-        (matched) => {
-            breadcrumbs.value = matched.flatMap(route => route.meta?.breadcrumb || []);
-        },
-        { immediate: true }
-    );
+    const separatorIcon = 'el-icon-arrow-right'; // 你可以根据需要修改分隔符的图标
 
     const getBreadcrumbLink = (breadcrumb) => {
         // 根据面包屑内容返回相应的路由信息
@@ -154,13 +155,29 @@
             case '系统首页':
                 return '/index';
             case '部门管理':
-                return '/dept';
+                return '/basic-info/dept';
             case '增加查询':
-                return '/annex';
+                return '/attachment';
+            case '资产分类':
+                return '/asset-category';
+            // Add other breadcrumb links if needed
             default:
                 return '/';
         }
     };
+
+    const route = useRoute();
+
+    watch(
+        () => route.matched,
+        (matched) => {
+            breadcrumbs.value = matched.flatMap(route => route.meta?.breadcrumb || []);
+        },
+        { immediate: true }
+    );
+
+
+
 
     const wd = ref('');
     const search = ()=>{

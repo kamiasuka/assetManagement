@@ -50,19 +50,42 @@
                     <el-button @click="clearFilter" type="primary" size="small">查询</el-button>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" stripe style="width: 100%; margin-top: 5px;"  >
-                <el-table-column :span="2" prop="date" label="单位" width="180"></el-table-column>
-                <el-table-column :span="4" prop="name" label="批次号" width="180"></el-table-column>
-                <el-table-column :span="2" prop="address" label="类型"></el-table-column>
-                <el-table-column :span="2" prop="address" label="名称"></el-table-column>
-                <el-table-column :span="2" prop="address" label="使用状态"></el-table-column>
-                <el-table-column :span="2" prop="address" label="数量"></el-table-column>
-                <el-table-column :span="2" prop="address" label="备注"></el-table-column>
-                <el-table-column :span="4" prop="address" label="更新时间"></el-table-column>
-                <el-table-column :span="4" prop="address" label="操作">
+            <el-table :data="tableData" stripe style="width: 100%; margin-top: 5px;"  :row-height="50" >
+                <el-table-column :span="2" prop="date" label="单位" width="80"></el-table-column>
+                <el-table-column :span="4" prop="name" label="批次号" width="200"></el-table-column>
+                <el-table-column :span="2" prop="address" label="类型" width="180"></el-table-column>
+                <el-table-column :span="2" prop="address" label="名称" width="180"></el-table-column>
+                <el-table-column :span="2" prop="address" label="使用状态" width="180"></el-table-column>
+                <el-table-column :span="2" prop="address" label="数量" width="180"></el-table-column>
+                <el-table-column :span="2" prop="address" label="备注" width="240"></el-table-column>
+                <el-table-column :span="4" prop="address" label="更新时间" width="220"></el-table-column>
+                <el-table-column :span="4" prop="address" label="操作" width="300">
                     <span>查看</span>
-                    <span>添加附件</span>
-                    <span>附件浏览</span>
+                    <el-button text @click="dialogFormVisible = true">
+                        添加附件
+                    </el-button>
+
+                    <el-dialog v-model="dialogFormVisible" title="Shipping address">
+                        <el-form :model="form">
+                            <el-form-item label="Promotion name" :label-width="formLabelWidth">
+                                <el-input v-model="form.name" autocomplete="off" />
+                            </el-form-item>
+                            <el-form-item label="Zones" :label-width="formLabelWidth">
+                                <el-select v-model="form.region" placeholder="Please select a zone">
+                                    <el-option label="Zone No.1" value="shanghai" />
+                                    <el-option label="Zone No.2" value="beijing" />
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          Confirm
+        </el-button>
+      </span>
+                        </template>
+                    </el-dialog>
                 </el-table-column>
             </el-table>
         </el-tab-pane>
@@ -103,7 +126,7 @@
 
 <script setup>
     import { Search } from '@element-plus/icons-vue';
-    import { ref } from 'vue';
+    import { ref,reactive } from 'vue';
 
     // 使用 `ref` 来声明响应式数据
     const selectedOption = ref('全部'); // Assuming `selectedOption` is a reactive variable
@@ -135,6 +158,26 @@
         {date: '2016-05-03', name: 'Tom', address: 'No. 189',},
         {date: '2016-05-02', name: 'Tom', address: 'No. 189',},
         {date: '2016-05-04', name: 'Tom', address: 'No. 189',},]
+
+
+    //添加附件相关
+
+    const dialogFormVisible = ref(false)
+    const formLabelWidth = '140px'
+
+    const form = reactive({
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+    })
+
+
+
 </script>
 
 <style >
