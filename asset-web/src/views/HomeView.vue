@@ -174,6 +174,8 @@
                 return '/attachment';
             case '资产分类':
                 return '/asset-category';
+            case '资产管理':
+                return '/asset-manage';
             default:
                 return '/';
             // 添加其他面包屑链接，如果需要的话
