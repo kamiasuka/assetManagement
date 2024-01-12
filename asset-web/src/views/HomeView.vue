@@ -129,6 +129,12 @@
                     </el-col>
                 </el-header>
                 <div  class="div-tags">
+                        <router-link v-for="(tag, index) in generatedTags" :key="index" :to="getTagLink(tag)"
+                                     style=" text-decoration: none !important;" class="router">
+                            <el-tag closable @close="removeTag(tag)" class="tag1" >
+                                {{ tag }}
+                            </el-tag>
+                        </router-link>
                 </div>
                 <!-- main主体模块：标签页 + 当前路由内容 -->
                 <el-main class="el-main" style="
@@ -147,22 +153,30 @@
     import axios from 'axios';
     import { useRoute } from 'vue-router';
     const breadcrumbs = ref([]);
-    const separatorIcon = 'el-icon-arrow-right'; // 你可以根据需要修改分隔符的图标
+
 
     const getBreadcrumbLink = (breadcrumb) => {
         // 根据面包屑内容返回相应的路由信息
+        const tagExists = generatedTags.value.includes(breadcrumb);
+        if (!tagExists) {
+            generatedTags.value.push(breadcrumb);
+        }
+
+        return getBreadcrumbLinkInternal(breadcrumb);
+    };
+
+    const getBreadcrumbLinkInternal = (breadcrumb) => {
+        // 返回相应的链接
         switch (breadcrumb) {
-            case '系统首页':
-                return '/index';
             case '部门管理':
-                return '/basic-info/dept';
+                return '/dept';
             case '增加查询':
                 return '/attachment';
             case '资产分类':
                 return '/asset-category';
-            // Add other breadcrumb links if needed
             default:
                 return '/';
+            // 添加其他面包屑链接，如果需要的话
         }
     };
 
@@ -192,6 +206,23 @@
             router.push('/login');
         }
     }
+
+
+    //标签页相关
+    const generatedTags = ref([]);
+
+    const removeTag = (tag) => {
+        const index = generatedTags.value.indexOf(tag);
+        if (index !== -1) {
+            generatedTags.value.splice(index, 1);
+        }
+    };
+
+    const getTagLink = (tag) => {
+        return getBreadcrumbLinkInternal(tag);
+        console.log(getBreadcrumbLinkInternal(tag))
+    };
+
 
 
 
@@ -229,7 +260,7 @@
     }
     .div-tags{
         padding: 0;
-        height: 28px;
+        height: 31px;
         background-color: #fff;
         display: flex;
         align-items: center;
@@ -261,6 +292,15 @@
         cursor: pointer;
 
     }
+    .tag1{
+        --el-tag-bg-color:#fff;
+        margin: 5px;
+    }
+
+.tag1:hover {
+    background-color: #f0f0f0; /* 悬浮时的背景颜色 */
+}
+
 
 
 </style>

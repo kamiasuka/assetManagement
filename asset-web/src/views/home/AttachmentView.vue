@@ -50,7 +50,7 @@
                     <el-button @click="clearFilter" type="primary" size="small">查询</el-button>
                 </el-col>
             </el-row>
-            <el-table :data="tableData" stripe style="width: 100%; margin-top: 5px;"  :row-height="50" >
+            <el-table :data="tableData"  style="width: 100%; margin-top: 5px;"  :row-height="50" >
                 <el-table-column :span="2" prop="date" label="单位" width="80"></el-table-column>
                 <el-table-column :span="4" prop="name" label="批次号" width="200"></el-table-column>
                 <el-table-column :span="2" prop="address" label="类型" width="180"></el-table-column>
@@ -59,29 +59,34 @@
                 <el-table-column :span="2" prop="address" label="数量" width="180"></el-table-column>
                 <el-table-column :span="2" prop="address" label="备注" width="240"></el-table-column>
                 <el-table-column :span="4" prop="address" label="更新时间" width="220"></el-table-column>
-                <el-table-column :span="4" prop="address" label="操作" width="300">
+                <el-table-column :span="4" prop="address" label="操作" width="200">
                     <span>查看</span>
                     <el-button text @click="dialogFormVisible = true">
                         添加附件
                     </el-button>
 
-                    <el-dialog v-model="dialogFormVisible" title="Shipping address">
-                        <el-form :model="form">
-                            <el-form-item label="Promotion name" :label-width="formLabelWidth">
-                                <el-input v-model="form.name" autocomplete="off" />
-                            </el-form-item>
-                            <el-form-item label="Zones" :label-width="formLabelWidth">
-                                <el-select v-model="form.region" placeholder="Please select a zone">
-                                    <el-option label="Zone No.1" value="shanghai" />
-                                    <el-option label="Zone No.2" value="beijing" />
-                                </el-select>
-                            </el-form-item>
-                        </el-form>
+                    <el-dialog v-model="dialogFormVisible" title="选择文件" width="30%" center  :modal="false" :show-close="false"  >
+                        <el-upload
+                                v-model:file-list="fileList"
+                                name="file"
+                                :limit="1"
+                                action="http://localhost:8080/v1/upload"
+                                list-type="picture-card"
+                                :on-preview="handlePictureCardPreview"
+                                :on-remove="handleRemove"
+                        >
+                            <el-icon><Plus /></el-icon>
+                        </el-upload>
+
+                        <el-dialog v-model="dialogVisible">
+                            <img w-full :src="dialogImageUrl" alt="Preview Image" />
+                        </el-dialog>
+
                         <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
+          上传文件
         </el-button>
       </span>
                         </template>
@@ -175,6 +180,48 @@
         resource: '',
         desc: '',
     })
+
+
+    //数据保存 上传组件相关
+    const save =()=>{
+        if(fileList.value.length>0){
+            let imgUrl = fileList.value[0].response.data;
+            user.value.imgUrl = imgUrl;
+        }
+
+        let data = qs.stringify(user.value);
+        // axios.post('http://localhost:8080/v1/users/update',data)
+        //     .then((response)=>{
+        //         if(response.data.code==2001){
+        //             ElMessage.success("修改完成！");
+        //             //修改localStorage中的数据
+        //             localStorage.user =JSON.stringify(user.value);
+        //             //让整个页面刷新
+        //             localtion.reload();
+        //         }
+        //     })
+    }
+    const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+
+    /*上传组件开始*/
+    const fileList = ref([])
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+    const handleRemove = (uploadFile, uploadFiles) => {
+
+        // axios.post('http://localhost:8080/v1/remove?imgUrl='+uploadFile.response.data)
+        //     .then((response)=>{
+        //         if (response.data.code==2001){
+        //             ElMessage.success("服务器文件删除完成!");
+        //         }
+        //     })
+
+    }
+    const handlePictureCardPreview = (uploadFile) => {
+        dialogImageUrl.value = uploadFile.url
+        dialogVisible.value = true
+    }
+    /*上传组件结束*/
 
 
 
