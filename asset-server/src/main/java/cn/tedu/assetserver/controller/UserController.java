@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users")
 public class UserController {
     @Autowired
-    IUserService service;
+    IUserService userService;
     @PostMapping("login")
     public JsonResult login(UserLoginDTO userLoginDTO){
 
-        UserVO userVO = service.login(userLoginDTO);
+        UserVO userVO = userService.login(userLoginDTO);
         System.out.println("userVO="+userVO);
         return JsonResult.ok(userVO);
     }
-    @PostMapping("update")
-    public JsonResult update(UserUpdateDTO userUpdateDTO){
-        service.update(userUpdateDTO);
+    @PostMapping("updateUser")
+    public JsonResult updateUser(UserUpdateDTO userUpdateDTO){
+        userService.updateUser(userUpdateDTO);
         return JsonResult.ok();
     }
 }

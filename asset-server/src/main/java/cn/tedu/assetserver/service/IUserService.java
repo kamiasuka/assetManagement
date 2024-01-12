@@ -7,7 +7,5 @@ import cn.tedu.assetserver.pojo.vo.UserVO;
 public interface IUserService {
 
     UserVO login(UserLoginDTO userLoginDTO);
-
-    void update(UserUpdateDTO userUpdateDTO);
-
+    void updateUser(UserUpdateDTO userUpdateDTO);
 }

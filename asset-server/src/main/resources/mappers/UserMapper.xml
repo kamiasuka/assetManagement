@@ -4,6 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.tedu.assetserver.mapper.UserMapper">
     <select id="selectByUsername" resultType="cn.tedu.assetserver.pojo.vo.UserVO">
-        SELECT  username,password,identity FROM asset.user WHERE username = #{username}
+        SELECT  username,password,identity,nickname,tel,email,dept,unit FROM asset.user WHERE username = #{username}
     </select>
+    <update id="updateUser">
+        UPDATE asset.user
+        <set>
+            <if test="nickname != null">nickname=#{nickname},</if>
+            tel=#{tel},
+            email=#{email}
+        </set>
+        WHERE username=#{username}
+    </update>
 </mapper>
