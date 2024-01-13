@@ -6,11 +6,10 @@
                     <el-col :span="4" v-for="(item, index) in recipeArr" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
-                                <p class="card-title">9999999</p>
+                                <p class="card-title">{{ item.title }}元</p>
                             </router-link>
                             <el-row :gutter="10">
-                                <el-col :span="24" class="card-text">土地</el-col>
-                                <el-col :span="24" class="card-text">666</el-col>
+                                <el-col :span="24" class="card-text">{{ item.type }}({{item.num}})</el-col>
                             </el-row>
                         </el-card>
                     </el-col>
@@ -19,11 +18,10 @@
                     <el-col :span="4" v-for="(item, index) in recipe" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
-                                <p class="card-title">9999999</p>
+                                <p class="card-title">9999999元</p>
                             </router-link>
                             <el-row :gutter="10">
-                                <el-col :span="24" class="card-text">土地</el-col>
-                                <el-col :span="24" class="card-text">666</el-col>
+                                <el-col :span="24" class="card-text">{{ item.type }}({{item.num}})</el-col>
                             </el-row>
                         </el-card>
                     </el-col>
@@ -60,22 +58,24 @@ import {ElMessage} from 'element-plus'
 import * as echarts from "echarts";
 
 const user = ref({username: "", password: "", nickname: ""});
+const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
+
 const recipeArr = ref([
-    {title: 'Recipe 1', description: 'Description 1', color: '#588EBD'},
-    {title: 'Recipe 2', description: 'Description 2', color: '#E25A5A'},
-    {title: 'Recipe 3', description: 'Description 3', color: '#45B6B0'},
-    {title: 'Recipe 4', description: 'Description 4', color: '#8775A9'},
-    {title: 'Recipe 5', description: 'Description 5', color: '#4F5C65'},
-    {title: 'Recipe 6', description: 'Description 6', color: '#13AAE3'},
+    {title: 'Recipe 1', description: 'Description 1', color: '#588EBD',type: '土地',num: 1},
+    {title: 'Recipe 2', description: 'Description 2', color: '#E25A5A',type: '土地',num: 1},
+    {title: 'Recipe 3', description: 'Description 3', color: '#45B6B0',type: '土地',num: 1},
+    {title: 'Recipe 4', description: 'Description 4', color: '#8775A9',type: '土地',num: 1},
+    {title: 'Recipe 5', description: 'Description 5', color: '#4F5C65',type: '土地',num: 1},
+    {title: 'Recipe 6', description: 'Description 6', color: '#13AAE3',type: '土地',num: 1},
 ])
 
 const recipe = ref([
-    {title: 'Recipe 1', description: 'Description 1', color: '#939EB0'},
-    {title: 'Recipe 2', description: 'Description 2', color: '#F29603'},
-    {title: 'Recipe 3', description: 'Description 3', color: '#9BCC34'},
-    {title: 'Recipe 4', description: 'Description 4', color: '#BC8F8C'},
-    {title: 'Recipe 5', description: 'Description 5', color: '#FDB35C'},
-    {title: 'Recipe 6', description: 'Description 6', color: '#49C0BE'},
+    {title: 'Recipe 1', description: 'Description 1', color: '#939EB0',type: '房屋',num: 0},
+    {title: 'Recipe 2', description: 'Description 2', color: '#F29603',type: '房屋',num: 0},
+    {title: 'Recipe 3', description: 'Description 3', color: '#9BCC34',type: '房屋',num: 0},
+    {title: 'Recipe 4', description: 'Description 4', color: '#BC8F8C',type: '房屋',num: 0},
+    {title: 'Recipe 5', description: 'Description 5', color: '#FDB35C',type: '房屋',num: 0},
+    {title: 'Recipe 6', description: 'Description 6', color: '#49C0BE',type: '房屋',num: 0},
 ])
 
 /*柱状图展示部分--开始*/
@@ -108,14 +108,15 @@ const showBarChart = () => {
         ]
     };
 
-    setInterval(() => {
-        const data0 = option.series[0].data;
-        option.series.forEach(item => {
-            // item.data.shift();
-            // item.data.push(Math.round(Math.random() * 39 + 1));
-        });
-        barChart.setOption(option);
-    }, 2000);
+    barChart.setOption(option);
+    // setInterval(() => {
+    //     const data0 = option.series[0].data;
+    //     option.series.forEach(item => {
+    //         // item.data.shift();
+    //         // item.data.push(Math.round(Math.random() * 39 + 1));
+    //     });
+    //     barChart.setOption(option);
+    // }, 2000);
 }
 /*柱状图展示部分--结束*/
 
@@ -154,7 +155,7 @@ const showPieChart = () => {
             textStyle: {
                 color: "#2c343c" // 图例文字颜色为红色
             },
-            data: ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"], // 图例的数据，与数据项名一一对应
+            data: typeData, // 图例的数据，与数据项名一一对应
         },
         series: [ // 系列列表
             {
@@ -241,7 +242,7 @@ onMounted(() => {
 .card-title {
     height: 40px; /* 调整为您希望的高度 */
     margin: 0;
-    font-size: 16px; /* 调整为您希望的字体大小 */
+    font-size: 30px; /* 调整为您希望的字体大小 */
     line-height: 20px; /* 调整为您希望的行高 */
     color: white;
 }
@@ -249,5 +250,6 @@ onMounted(() => {
 .card-text {
     line-height: 20px; /* 调整为您希望的行高 */
     color: white;
+    font-size: 20px;
 }
 </style>
