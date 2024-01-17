@@ -37,7 +37,7 @@
                                 <el-menu-item-group  class="b1" @click="router.push('/asset-category')">
                                     <el-menu-item index="2-2">资产分类</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group  class="b1">
+                                <el-menu-item-group  class="b1" @click="router.push('/asset-life')">
                                     <el-menu-item index="2-3">使用年限</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -46,7 +46,7 @@
                                     <el-icon><location /></el-icon>
                                     <span>附件管理</span>
                                 </template>
-                                <el-menu-item-group  class="b1" @click="router.push('/annex')">
+                                <el-menu-item-group  class="b1" @click="router.push('/attachment')">
                                     <el-menu-item index="3-1">增加查询</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -56,22 +56,19 @@
                                     <span>资产管理</span>
                                 </template>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-manage')">
-                                    <el-menu-item index="4-1">资产管理</el-menu-item>
+                                    <el-menu-item index="4-1">资产录入</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-2">资产录入</el-menu-item>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-quary')">
+                                    <el-menu-item index="4-2">资产查询</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-3">资产查询</el-menu-item>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
+                                    <el-menu-item index="4-3">资产上报</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-4">资产上报</el-menu-item>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-report')">
+                                    <el-menu-item index="4-4">资产报损</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-5">资产报损</el-menu-item>
-                                </el-menu-item-group>
-                                <el-menu-item-group class="b1" >
-                                    <el-menu-item index="4-6">价值变更</el-menu-item>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-value-change')">
+                                    <el-menu-item index="4-5">价值变更</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-sub-menu index="5">
@@ -79,7 +76,7 @@
                                     <el-icon><location /></el-icon>
                                     <span>资产年表</span>
                                 </template>
-                                <el-menu-item-group class="b1" >
+                                <el-menu-item-group class="b1" @click="router.push('/annual-report')">
                                     <el-menu-item index="5-1">年度报表</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
@@ -115,7 +112,7 @@
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item @click="router.push('/personal')">个人中心</el-dropdown-item>
+                                    <el-dropdown-item @click="router.push('/user')">个人中心</el-dropdown-item>
                                     <el-dropdown-item ></el-dropdown-item>
                                     <el-dropdown-item divided>修改密码</el-dropdown-item>
                                 </el-dropdown-menu>
@@ -151,30 +148,61 @@
     import { ArrowRight, HomeFilled, User,Icon } from '@element-plus/icons-vue';
     import { onMounted, ref, watch,computed } from 'vue';
     import axios from 'axios';
-    //面包屑
+    import { useRoute } from 'vue-router';
     const breadcrumbs = ref([]);
 
+
+    const getBreadcrumbLink = (breadcrumb) => {
+        // 根据面包屑内容返回相应的路由信息
+        const tagExists = generatedTags.value.includes(breadcrumb);
+        if (!tagExists) {
+            generatedTags.value.push(breadcrumb);
+        }
+
+        return getBreadcrumbLinkInternal(breadcrumb);
+    };
+
+    const getBreadcrumbLinkInternal = (breadcrumb) => {
+        // 返回相应的链接
+        switch (breadcrumb) {
+            case '部门管理':
+                return '/dept';
+            case '增加查询':
+                return '/attachment';
+            case '资产分类':
+                return '/asset-category';
+            case '资产管理':
+                return '/asset-manage';
+            case '使用年限':
+                return '/asset-life';
+            case '资产查询':
+                return '/asset-quary';
+            case '资产上报':
+                return '/asset-post';
+            case '资产报损':
+                return '/asset-report';
+            case '价值变更':
+                return '/asset-value-change';
+            case '年度报表':
+                return '/annual-report';
+            default:
+                return '/';
+            // 添加其他面包屑链接，如果需要的话
+        }
+    };
+
+    const route = useRoute();
+
     watch(
-        () => router.currentRoute.value.matched,
+        () => route.matched,
         (matched) => {
             breadcrumbs.value = matched.flatMap(route => route.meta?.breadcrumb || []);
         },
         { immediate: true }
     );
 
-    const getBreadcrumbLink = (breadcrumb) => {
-        // 根据面包屑内容返回相应的路由信息
-        switch (breadcrumb) {
-            case '系统首页':
-                return '/index';
-            case '部门管理':
-                return '/dept';
-            case '增加查询':
-                return '/annex';
-            default:
-                return '/';
-        }
-    };
+
+
 
     const wd = ref('');
     const search = ()=>{
@@ -189,6 +217,23 @@
             router.push('/login');
         }
     }
+
+
+    //标签页相关
+    const generatedTags = ref([]);
+
+    const removeTag = (tag) => {
+        const index = generatedTags.value.indexOf(tag);
+        if (index !== -1) {
+            generatedTags.value.splice(index, 1);
+        }
+    };
+
+    const getTagLink = (tag) => {
+        return getBreadcrumbLinkInternal(tag);
+        console.log(getBreadcrumbLinkInternal(tag))
+    };
+
 
 
 
@@ -226,7 +271,7 @@
     }
     .div-tags{
         padding: 0;
-        height: 28px;
+        height: 31px;
         background-color: #fff;
         display: flex;
         align-items: center;
@@ -258,6 +303,15 @@
         cursor: pointer;
 
     }
+    .tag1{
+        --el-tag-bg-color:#fff;
+        margin: 5px;
+    }
+
+.tag1:hover {
+    background-color: #f0f0f0; /* 悬浮时的背景颜色 */
+}
+
 
 
 </style>
