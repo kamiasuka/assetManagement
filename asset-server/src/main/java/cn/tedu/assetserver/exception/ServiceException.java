@@ -11,4 +11,9 @@ public class ServiceException extends RuntimeException{
     public ServiceException(StatusCode statusCode) {
         this.statusCode = statusCode;
     }
+
+    public  ServiceException (StatusCode statusCode,String message) {
+        super(message);
+        this.statusCode = statusCode;
+    }
 }
