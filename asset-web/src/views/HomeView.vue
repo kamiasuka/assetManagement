@@ -35,7 +35,7 @@
                                     <el-menu-item index="2-1">部门管理</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group  class="b1">
-                                    <el-menu-item index="2-2">资产分类</el-menu-item>
+                                    <el-menu-item index="2-2" @click="router.push('/asset-category')">资产分类</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group  class="b1">
                                     <el-menu-item index="2-3">使用年限</el-menu-item>
@@ -157,6 +157,8 @@
                 return '/dept';
             case '增加查询':
                 return '/annex';
+            case '资产分类':
+                return '/asset-category';
             default:
                 return '/';
         }

@@ -6,7 +6,7 @@
             <el-aside width="200px" style="border: 5px;border-color: black">
                     <!-- Form -->
                     <el-button type="primary" @click="dialogFormVisible = true">编辑资产分类</el-button>
-
+<!--              编辑资产弹窗      -->
                     <el-dialog v-model="dialogFormVisible" title="编辑资产分类">
                         <el-form :model="form">
                             <el-form-item label="分类名称" :label-width="formLabelWidth">
@@ -36,7 +36,6 @@
                                 @open="handleOpen"
                                 @close="handleClose"
                         >
-
                             <el-sub-menu index="1">
                                 <template #title>
                                     <el-icon>
