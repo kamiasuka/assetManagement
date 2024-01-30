@@ -45,6 +45,13 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
         }
 
+        AssetCategory a = categoryMapper.selectCategoryById(categoryDTO.getParentId());
+        if(a.getLevel()>3){
+            String msg = "添加失败，最多允许添加三个子分类";
+            log.warn(msg);
+            throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
+        }
+
         /** 判断插入的是子级还是父级，记录深度 */
         int parentId = categoryDTO.getParentId();
         int depth = 1;
