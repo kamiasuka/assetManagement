@@ -1,6 +1,5 @@
-package cn.tedu.assetserver.mapper;
+package cn.tedu.assetserver.dao.persist.mapper;
 
-import cn.tedu.assetserver.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.assetserver.pojo.entity.AssetCategory;
 import cn.tedu.assetserver.pojo.vo.AssetCategoryVO;
 import cn.tedu.assetserver.pojo.vo.CategoryStandardVO;

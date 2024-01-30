@@ -8,6 +8,7 @@
         <module>asset-server</module>
         <module>asset-admin</module>
         <module>asset-common</module>
+        <module>asset-attachment</module>
     </modules>
 
     <parent>

@@ -2,7 +2,7 @@ package cn.tedu.assetserver.service.impl;
 
 import cn.tedu.assetcommom.ex.ServiceException;
 import cn.tedu.assetcommom.response.StatusCode;
-import cn.tedu.assetserver.mapper.AssetCategoryMapper;
+import cn.tedu.assetserver.dao.persist.mapper.AssetCategoryMapper;
 import cn.tedu.assetserver.pojo.dto.CategoryAddDTO;
 import cn.tedu.assetserver.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.assetserver.pojo.entity.AssetCategory;

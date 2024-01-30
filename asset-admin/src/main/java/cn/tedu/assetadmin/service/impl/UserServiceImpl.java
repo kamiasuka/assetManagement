@@ -1,6 +1,6 @@
 package cn.tedu.assetadmin.service.impl;
 
-import cn.tedu.assetadmin.mapper.UserMapper;
+import cn.tedu.assetadmin.dao.persist.mapper.UserMapper;
 import cn.tedu.assetadmin.pojo.dto.UserLoginDTO;
 import cn.tedu.assetadmin.pojo.dto.UserUpdateDTO;
 import cn.tedu.assetadmin.pojo.entity.User;

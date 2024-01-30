@@ -1,4 +1,4 @@
-package cn.tedu.assetadmin.mapper;
+package cn.tedu.assetadmin.dao.persist.mapper;
 
 
 import cn.tedu.assetadmin.pojo.entity.User;
