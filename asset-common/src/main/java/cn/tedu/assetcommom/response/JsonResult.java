@@ -1,4 +1,4 @@
-package cn.tedu.assetserver.common.response;
+package cn.tedu.assetcommom.response;
 
 import lombok.*;
 

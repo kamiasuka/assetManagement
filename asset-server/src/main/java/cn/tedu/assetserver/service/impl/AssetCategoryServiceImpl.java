@@ -1,7 +1,7 @@
 package cn.tedu.assetserver.service.impl;
 
-import cn.tedu.assetserver.common.response.StatusCode;
-import cn.tedu.assetserver.exception.ServiceException;
+import cn.tedu.assetcommom.ex.ServiceException;
+import cn.tedu.assetcommom.response.StatusCode;
 import cn.tedu.assetserver.mapper.AssetCategoryMapper;
 import cn.tedu.assetserver.pojo.dto.CategoryAddDTO;
 import cn.tedu.assetserver.pojo.dto.CategoryUpdateDTO;
@@ -10,7 +10,6 @@ import cn.tedu.assetserver.pojo.vo.AssetCategoryVO;
 import cn.tedu.assetserver.pojo.vo.CategoryStandardVO;
 import cn.tedu.assetserver.service.IAssetCategoryService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,8 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
         }
 
         AssetCategory a = categoryMapper.selectCategoryById(categoryDTO.getParentId());
-        if(a.getLevel()>3){
+        System.out.println("子级深度"+a.getLevel());
+        if(a.getLevel()>=3){
             String msg = "添加失败，最多允许添加三个子分类";
             log.warn(msg);
             throw new ServiceException(StatusCode.OPERATION_FAILED,msg);

@@ -1,20 +1,20 @@
-package cn.tedu.assetserver.service.impl;
+package cn.tedu.assetadmin.service.impl;
 
-import cn.tedu.assetserver.common.response.StatusCode;
-import cn.tedu.assetserver.exception.ServiceException;
-import cn.tedu.assetserver.mapper.UserMapper;
-import cn.tedu.assetserver.pojo.dto.UserLoginDTO;
-import cn.tedu.assetserver.pojo.dto.UserUpdateDTO;
-import cn.tedu.assetserver.pojo.entity.User;
-import cn.tedu.assetserver.pojo.vo.UserVO;
-import cn.tedu.assetserver.service.IUserService;
+import cn.tedu.assetadmin.mapper.UserMapper;
+import cn.tedu.assetadmin.pojo.dto.UserLoginDTO;
+import cn.tedu.assetadmin.pojo.dto.UserUpdateDTO;
+import cn.tedu.assetadmin.pojo.entity.User;
+import cn.tedu.assetadmin.pojo.vo.UserVO;
+import cn.tedu.assetadmin.service.IUserService;
+import cn.tedu.assetcommom.ex.ServiceException;
+import cn.tedu.assetcommom.response.StatusCode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    @Autowired
+    @Autowired(required = false)
     UserMapper userMapper;
 
     @Override

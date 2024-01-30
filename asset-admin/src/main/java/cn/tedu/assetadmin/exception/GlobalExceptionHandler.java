@@ -1,4 +1,4 @@
-package cn.tedu.assetserver.exception;
+package cn.tedu.assetadmin.exception;
 
 import cn.tedu.assetcommom.ex.ServiceException;
 import cn.tedu.assetcommom.response.JsonResult;
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public JsonResult doHandleServiceException(ServiceException ex){
         log.error(ex.getStatusCode().getMsg());
         //给客户端响应数据
-        return new JsonResult(ex.getStatusCode(), ex.getMessage());
+        return new JsonResult(ex.getStatusCode());
     }
 
     /**

@@ -1,11 +1,6 @@
-package cn.tedu.assetserver.pojo.entity;
+package cn.tedu.assetadmin.pojo.entity;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 @Data
 public class User {

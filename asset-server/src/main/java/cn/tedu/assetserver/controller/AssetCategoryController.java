@@ -1,6 +1,6 @@
 package cn.tedu.assetserver.controller;
 
-import cn.tedu.assetserver.common.response.JsonResult;
+import cn.tedu.assetcommom.response.JsonResult;
 import cn.tedu.assetserver.pojo.dto.CategoryAddDTO;
 import cn.tedu.assetserver.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.assetserver.pojo.vo.AssetCategoryVO;
