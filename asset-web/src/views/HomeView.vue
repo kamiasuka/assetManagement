@@ -58,7 +58,7 @@
                                 <el-menu-item-group class="b1" @click="router.push('/asset-manage')">
                                     <el-menu-item index="4-1">资产录入</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" @click="router.push('/asset-quary')">
+                                <el-menu-item-group class="b1" @click="router.push('/asset-query')">
                                     <el-menu-item index="4-2">资产查询</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
@@ -176,7 +176,7 @@
             case '使用年限':
                 return '/asset-life';
             case '资产查询':
-                return '/asset-quary';
+                return '/asset-query';
             case '资产上报':
                 return '/asset-post';
             case '资产报损':
