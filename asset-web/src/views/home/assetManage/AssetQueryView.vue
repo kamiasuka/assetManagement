@@ -1,5 +1,5 @@
 <template>
-    quary
+    query
 </template>
 
 <style>

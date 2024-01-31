@@ -30,10 +30,10 @@
     import router from "@/router";
 
     const user = ref({username:'',password:''});
-   /* const  BASE_URL = 'http://localhost:8080';*/
+   /* const  ADMIN_URL = 'http://localhost:9001';*/
     const login = ()=>{
         let data = qs.stringify(user.value);
-        axios.post(BASE_URL+'/v1/users/login',data)
+        axios.post(ADMIN_URL+'/v1/users/login',data)
             .then((response)=>{
                 if (response.data.code==2001){
                     ElMessage.success("登录成功!");
