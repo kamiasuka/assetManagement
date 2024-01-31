@@ -1,4 +1,4 @@
-package cn.tedu.attachment;
+package cn.tedu.asset.attachment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
