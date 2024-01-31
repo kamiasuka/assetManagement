@@ -6,12 +6,12 @@
 
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>asset-management</artifactId>
+        <artifactId>asset-server</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>cn.tedu</groupId>
-    <artifactId>asset-server</artifactId>
+    <artifactId>asset-manage</artifactId>
 
     <name>asset-server</name>
     <description>Demo project for Spring Boot</description>
