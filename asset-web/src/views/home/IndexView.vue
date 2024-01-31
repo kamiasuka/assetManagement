@@ -3,10 +3,10 @@
         <div class="up-side">
             <el-card>
                 <el-row :gutter="12">
-                    <el-col :span="4" v-for="(item, index) in recipeArr" :key="index">
+                    <el-col :span="4" v-for="(item, index) in recipeArr.slice(0,6)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
-                                <p class="card-title">{{ item.title }}元</p>
+                                <p class="card-title">{{ item.worth }}元</p>
                             </router-link>
                             <el-row :gutter="10">
                                 <el-col :span="24" class="card-text">{{ item.type }}({{item.num}})</el-col>
@@ -15,10 +15,10 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="12" style="margin-top: 8px;">
-                    <el-col :span="4" v-for="(item, index) in recipe" :key="index">
+                    <el-col :span="4" v-for="(item, index) in recipeArr.slice(6,12)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
-                                <p class="card-title">9999999元</p>
+                                <p class="card-title">{{ item.worth }}元</p>
                             </router-link>
                             <el-row :gutter="10">
                                 <el-col :span="24" class="card-text">{{ item.type }}({{item.num}})</el-col>
@@ -58,25 +58,64 @@ import {ElMessage} from 'element-plus'
 import * as echarts from "echarts";
 
 const user = ref({username: "", password: "", nickname: ""});
+const worthData = [
+    'Recipe 1',
+    'Recipe 2',
+    'Recipe 3',
+    'Recipe 4',
+    'Recipe 5',
+    'Recipe 6',
+    'Recipe 7',
+    'Recipe 8',
+    'Recipe 9',
+    'Recipe 1',
+    'Recipe 1',
+    'Recipe 1',
+    'Recipe 1',
+];
+
+const colorData = [
+    '#588EBD',
+    '#E25A5A',
+    '#45B6B0',
+    '#8775A9',
+    '#4F5C65',
+    '#13AAE3',
+    '#939EB0',
+    '#F29603',
+    '#9BCC34',
+    '#BC8F8C',
+    '#FDB35C',
+    '#49C0BE'
+];
+
 const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
+const numData = [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20];
 
-const recipeArr = ref([
-    {title: 'Recipe 1', description: 'Description 1', color: '#588EBD',type: '土地',num: 1},
-    {title: 'Recipe 2', description: 'Description 2', color: '#E25A5A',type: '土地',num: 1},
-    {title: 'Recipe 3', description: 'Description 3', color: '#45B6B0',type: '土地',num: 1},
-    {title: 'Recipe 4', description: 'Description 4', color: '#8775A9',type: '土地',num: 1},
-    {title: 'Recipe 5', description: 'Description 5', color: '#4F5C65',type: '土地',num: 1},
-    {title: 'Recipe 6', description: 'Description 6', color: '#13AAE3',type: '土地',num: 1},
-])
+const recipeArr = ref([]);
+for (let i = 0; i < typeData.length; i++) {
+    recipeArr.value.push({
+        worth: worthData[i],
+        color: colorData[i],
+        type: typeData[i],
+        num: numData[i],
+    });
+}
+// const recipeArr = ref([
+//     {title: 'Recipe 1',  color: '#588EBD',type: '土地',num: 1},
+//     {title: 'Recipe 2',  color: '#E25A5A',type: '土地',num: 1},
+//     {title: 'Recipe 3',  color: '#45B6B0',type: '土地',num: 1},
+//     {title: 'Recipe 4',  color: '#8775A9',type: '土地',num: 1},
+//     {title: 'Recipe 5',  color: '#4F5C65',type: '土地',num: 1},
+//     {title: 'Recipe 6',  color: '#13AAE3',type: '土地',num: 1},
+//     {title: 'Recipe 7',  color: '#939EB0',type: '房屋',num: 0},
+//     {title: 'Recipe 8',  color: '#F29603',type: '房屋',num: 0},
+//     {title: 'Recipe 9',  color: '#9BCC34',type: '房屋',num: 0},
+//     {title: 'Recipe 1',  color: '#BC8F8C',type: '房屋',num: 0},
+//     {title: 'Recipe 1',  color: '#FDB35C',type: '房屋',num: 0},
+//     {title: 'Recipe 1',  color: '#49C0BE',type: '房屋',num: 0},
+// ])
 
-const recipe = ref([
-    {title: 'Recipe 1', description: 'Description 1', color: '#939EB0',type: '房屋',num: 0},
-    {title: 'Recipe 2', description: 'Description 2', color: '#F29603',type: '房屋',num: 0},
-    {title: 'Recipe 3', description: 'Description 3', color: '#9BCC34',type: '房屋',num: 0},
-    {title: 'Recipe 4', description: 'Description 4', color: '#BC8F8C',type: '房屋',num: 0},
-    {title: 'Recipe 5', description: 'Description 5', color: '#FDB35C',type: '房屋',num: 0},
-    {title: 'Recipe 6', description: 'Description 6', color: '#49C0BE',type: '房屋',num: 0},
-])
 
 /*柱状图展示部分--开始*/
 const assetBarChartRef = ref(null);
@@ -93,7 +132,7 @@ const showBarChart = () => {
             data: ["数量"]
         },
         xAxis: {
-            data: ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"],
+            data: typeData,
             axisLabel: {
                 interval: 0
             }
