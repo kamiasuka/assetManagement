@@ -1,9 +1,12 @@
 package cn.tedu.asset.admin.service.impl;
 
 import cn.tedu.asset.admin.dao.persist.mapper.UserMapper;
+import cn.tedu.asset.admin.dao.persist.repository.IUserRepository;
 import cn.tedu.asset.admin.pojo.dto.UserLoginDTO;
 import cn.tedu.asset.admin.pojo.dto.UserUpdateDTO;
 import cn.tedu.asset.admin.pojo.entity.User;
+import cn.tedu.asset.admin.pojo.param.UserUpdateInfoParam;
+import cn.tedu.asset.admin.pojo.po.UserPO;
 import cn.tedu.asset.admin.pojo.vo.UserVO;
 import cn.tedu.asset.admin.service.IUserService;
 import cn.tedu.asset.commom.ex.ServiceException;
@@ -13,11 +16,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@Service
 public class UserServiceImpl implements IUserService {
     @Autowired(required = false)
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
+    @Autowired(required = false)
+    private IUserRepository userRepository;
 
     @Override
     public UserVO login(UserLoginDTO userLoginDTO) {
@@ -34,9 +40,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void updateUser(UserUpdateDTO userUpdateDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userUpdateDTO,user);
-        userMapper.updateUser(user);
+    public void updateInfo(Long userId, UserUpdateInfoParam userUpdateInfoParam) {
+        log.debug("开始处理【修改基本信息】的业务，用户ID：{}，新基本信息：{}", userId, userUpdateInfoParam);
+        UserPO userPO = new UserPO();
+        BeanUtils.copyProperties(userUpdateInfoParam, userPO);
+        userPO.setId(userId);
+        int rows = userRepository.updateById(userPO);
+        if (rows != 1) {
+            String message = "修改基本信息失败，服务器忙，请稍后再尝试！";
+            log.warn(message);
+            throw new ServiceException(StatusCode.OPERATION_FAILED,message);
+        }
+    }
+
+    @Override
+    public void updatePassword(Long userId, String newPassword) {
+        log.debug("开始处理【修改密码】的业务，用户ID：{}，新密码：{}", userId, newPassword);
+        UserPO userPO = new UserPO();
+        userPO.setId(userId);
+        userPO.setPassword(newPassword);
+        int rows = userRepository.updateById(userPO);
+        if (rows != 1) {
+            String message = "修改密码失败，服务器忙，请稍后再尝试！";
+            log.warn(message);
+            throw new ServiceException(StatusCode.OPERATION_FAILED,message);
+        }
     }
 }
