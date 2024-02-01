@@ -40,7 +40,7 @@ console.log(localStorage.user);
 // 修改用户信息
 const save = ()=>{
     let data = qs.stringify(user.value);
-    axios.post('http://localhost:8080/v1/users/updateUser',data)
+    axios.post('http://localhost:9001/v1/users/'+user.value.id+'/info/update',data)
         .then((response)=>{
             if (response.data.code==2001){
                 ElMessage.success("修改完成!");
@@ -56,21 +56,22 @@ const newPwd2 = ref("");//确认新密码
 // todo 修改密码业务
 const savePwd= ()=>{
     if (newPwd1.value === newPwd2.value){
-        const user = JSON.parse(localStorage.getItem('user'));
-        user.password = newPwd1.value;
-        localStorage.setItem('user', JSON.stringify(user));
-
-        // let data = { username: user.username,password: newPwd1.value };
-
-        let data = qs.stringify(user.value);
-        console.log(data);
-        axios.post('http://localhost:8080/v1/users/updateUserPassword',data)
+        let dataJson = {
+            id: user.value.id,
+            newPassword: newPwd2.value
+        };
+        console.log(dataJson);
+        let data = qs.stringify(dataJson);
+        console.log(dataJson.id);
+        axios.post('http://localhost:9001/v1/users/'+dataJson.id+'/password/update',data)
             .then((response)=>{
                 if (response.data.code==2001){
                     ElMessage.success("修改完成!");
-
-                    //更新LocalStorage里面的用户数据
-                    localStorage.user = JSON.stringify(user.value);
+                    //刷新“旧密码”框的显示
+                    user.value.password = newPwd2;
+                    //刷新输入框
+                    newPwd1.value="";
+                    newPwd2.value="";
                 }else{
                     console.log(localStorage.user);
                     ElMessage.error(response.data.msg);
@@ -81,7 +82,8 @@ const savePwd= ()=>{
         newPwd2.value="";
         ElMessage.error("新密码不一致，请重新输入");
     }
-
+//更新LocalStorage里面的用户数据
+    localStorage.user = JSON.stringify(user.value);
 
 }
 const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
