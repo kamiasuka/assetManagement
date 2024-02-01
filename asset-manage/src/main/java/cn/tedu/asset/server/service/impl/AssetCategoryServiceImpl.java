@@ -43,7 +43,7 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             log.warn(msg);
             throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
         }
-
+        /** 限制子级深度 */
         AssetCategory a = categoryMapper.selectCategoryById(categoryDTO.getParentId());
         System.out.println("子级深度"+a.getLevel());
         if(a.getLevel()>=3){
@@ -163,6 +163,13 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             log.warn(message);
             throw new ServiceException(StatusCode.OPERATION_FAILED,message);
 
+        }
+
+        /** 更新关联父类 */
+        AssetCategory assetCategory = categoryMapper.selectCategoryById(id);
+        int temp = categoryMapper.countCategory(assetCategory.getParentId());
+        if (temp==1){
+            categoryMapper.updateIsParent(assetCategory.getParentId());
         }
     }
 }
