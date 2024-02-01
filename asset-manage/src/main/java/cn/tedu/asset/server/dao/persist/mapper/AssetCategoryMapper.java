@@ -22,5 +22,7 @@ public interface AssetCategoryMapper {
     int selectAssetByType(String type);
     int deleteCategory(int id);
 
+    int countCategory(int parentId);
+    int updateIsParent(int parentId);
 
 }

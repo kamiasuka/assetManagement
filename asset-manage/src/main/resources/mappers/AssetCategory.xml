@@ -46,4 +46,12 @@
     <delete id="deleteCategory">
         DELETE FROM asset_category WHERE id=#{id}
     </delete>
+    <select id="countCategory" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  asset_category WHERE parent_id=#{parent_id}
+    </select>
+    <update id="updateIsParent">
+        UPDATE asset_category SET
+            is_parent=0
+        WHERE id=#{parent_id}
+    </update>
 </mapper>
