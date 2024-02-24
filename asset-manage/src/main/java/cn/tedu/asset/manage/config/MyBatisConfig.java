@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.config;
+package cn.tedu.asset.manage.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;

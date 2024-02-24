@@ -1,14 +1,14 @@
-package cn.tedu.asset.server.service.impl;
+package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
-import cn.tedu.asset.server.dao.persist.mapper.AssetCategoryMapper;
-import cn.tedu.asset.server.pojo.dto.CategoryAddDTO;
-import cn.tedu.asset.server.pojo.dto.CategoryUpdateDTO;
-import cn.tedu.asset.server.pojo.entity.AssetCategory;
-import cn.tedu.asset.server.pojo.vo.AssetCategoryVO;
-import cn.tedu.asset.server.pojo.vo.CategoryStandardVO;
-import cn.tedu.asset.server.service.IAssetCategoryService;
+import cn.tedu.asset.manage.dao.persist.mapper.AssetCategoryMapper;
+import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
+import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
+import cn.tedu.asset.manage.pojo.entity.AssetCategory;
+import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.CategoryStandardVO;
+import cn.tedu.asset.manage.service.IAssetCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.exception;
+package cn.tedu.asset.manage.exception;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.JsonResult;

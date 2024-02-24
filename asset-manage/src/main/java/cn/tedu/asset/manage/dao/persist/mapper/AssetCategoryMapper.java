@@ -1,8 +1,8 @@
-package cn.tedu.asset.server.dao.persist.mapper;
+package cn.tedu.asset.manage.dao.persist.mapper;
 
-import cn.tedu.asset.server.pojo.entity.AssetCategory;
-import cn.tedu.asset.server.pojo.vo.AssetCategoryVO;
-import cn.tedu.asset.server.pojo.vo.CategoryStandardVO;
+import cn.tedu.asset.manage.pojo.entity.AssetCategory;
+import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.CategoryStandardVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

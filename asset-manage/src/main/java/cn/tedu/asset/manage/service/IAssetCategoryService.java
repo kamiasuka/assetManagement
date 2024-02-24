@@ -1,8 +1,8 @@
-package cn.tedu.asset.server.service;
+package cn.tedu.asset.manage.service;
 
-import cn.tedu.asset.server.pojo.dto.CategoryAddDTO;
-import cn.tedu.asset.server.pojo.dto.CategoryUpdateDTO;
-import cn.tedu.asset.server.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
+import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
+import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
 
 import java.util.List;
 

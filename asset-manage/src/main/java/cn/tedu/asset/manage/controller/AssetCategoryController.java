@@ -1,10 +1,10 @@
-package cn.tedu.asset.server.controller;
+package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
-import cn.tedu.asset.server.pojo.dto.CategoryAddDTO;
-import cn.tedu.asset.server.pojo.dto.CategoryUpdateDTO;
-import cn.tedu.asset.server.pojo.vo.AssetCategoryVO;
-import cn.tedu.asset.server.service.IAssetCategoryService;
+import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
+import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
+import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.service.IAssetCategoryService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

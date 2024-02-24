@@ -1,4 +1,4 @@
-package cn.tedu.asset.server;
+package cn.tedu.asset.manage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
