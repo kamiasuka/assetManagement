@@ -90,7 +90,7 @@ const colorData = [
 ];
 
 const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
-const numData = [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20];
+const numData = [5, 20, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
 
 const recipeArr = ref([]);
 for (let i = 0; i < typeData.length; i++) {
@@ -142,7 +142,8 @@ const showBarChart = () => {
             {
                 name: "数量",
                 type: "bar",
-                data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                data: numData
+
             },
         ]
     };

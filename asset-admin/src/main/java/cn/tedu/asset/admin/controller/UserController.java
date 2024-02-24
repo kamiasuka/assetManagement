@@ -28,6 +28,10 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    public UserController() {
+        log.info("创建控制器对象：UserController");
+    }
+
     @ApiOperation("用户登录")
     @ApiOperationSupport(order = 290)
     @PostMapping("/login")
