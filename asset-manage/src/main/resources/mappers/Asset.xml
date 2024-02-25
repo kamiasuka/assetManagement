@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.asset.manage.dao.persist.mapper.AssetMapper">
+
+    <select id="listAllCategory" resultType="java.lang.String">
+        select distinct type from asset_info;
+    </select>
+    <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
+        select *  from asset_info where type=#{type}
+    </select>
+</mapper>
