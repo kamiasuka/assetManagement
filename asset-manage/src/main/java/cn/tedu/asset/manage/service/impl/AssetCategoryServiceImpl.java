@@ -2,6 +2,7 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
+import cn.tedu.asset.manage.dao.cache.repository.IAssetCategoryCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetCategoryMapper;
 import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
 import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
@@ -21,12 +22,15 @@ import java.util.List;
 public class AssetCategoryServiceImpl implements IAssetCategoryService {
     @Autowired(required = false)
     private AssetCategoryMapper categoryMapper;
+    @Autowired
+    private IAssetCategoryCacheRepository categoryCacheRepository;
 
     @Override
-    public List<AssetCategoryVO> listAll() {
-        return categoryMapper.selectlistAll();
+    public List<AssetCategoryVO> getAllCategory() {
+        log.debug("开始处理【预热所有资产分类】的业务");
+        List<AssetCategoryVO> listByCategory = categoryCacheRepository.listByCategory();
+        return listByCategory;
     }
-
     /**
      * 添加资产分类
      * @param categoryDTO
@@ -36,7 +40,7 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
         log.debug("开始处理【添加类别】的业务，参数：{}", categoryDTO);
         String name = categoryDTO.getName();
         /** 查询是否存在同名分类 */
-        int num = categoryMapper.selectCategoryByname(name);
+        int num = categoryMapper.selectCategoryByName(name);
         log.debug("根据名称【{}】统计数量，结果：{}", name, num);
         if (num>=1){
             String msg = "添加失败，此类别已经被占用";
@@ -149,7 +153,7 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             throw new ServiceException(StatusCode.OPERATION_FAILED,message);
         }
 
-        int count = categoryMapper.selectAssetByType(queryResult.getType());
+        int count = categoryMapper.selectAssetByName(queryResult.getName());
         if (count>0){
             String message = "删除类别失败，该分类下还有资产关联！";
             log.warn(message);

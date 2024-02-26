@@ -8,6 +8,5 @@ public class AssetCategory {
     private String name;
     private int parentId;
     private int level;
-    private String type;
     private int isParent;
 }

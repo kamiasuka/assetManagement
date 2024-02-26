@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface AssetCategoryMapper {
 
-    List<AssetCategoryVO> selectlistAll();
-    int selectCategoryByname(String name);
+    List<AssetCategoryVO> selectListAll();
+    int selectCategoryByName(String name);
     AssetCategory selectCategoryById(int parentId);
     int updateParent(AssetCategory parentCategory);
     int insertCategory(AssetCategory assetCategory);
@@ -19,7 +19,7 @@ public interface AssetCategoryMapper {
     int countByNameAndNotId(@Param("id") Integer id, @Param("name") String name);
     int updateCategory(AssetCategory assetCategory);
 
-    int selectAssetByType(String type);
+    int selectAssetByName(String name);
     int deleteCategory(int id);
 
     int countCategory(int parentId);

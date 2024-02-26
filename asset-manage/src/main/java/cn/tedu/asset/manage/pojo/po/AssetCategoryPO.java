@@ -1,9 +1,9 @@
-package cn.tedu.asset.manage.pojo.vo;
+package cn.tedu.asset.manage.pojo.po;
 
 import lombok.Data;
 
 @Data
-public class AssetCategoryVO {
+public class AssetCategoryPO {
     private String name;
     private int parentId;
     private int level;

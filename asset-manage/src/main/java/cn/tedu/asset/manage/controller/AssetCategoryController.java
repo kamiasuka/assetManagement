@@ -32,7 +32,7 @@ public class AssetCategoryController {
     @ApiOperationSupport(order = 100)
     public JsonResult ListAll() {
         log.debug("开始处理【显示所有资产分类】的请求");
-        List<AssetCategoryVO> categoryList = categoryService.listAll();
+        List<AssetCategoryVO> categoryList = categoryService.getAllCategory();
         return JsonResult.ok(categoryList);
     }
 

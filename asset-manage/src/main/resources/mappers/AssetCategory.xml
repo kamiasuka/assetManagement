@@ -4,18 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.tedu.asset.manage.dao.persist.mapper.AssetCategoryMapper">
     <!-- 添加分类业务 -->
-    <select id="selectlistAll" resultType="cn.tedu.asset.manage.pojo.vo.AssetCategoryVO">
-        SELECT name,parent_id,level,type,is_parent FROM asset_category
+    <select id="selectListAll" resultType="cn.tedu.asset.manage.pojo.vo.AssetCategoryVO">
+        SELECT name,parent_id,level,is_parent FROM asset_category
     </select>
-    <select id="selectCategoryByname" resultType="int">
+    <select id="selectCategoryByName" resultType="int">
         SELECT count(*) FROM asset_category WHERE name=#{name}
     </select>
     <select id="selectCategoryById" resultType="cn.tedu.asset.manage.pojo.entity.AssetCategory">
-        SELECT id,name,parent_id,level,type,is_parent FROM asset_category WHERE id=#{id}
+        SELECT id,name,parent_id,level,is_parent FROM asset_category WHERE id=#{id}
     </select>
     <insert id="insertCategory">
-        INSERT INTO asset_category(name,parent_id,level,type,is_parent)
-        VALUES (#{name},#{parentId},#{level},#{type},#{isParent})
+        INSERT INTO asset_category(name,parent_id,level,is_parent)
+        VALUES (#{name},#{parentId},#{level},#{isParent})
     </insert>
     <update id="updateParent">
         UPDATE asset_category SET
@@ -25,7 +25,7 @@
 
 <!-- 修改分类业务 -->
     <select id="getStandardById" resultType="cn.tedu.asset.manage.pojo.vo.CategoryStandardVO">
-        SELECT name,parent_id,level,type,is_parent FROM asset_category WHERE id=#{id}
+        SELECT name,parent_id,level,is_parent FROM asset_category WHERE id=#{id}
     </select>
     <select id="countByNameAndNotId" resultType="int">
         SELECT count(*) FROM asset_category  WHERE  name=#{name}
@@ -34,14 +34,14 @@
         UPDATE asset_category
         <set>
             <if test="name!=null">name=#{name},</if>
-            <if test="type!=null">asset_category.type=#{type}</if>
+<!--            <if test="type!=null">asset_category.type=#{type}</if>-->
         </set>
         WHERE id=#{id}
     </update>
 
 <!-- 删除分类业务 -->
-    <select id="selectAssetByType" resultType="int">
-        SELECT COUNT(*) FROM asset_info WHERE type=#{type}
+    <select id="selectAssetByName" resultType="int">
+        SELECT COUNT(*) FROM asset_info WHERE name=#{name}
     </select>
     <delete id="deleteCategory">
         DELETE FROM asset_category WHERE id=#{id}
