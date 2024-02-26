@@ -37,22 +37,22 @@
                                 @close="handleClose"
                         >
 
-                            <el-sub-menu index="1">
-                                <template #title>
-                                    <el-icon>
-                                        <document/>
-                                    </el-icon>
-                                    <span>土地</span>
-                                </template>
-                                <el-sub-menu index="1-1">
-                                    <template #title>商用土地</template>
-                                    <el-menu-item index="1-1-1">item one</el-menu-item>
-                                </el-sub-menu>
-                                <el-sub-menu index="1-2">
-                                    <template #title>出租土地</template>
-                                    <el-menu-item index="1-1-2">item 2</el-menu-item>
-                                </el-sub-menu>
-                            </el-sub-menu>
+<!--                            <el-sub-menu index="3">-->
+<!--                                <template #title>-->
+<!--                                    <el-icon>-->
+<!--                                        <document/>-->
+<!--                                    </el-icon>-->
+<!--                                    <span>土地</span>-->
+<!--                                </template>-->
+<!--                                <el-sub-menu index="1-1">-->
+<!--                                    <template #title>商用土地</template>-->
+<!--                                    <el-menu-item index="1-1-1">item one</el-menu-item>-->
+<!--                                </el-sub-menu>-->
+<!--                                <el-sub-menu index="1-2">-->
+<!--                                    <template #title>出租土地</template>-->
+<!--                                    <el-menu-item index="1-1-2">item 2</el-menu-item>-->
+<!--                                </el-sub-menu>-->
+<!--                            </el-sub-menu>-->
 
 
                             <el-sub-menu index="2">
@@ -68,6 +68,23 @@
                                 </el-sub-menu>
                                 <el-sub-menu index="2-2">
                                     <template #title>出租房屋</template>
+                                    <el-menu-item index="1-1-2">item 2</el-menu-item>
+                                </el-sub-menu>
+                            </el-sub-menu>
+
+                            <el-sub-menu index="3">
+                                <template #title>
+                                    <el-icon>
+                                        <document/>
+                                    </el-icon>
+                                    <span>土地</span>
+                                </template>
+                                <el-sub-menu index="1-1">
+                                    <template #title>商用土地</template>
+                                    <el-menu-item index="1-1-1">item one</el-menu-item>
+                                </el-sub-menu>
+                                <el-sub-menu index="1-2">
+                                    <template #title>出租土地</template>
                                     <el-menu-item index="1-1-2">item 2</el-menu-item>
                                 </el-sub-menu>
                             </el-sub-menu>
@@ -143,6 +160,7 @@ import {
     Star,
 } from '@element-plus/icons-vue'
 
+const category_level = 1;
 
 const handleClick = () => {
     console.log('click')

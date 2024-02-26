@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.config;
+package cn.tedu.asset.admin.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -28,4 +28,5 @@ public class RedisConfig {
         redisTemplate.setHashValueSerializer(RedisSerializer.json());
         return redisTemplate;
     }
+
 }
