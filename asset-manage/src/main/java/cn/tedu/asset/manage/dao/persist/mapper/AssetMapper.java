@@ -7,5 +7,5 @@ import java.util.List;
 public interface AssetMapper {
     List<String> listAllCategory();
 
-    AssetPO listAssetByCategory(String type);
+    List<AssetPO> listAssetByCategory(String type);
 }

@@ -25,15 +25,19 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
 
     @Override
     public void save(String type) {
-        log.debug("开始处理【存储资产分类】的缓存数据", type);
+        log.debug("开始处理【存储资产分类】的缓存数据,参数：" + type);
         //String key = KEY_PREFIX_ITEM+type;
-        SetOperations<String,Serializable> setOperations = redisTemplate.opsForSet();
-        setOperations.add(KEY_ALL_KEYS,type);
+        SetOperations<String, Serializable> setOperations = redisTemplate.opsForSet();
+        setOperations.add(KEY_ALL_KEYS, type);
     }
 
     @Override
-    public void saveByCategory(AssetPO assetPO) {
-
+    public void saveByCategory(List<AssetPO> assetPOList) {
+        log.debug("开始处理【存储资产】的缓存数据,参数：" + assetPOList);
+        SetOperations<String, Serializable> setOperations = redisTemplate.opsForSet();
+        for (AssetPO assetPO : assetPOList) {
+            setOperations.add(assetPO.getType(), assetPO);
+        }
     }
 
     @Override
@@ -48,6 +52,4 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     public List<AssetVO> listByAsset() {
         return null;
     }
-
-
 }

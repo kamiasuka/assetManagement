@@ -23,7 +23,7 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public List<AssetVO> getAssetByType(String type) {
-        log.debug("开始处理【预热所有资产】的业务");
+        log.debug("开始处理【查询资产】的业务");
         return iAssetCacheRepository.listByAsset();
     }
 
@@ -33,11 +33,12 @@ public class AssetServiceImpl implements IAssetService {
         iAssetCacheRepository.deleteAll();
 
         List<String> categoryList = assetMapper.listAllCategory();
-        AssetPO assetPO = null;
+        List<AssetPO> assetPOList = null;
 
         for (String type: categoryList){
-            //assetPO = assetMapper.listAssetByCategory(type);
             iAssetCacheRepository.save(type);
+            assetPOList = assetMapper.listAssetByCategory(type);
+            iAssetCacheRepository.saveByCategory(assetPOList);
         }
 
     }

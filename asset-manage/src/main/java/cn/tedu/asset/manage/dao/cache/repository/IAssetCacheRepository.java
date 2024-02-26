@@ -8,10 +8,9 @@ import java.util.List;
 public interface IAssetCacheRepository {
     void deleteAll();
 
-    List<AssetVO> listByAsset();
-
     void save(String type);
 
-    void saveByCategory(AssetPO assetPO);
+    void saveByCategory(List<AssetPO> assetPOList);
 
+    List<AssetVO> listByAsset();
 }

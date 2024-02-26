@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class AssetVO {
-    private String id;
+    private String code;
     private String name;
     private String type;
     private String dept;

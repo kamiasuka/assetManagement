@@ -24,7 +24,7 @@ public class AssetController {
     @ApiOperation("显示所有资产")
     public JsonResult getAssetByType(@PathVariable String type){
         log.debug("开始处理【显示所有资产】的请求");
-
+        iAssetService.getAssetByType(type);
         return JsonResult.ok();
     }
 
