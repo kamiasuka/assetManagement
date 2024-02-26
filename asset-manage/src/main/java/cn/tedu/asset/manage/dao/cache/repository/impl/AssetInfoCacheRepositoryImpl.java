@@ -1,13 +1,10 @@
-package cn.tedu.asset.server.dao.cache.impl;
+package cn.tedu.asset.manage.dao.cache.repository.impl;
 
-import cn.tedu.asset.server.dao.cache.IAssetInfoCacheRepository;
+import cn.tedu.asset.manage.dao.cache.repository.IAssetInfoCacheRepository;
 import cn.tedu.asset.server.pojo.param.AssetInfoAddParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.io.Serializable;
 
 @Slf4j
 @Repository

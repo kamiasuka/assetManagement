@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.dao.cache;
+package cn.tedu.asset.manage.dao.cache.repository;
 
 import cn.tedu.asset.server.pojo.param.AssetInfoAddParam;
 
