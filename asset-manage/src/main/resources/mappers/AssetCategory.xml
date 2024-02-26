@@ -11,7 +11,7 @@
         SELECT count(*) FROM asset_category WHERE name=#{name}
     </select>
     <select id="selectCategoryById" resultType="cn.tedu.asset.manage.pojo.entity.AssetCategory">
-        SELECT id,name,parent_id,level,is_parent FROM asset_category WHERE id=#{id}
+        SELECT id,name,parent_id,level,is_parent FROM asset_category WHERE parent_id=#{parentId}
     </select>
     <insert id="insertCategory">
         INSERT INTO asset_category(name,parent_id,level,is_parent)

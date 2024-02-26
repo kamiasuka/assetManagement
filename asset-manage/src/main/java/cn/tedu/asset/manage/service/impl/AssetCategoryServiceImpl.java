@@ -31,6 +31,8 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
         List<AssetCategoryVO> listByCategory = categoryCacheRepository.listByCategory();
         return listByCategory;
     }
+
+
     /**
      * 添加资产分类
      * @param categoryDTO
@@ -47,20 +49,22 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             log.warn(msg);
             throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
         }
-        /** 限制子级深度 */
-        AssetCategory a = categoryMapper.selectCategoryById(categoryDTO.getParentId());
-        System.out.println("子级深度"+a.getLevel());
-        if(a.getLevel()>=3){
-            String msg = "添加失败，最多允许添加三个子分类";
-            log.warn(msg);
-            throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
-        }
+
 
         /** 判断插入的是子级还是父级，记录深度 */
         int parentId = categoryDTO.getParentId();
         int depth = 1;
         AssetCategory parentCategory = null;
         if (parentId != 0) {
+            /** 限制子级深度 */
+            AssetCategory a = categoryMapper.selectCategoryById(categoryDTO.getParentId());
+            System.out.println("子级深度"+a.getLevel());
+            if(a.getLevel()>=3){
+                String msg = "添加失败，最多允许添加三个子分类";
+                log.warn(msg);
+                throw new ServiceException(StatusCode.OPERATION_FAILED,msg);
+            }
+
             parentCategory = categoryMapper.selectCategoryById(parentId);
             if (parentCategory == null){
                 String msg = "添加失败，父级类别不存在";
@@ -70,7 +74,6 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
                 depth = parentCategory.getLevel()+1;
             }
         }
-
         /** 添加父级，更新深度和isParent */
         AssetCategory assetCategory = new AssetCategory();
         BeanUtils.copyProperties(categoryDTO,assetCategory);
@@ -153,7 +156,7 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
             throw new ServiceException(StatusCode.OPERATION_FAILED,message);
         }
 
-        int count = categoryMapper.selectAssetByName(queryResult.getName());
+        int count = categoryMapper.selectCategoryByName(queryResult.getName());
         if (count>0){
             String message = "删除类别失败，该分类下还有资产关联！";
             log.warn(message);

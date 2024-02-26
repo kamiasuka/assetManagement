@@ -10,7 +10,9 @@ import java.util.List;
 public interface AssetCategoryMapper {
 
     List<AssetCategoryVO> selectListAll();
+
     int selectCategoryByName(String name);
+
     AssetCategory selectCategoryById(int parentId);
     int updateParent(AssetCategory parentCategory);
     int insertCategory(AssetCategory assetCategory);
