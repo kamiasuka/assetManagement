@@ -1,13 +1,11 @@
-package cn.tedu.asset.server.controller;
+package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
-import cn.tedu.asset.server.pojo.param.AssetInfoAddParam;
-import cn.tedu.asset.server.service.IAssetInfoService;
+import cn.tedu.asset.manage.pojo.param.AssetInfoAddParam;
+import cn.tedu.asset.manage.service.IAssetInfoService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
