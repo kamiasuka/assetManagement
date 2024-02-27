@@ -9,5 +9,5 @@ public interface AssetCacheConsts {
     /**
      * 缓存中所有列表数据的Key集合的Key
      */
-    String KEY_ALL_KEYS = "asset:keys";
+    String KEY_ALL_KEYS = "assetCategory:keys";
 }

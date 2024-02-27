@@ -65,6 +65,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cn.tedu</groupId>
             <artifactId>asset-common</artifactId>
             <version>1.0-SNAPSHOT</version>
