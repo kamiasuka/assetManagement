@@ -1,6 +1,6 @@
 package cn.tedu.asset.manage.dao.cache.repository;
 
-import cn.tedu.asset.server.pojo.param.AssetInfoAddParam;
+import cn.tedu.asset.manage.pojo.param.AssetInfoAddParam;
 
 public interface IAssetInfoCacheRepository {
     /**
