@@ -5,19 +5,14 @@ import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import com.alibaba.fastjson2.JSON;
-import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -35,10 +30,6 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     @Override
     public void save(String type) {
         log.debug("开始处理【存储资产分类】的缓存预热,参数：" + type);
-/*
-        ListOperations<String, Serializable> listOperations = redisTemplate.opsForList();
-        listOperations.leftPush(KEY_ALL_KEYS, type);
-*/
         SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
         opsForSet.add(KEY_ALL_KEYS,type);
     }
@@ -46,12 +37,6 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     @Override
     public void saveByCategory(List<AssetPO> assetPOList) {
         log.debug("开始处理【存储资产】的缓存预热,参数：" + assetPOList);
-/*
-        ListOperations<String, Serializable> listOperations = redisTemplate.opsForList();
-        for (AssetPO assetPO : assetPOList) {
-            listOperations.leftPush(assetPO.getType(), assetPO);
-        }
-*/
         SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
         for (AssetPO assetPO : assetPOList) {
             String assetPOJson = JSON.toJSONString(assetPO);
@@ -62,13 +47,7 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
 
     @Override
     public void deleteAll() {
-        log.debug("开始处理【删除所有数据】的缓存预热，无参数");
-/*
-        ListOperations<String, Serializable> opsForList = redisTemplate.opsForList();
-        List keys = opsForList.range(KEY_ALL_KEYS, 0, -1);
-        redisTemplate.delete(keys);
-*/
-
+        log.debug("开始处理【清理缓存】的业务");
         SetOperations<String, String> opsForString = redisTemplate.opsForSet();
         Set keys = opsForString.members(KEY_ALL_KEYS);
         redisTemplate.delete(keys);
@@ -78,26 +57,11 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     @Override
     public List<AssetVO> listByAsset(String type) {
         log.debug("开始处理【根据type查询资产数据】的缓存数据访问，参数:"+type);
-/*        ListOperations<String,Serializable> listOperations = redisTemplate.opsForList();
-        List assetPOList = listOperations.range(type,0,-1);
-
-        if (assetPOList.isEmpty()){
-            List<AssetPO> poList = assetMapper.listAssetByCategory(type);
-
-            AssetVO assetVO = new AssetVO();
-            List<AssetVO> voList = new ArrayList<>();
-            for (AssetPO assetPO : poList ){
-                BeanUtils.copyProperties(assetPO,assetVO);
-                voList.add(assetVO);
-                listOperations.leftPush(assetPO.getType(), type);
-            }
-            return voList;
-        }
-        return assetPOList;*/
         SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
         Set<String> assetJsonSet = opsForSet.members(type);
 
         /** 缓存未命中 */
+        log.debug("根据type查询资产数据，缓存未命中，访问数据库，参数:"+type);
         if(assetJsonSet.isEmpty()){
             List<AssetPO> poList = assetMapper.listAssetByCategory(type);
             AssetVO assetVO = new AssetVO();
@@ -105,7 +69,9 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
             for (AssetPO assetPO : poList ){
                 BeanUtils.copyProperties(assetPO,assetVO);
                 voList.add(assetVO);
-                //listOperations.leftPush(assetPO.getType(), type);
+                /** 更新缓存 */
+                String assetPOJson = JSON.toJSONString(assetPO);
+                opsForSet.add(assetPO.getType(), assetPOJson);
             }
             return voList;
         }

@@ -23,9 +23,8 @@ public class AssetController {
     @GetMapping("getAsset/{type}")
     @ApiOperation("根据分类显示资产")
     public JsonResult getAssetByType(@PathVariable String type){
-        log.debug("开始处理【根据分类加载资产】的请求");
-        iAssetService.getAssetByType(type);
-        return JsonResult.ok();
+        log.debug("开始处理【根据分类加载资产】的请求，参数："+type);
+        return JsonResult.ok(iAssetService.getAssetByType(type));
     }
 
     @GetMapping()

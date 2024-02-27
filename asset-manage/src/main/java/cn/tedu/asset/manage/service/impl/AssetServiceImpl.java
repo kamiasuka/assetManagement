@@ -24,7 +24,7 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public List<AssetVO> getAssetByType(String type) {
-        log.debug("开始处理【根据分类加载资产】的业务");
+        log.debug("开始处理【根据分类加载资产】的业务，参数："+type);
         return iAssetCacheRepository.listByAsset(type);
     }
 
