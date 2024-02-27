@@ -8,6 +8,7 @@ import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.service.IAssetService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public List<AssetVO> getAssetByType(String type) {
         log.debug("开始处理【查询资产】的业务");
-        return iAssetCacheRepository.listByAsset();
+        return iAssetCacheRepository.listByAsset(type);
     }
 
     @Override
