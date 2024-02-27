@@ -92,6 +92,10 @@ const colorData = [
 const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
 const numData = [5, 20, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
 
+// const worthData = [];
+// const numData = ref([]);
+
+
 const recipeArr = ref([]);
 for (let i = 0; i < typeData.length; i++) {
     recipeArr.value.push({
@@ -101,22 +105,27 @@ for (let i = 0; i < typeData.length; i++) {
         num: numData[i],
     });
 }
-// const recipeArr = ref([
-//     {title: 'Recipe 1',  color: '#588EBD',type: '土地',num: 1},
-//     {title: 'Recipe 2',  color: '#E25A5A',type: '土地',num: 1},
-//     {title: 'Recipe 3',  color: '#45B6B0',type: '土地',num: 1},
-//     {title: 'Recipe 4',  color: '#8775A9',type: '土地',num: 1},
-//     {title: 'Recipe 5',  color: '#4F5C65',type: '土地',num: 1},
-//     {title: 'Recipe 6',  color: '#13AAE3',type: '土地',num: 1},
-//     {title: 'Recipe 7',  color: '#939EB0',type: '房屋',num: 0},
-//     {title: 'Recipe 8',  color: '#F29603',type: '房屋',num: 0},
-//     {title: 'Recipe 9',  color: '#9BCC34',type: '房屋',num: 0},
-//     {title: 'Recipe 1',  color: '#BC8F8C',type: '房屋',num: 0},
-//     {title: 'Recipe 1',  color: '#FDB35C',type: '房屋',num: 0},
-//     {title: 'Recipe 1',  color: '#49C0BE',type: '房屋',num: 0},
-// ])
 
+const pieChartArr = [];
+for (let i = 0; i < typeData.length; i++) {
+    pieChartArr.push({
+        value: numData[i],
+        itemStyle:  {color: colorData[i]},
+        name: typeData[i]
+    });
+}
 
+// 获取资产最大级分类的统计信息
+const getStatistic = ()=>{
+    axios.get("http://localhost:9002/v1/asset/getStatistics")
+        .then((response)=>{
+            if (response.data.code==2001){
+                ElMessage.success("操作成功");
+                const statistic = response.data.data;
+                console.log(statistic);
+            }
+        })
+}
 /*柱状图展示部分--开始*/
 const assetBarChartRef = ref(null);
 //绘制柱状图
@@ -203,20 +212,7 @@ const showPieChart = () => {
                 type: "pie", // 图表类型为饼图
                 radius: ["0%", "60%"], // 饼图半径
                 center: ["50%", "50%"], // 饼图中心点位置
-                data: [ // 数据项列表
-                    {value: 5, itemStyle: {color: '#588EBD'}, name: "土地"}, // 数据项，value：数值，name：数据项名称
-                    {value: 20, itemStyle: {color: '#E25A5A'}, name: "房屋"},
-                    {value: 36, itemStyle: {color: '#45B6B0'}, name: "构筑物"},
-                    {value: 10, itemStyle: {color: '#8775A9'}, name: "通用设备"},
-                    {value: 10, itemStyle: {color: '#4F5C65'}, name: "专用设备"},
-                    {value: 20, itemStyle: {color: '#13AAE3'}, name: "车辆"},
-                    {value: 5, itemStyle: {color: '#939EB0'}, name: "文物和陈列品"},
-                    {value: 20, itemStyle: {color: '#F29603'}, name: "家具用具"},
-                    {value: 36, itemStyle: {color: '#9BCC34'}, name: "图书档案"},
-                    {value: 10, itemStyle: {color: '#BC8F8C'}, name: "动植物"},
-                    {value: 10, itemStyle: {color: '#FDB35C'}, name: "无形资产"},
-                    {value: 20, itemStyle: {color: '#49C0BE'}, name: "在建工程"}
-                ].sort(function (a, b) { // 按照数值从小到大排序
+                data: pieChartArr.sort(function (a, b) { // 按照数值从小到大排序
                     return a.value - b.value;
                 }),
                 roseType: "", // 南丁格尔玫瑰图，通过半径展现数据的大小，也可以改为 "area"，表示通过面积展现数据的大小
@@ -266,6 +262,7 @@ const showPieChart = () => {
 /*饼状图展示部分--结束*/
 
 onMounted(() => {
+    getStatistic();
     showBarChart();
     showPieChart();
 });

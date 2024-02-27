@@ -13,4 +13,5 @@ public interface IAssetCacheRepository {
     void saveByCategory(List<AssetPO> assetPOList);
 
     List<AssetVO> listByAsset();
+
 }

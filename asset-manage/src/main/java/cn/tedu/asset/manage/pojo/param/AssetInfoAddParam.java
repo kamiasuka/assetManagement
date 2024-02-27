@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.pojo.param;
+package cn.tedu.asset.manage.pojo.param;
 
 import lombok.Data;
 

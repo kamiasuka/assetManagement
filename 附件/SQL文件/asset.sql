@@ -47,6 +47,7 @@ CREATE TABLE asset_info
     code          varchar(30) unique not null COMMENT '资产编码',
     name          varchar(50)        not null COMMENT '资产名',
     type          varchar(50)        not null COMMENT '资产类型',
+    max_type      varchar(50)        not null COMMENT '所属的一级分类',
     dept          varchar(30)    DEFAULT '' COMMENT '所属部门',
     unit          varchar(30)    DEFAULT '' COMMENT '所属单位',
     life          int unsigned   DEFAULT 0 COMMENT '使用年限',
@@ -105,7 +106,8 @@ set is_parent=1
 where id = 8;
 
 # 资产信息表操作
-INSERT INTO asset.asset_info(code, name, type, dept, unit, life, amount, use_status, review_status, approval_date)
-VALUES ('1', '土地测试', '土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('2', '电脑a', '电子设备', '', '宝相公司', 5, 3000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('3', '办公桌a', '家具用具', '', '宝相公司', 20, 10000.00, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO asset.asset_info(code, name, type,max_type, dept, unit, life, amount, use_status, review_status, approval_date)
+VALUES ('1', '土地测试', '土地','土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('2', '电脑a', '电脑', '通用设备','', '宝相公司', 5, 3000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('3', '办公桌a', '家具用具','家具用具', '', '宝相公司', 20, 10000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('4', '办公桌b', '家具用具','家具用具', '', '宝相公司', 20, 7000.00, DEFAULT, DEFAULT, DEFAULT);

@@ -10,4 +10,13 @@
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
         select *  from asset_info where type=#{type}
     </select>
+    <select id="listByLevel" resultType="java.lang.String">
+        select name from asset_category where level = #{level};
+    </select>
+    <select id="numberSumQuery" resultType="java.lang.Integer">
+        select COUNT(*) from asset_info WHERE max_type = #{maxType};
+    </select>
+    <select id="worthSumQuery" resultType="java.lang.Double">
+        select SUM(amount) from asset_info WHERE max_type = #{maxType};
+    </select>
 </mapper>

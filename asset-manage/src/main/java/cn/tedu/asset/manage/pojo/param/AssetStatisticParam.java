@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AssetStatisticParam {
     /**
-     * 该分类下所有资产的总值
+     * 该一级分类下所有资产的总值
      */
     private Double worth;
     /**
@@ -16,7 +16,7 @@ public class AssetStatisticParam {
      */
     private String type;
     /**
-     * 该分类下所有资产的数量
+     * 该一级分类下所有资产的数量
      */
     private Integer num;
 }

@@ -1,7 +1,7 @@
-package cn.tedu.asset.server.service.impl;
+package cn.tedu.asset.manage.service.impl;
 
-import cn.tedu.asset.server.pojo.param.AssetInfoAddParam;
-import cn.tedu.asset.server.service.IAssetInfoService;
+import cn.tedu.asset.manage.pojo.param.AssetInfoAddParam;
+import cn.tedu.asset.manage.service.IAssetInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
