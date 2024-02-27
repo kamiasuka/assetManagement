@@ -10,4 +10,5 @@ public interface IAssetService {
 
     void rebuildCache();
 
+    AssetVO getAssetByES();
 }

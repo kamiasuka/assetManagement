@@ -21,10 +21,18 @@ public class AssetController {
     private IAssetService iAssetService;
 
     @GetMapping("getAsset/{type}")
-    @ApiOperation("显示所有资产")
+    @ApiOperation("根据分类显示资产")
     public JsonResult getAssetByType(@PathVariable String type){
-        log.debug("开始处理【显示所有资产】的请求");
+        log.debug("开始处理【根据分类加载资产】的请求");
         iAssetService.getAssetByType(type);
+        return JsonResult.ok();
+    }
+
+    @GetMapping()
+    @ApiOperation("资产全局查询")
+    public JsonResult getAssetByES(){
+        log.debug("开始处理【资产全局搜索】的请求");
+        iAssetService.getAssetByES();
         return JsonResult.ok();
     }
 
