@@ -34,12 +34,9 @@
                                 <el-menu-item-group class="b1" @click="router.push('/dept')">
                                     <el-menu-item index="2-1">部门管理</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group  class="b1" @click="router.push('/asset-category')">
-                                    <el-menu-item index="2-2">资产分类</el-menu-item>
-                                </el-menu-item-group>
-                                <el-menu-item-group  class="b1" @click="router.push('/asset-life')">
-                                    <el-menu-item index="2-3">使用年限</el-menu-item>
-                                </el-menu-item-group>
+<!--                                <el-menu-item-group  class="b1" @click="router.push('/asset-life')">-->
+<!--                                    <el-menu-item index="2-3">使用年限</el-menu-item>-->
+<!--                                </el-menu-item-group>-->
                             </el-sub-menu>
                             <el-sub-menu index="3">
                                 <template #title>
@@ -58,7 +55,7 @@
                                 <el-menu-item-group class="b1" @click="router.push('/asset-manage')">
                                     <el-menu-item index="4-1">资产录入</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" @click="router.push('/asset-quary')">
+                                <el-menu-item-group class="b1"  @click="router.push('/asset-query')">
                                     <el-menu-item index="4-2">资产查询</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
@@ -68,7 +65,7 @@
                                     <el-menu-item index="4-4">资产报损</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-value-change')">
-                                    <el-menu-item index="4-5">价值变更</el-menu-item>
+                                    <el-menu-item index="4-5">资产修改</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-sub-menu index="5">
