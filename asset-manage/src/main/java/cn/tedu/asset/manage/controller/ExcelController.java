@@ -2,20 +2,17 @@ package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.excel.ExcelUtil;
-import cn.tedu.asset.manage.pojo.entity.AssetData;
+import cn.tedu.asset.manage.pojo.entity.AssetExcelData;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.alibaba.excel.EasyExcel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +34,20 @@ public class ExcelController {
         String fileName = URLEncoder.encode("资产报表", "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
 */
-        //        iExcelService.exportDataToExcel(response, fileName);
+        //iExcelService.exportDataToExcel(response, fileName);
 
         List<AssetPO> assetPOList = assetMapper.listAssetByCategory("办公用品");
+
+        List<AssetExcelData> excelDataList = new ArrayList<>();
+        AssetExcelData excelData = new AssetExcelData();
+
+        for (AssetPO assetPO:assetPOList){
+            BeanUtils.copyProperties(assetPO,excelData);
+            excelDataList.add(excelData);
+        }
+
         String fileName = ExcelUtil.getPath()+"测试"+".xlsx";
-        EasyExcel.write(fileName,AssetPO.class).sheet("资产数据").doWrite(assetPOList);
-
-
+        EasyExcel.write(fileName,AssetPO.class).sheet("资产数据").doWrite(excelDataList);
 
     }
 }

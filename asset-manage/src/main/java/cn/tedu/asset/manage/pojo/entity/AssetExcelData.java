@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class AssetData {
+public class AssetExcelData {
     @ExcelProperty("资产编码")
     private String code;
 
