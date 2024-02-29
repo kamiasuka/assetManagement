@@ -180,12 +180,12 @@
             case '使用年限':
                 return '/asset-life';
             case '资产查询':
-                return '/asset-quary';
+                return '/asset-query';
             case '资产上报':
                 return '/asset-post';
             case '资产报损':
                 return '/asset-report';
-            case '价值变更':
+            case '资产修改':
                 return '/asset-value-change';
             case '年度报表':
                 return '/annual-report';
