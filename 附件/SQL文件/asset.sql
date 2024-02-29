@@ -52,7 +52,7 @@ CREATE TABLE asset_info
     unit          varchar(30)    DEFAULT '' COMMENT '所属单位',
     life          int unsigned   DEFAULT 0 COMMENT '使用年限',
     amount        decimal(10, 2) DEFAULT 0.00 COMMENT '资产价值',
-    use_status    varchar(30)    DEFAULT '闲置' COMMENT '使用状态，包括在用，闲置，在修，报废',
+    use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
     approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
 ) COMMENT '资产信息' CHARSET = utf8mb4;
