@@ -58,7 +58,7 @@ public class AssetServiceImpl implements IAssetService {
 
 
         for (int i=0;i<types.size();i++){
-            log.debug("开始封装每{}个分类的统计信息AssetStatisticParam",i+1);
+            log.debug("开始封装第{}个分类的统计信息AssetStatisticParam",i+1);
             AssetStatisticParam asp = new AssetStatisticParam();
             asp.setType(types.get(i));
             /**

@@ -3,7 +3,7 @@
         <div class="up-side">
             <el-card>
                 <el-row :gutter="12">
-                    <el-col :span="4" v-for="(item, index) in recipeArr.slice(0,6)" :key="index">
+                    <el-col :span="4" v-for="(item, index) in cardArr.slice(0,6)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
                                 <p class="card-title">{{ item.worth }}元</p>
@@ -15,7 +15,7 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="12" style="margin-top: 8px;">
-                    <el-col :span="4" v-for="(item, index) in recipeArr.slice(6,12)" :key="index">
+                    <el-col :span="4" v-for="(item, index) in cardArr.slice(6,12)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
                                 <p class="card-title">{{ item.worth }}元</p>
@@ -38,6 +38,7 @@
                         </el-card>
                     </el-col>
                     <el-col :span="8">
+
                         <el-card>
                             <div id="asset_pie_chart" style="width:100%;height:450px;"></div>
                         </el-card>
@@ -58,21 +59,20 @@ import {ElMessage} from 'element-plus'
 import * as echarts from "echarts";
 
 const user = ref({username: "", password: "", nickname: ""});
-const worthData = [
-    'Recipe 1',
-    'Recipe 2',
-    'Recipe 3',
-    'Recipe 4',
-    'Recipe 5',
-    'Recipe 6',
-    'Recipe 7',
-    'Recipe 8',
-    'Recipe 9',
-    'Recipe 1',
-    'Recipe 1',
-    'Recipe 1',
-    'Recipe 1',
-];
+// const worthData = [
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+//     10,
+// ];
 
 const colorData = [
     '#588EBD',
@@ -90,48 +90,77 @@ const colorData = [
 ];
 
 const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
-const numData = [5, 20, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
+// const numData = [5, 10, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
 
-// const worthData = [];
-// const numData = ref([]);
+const worthData = ref([]);
+const numData = ref([]);
+
+const statistics = ref([]);//{worth:0.0,type:"",num:0}
 
 
-const recipeArr = ref([]);
-for (let i = 0; i < typeData.length; i++) {
-    recipeArr.value.push({
-        worth: worthData[i],
-        color: colorData[i],
-        type: typeData[i],
-        num: numData[i],
-    });
-}
+const cardArr = ref([]);
+const pieChartArr = ref([]);
 
-const pieChartArr = [];
-for (let i = 0; i < typeData.length; i++) {
-    pieChartArr.push({
-        value: numData[i],
-        itemStyle:  {color: colorData[i]},
-        name: typeData[i]
-    });
-}
 
 // 获取资产最大级分类的统计信息
-const getStatistic = ()=>{
-    axios.get("http://localhost:9002/v1/asset/getStatistics")
+const getStatistics = ()=>{
+    console.log("开始执行getStatistics方法 ")
+     axios.get("http://localhost:9002/v1/asset/getStatistics")
         .then((response)=>{
+            console.log("发送axios请求")
             if (response.data.code==2001){
                 ElMessage.success("操作成功");
-                const statistic = response.data.data;
-                console.log(statistic);
+                statistics.value = response.data.data;
+                for (let i = 0; i < typeData.length; i++){
+                    numData.value.push(statistics.value[i].num);
+                    worthData.value.push(statistics.value[i].worth);
+                }
+                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                console.log(numData);
+                console.log(worthData);
             }
+
+            console.log("开始封装cardArr");
+            for (let i = 0; i < typeData.length; i++) {
+                cardArr.value.push({
+                    worth: worthData.value[i],
+                    color: colorData[i],
+                    type: typeData[i],
+                    num: numData.value[i]
+                });
+            }
+
+            console.log(cardArr);
+
+            console.log("开始封装pieChartArr");
+            for (let i = 0; i < typeData.length; i++) {
+                pieChartArr.value.push({
+                    value: worthData.value[i],
+                    itemStyle:  {color: colorData[i]},
+                    name: typeData[i]
+                });
+            }
+            console.log(pieChartArr);
+            //绘制柱状图
+            showBarChart();
+            //绘制饼图
+            showPieChart();
+
         })
 }
+
+
+
+
+
 /*柱状图展示部分--开始*/
 const assetBarChartRef = ref(null);
 //绘制柱状图
 const showBarChart = () => {
+    console.log("开始绘制柱状图)");
     assetBarChartRef.value = document.getElementById('asset_bar_chart');
     const barChart = echarts.init(assetBarChartRef.value);
+    console.log(numData);
     let option = {
         title: {
             text: "资产数量统计"
@@ -151,7 +180,7 @@ const showBarChart = () => {
             {
                 name: "数量",
                 type: "bar",
-                data: numData
+                data: numData.value
 
             },
         ]
@@ -174,6 +203,7 @@ const showBarChart = () => {
 const assetPieChartRef = ref(null);
 //绘制饼状图
 const showPieChart = () => {
+    console.log("开始绘制饼图)");
     assetPieChartRef.value = document.getElementById('asset_pie_chart');
     const pieChart = echarts.init(assetPieChartRef.value);
     let option = {
@@ -212,14 +242,16 @@ const showPieChart = () => {
                 type: "pie", // 图表类型为饼图
                 radius: ["0%", "60%"], // 饼图半径
                 center: ["50%", "50%"], // 饼图中心点位置
-                data: pieChartArr.sort(function (a, b) { // 按照数值从小到大排序
+                data: pieChartArr.value.sort(function (a, b) { // 按照数值从小到大排序
                     return a.value - b.value;
                 }),
                 roseType: "", // 南丁格尔玫瑰图，通过半径展现数据的大小，也可以改为 "area"，表示通过面积展现数据的大小
                 label: {
+                    // show:false,
                     color: "rgba(10, 10, 10, 0.9)" // 标签文字颜色为灰色，透明度为 0.3
                 },
                 labelLine: {
+                    // show:false,
                     lineStyle: {
                         color: "rgba(10, 10, 10, 0.9)" // 标签线颜色为灰色，透明度为 0.3
                     },
@@ -262,10 +294,9 @@ const showPieChart = () => {
 /*饼状图展示部分--结束*/
 
 onMounted(() => {
-    getStatistic();
-    showBarChart();
-    showPieChart();
+    getStatistics();
 });
+
 </script>
 
 <style scoped>
