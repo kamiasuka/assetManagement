@@ -1,4 +1,4 @@
-package cn.tedu.asset.manage.pojo.param;
+package cn.tedu.asset.manage.pojo.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * 用于传递给首页，显示首页数据
  */
 @Data
-public class AssetStatisticParam {
+public class AssetStatisticDTO {
     /**
      * 该一级分类下所有资产的总值
      */

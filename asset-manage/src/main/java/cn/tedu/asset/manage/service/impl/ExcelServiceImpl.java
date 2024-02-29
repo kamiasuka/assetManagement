@@ -1,11 +1,11 @@
 package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
-import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.commom.response.StatusCode;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.entity.AssetExcelData;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
+import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.alibaba.excel.EasyExcel;
 import org.springframework.beans.BeanUtils;
@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +24,31 @@ public class ExcelServiceImpl implements IExcelService {
     private AssetMapper assetMapper;
 
     @Override
-    public void export(HttpServletResponse response) {
+    public List<AssetVO> listAll() {
+        List<AssetPO> poList = assetMapper.export();
+        List<AssetVO> voList = new ArrayList<>();
 
+        for (AssetPO assetPO:poList){
+            AssetVO assetVO = new AssetVO();
+            BeanUtils.copyProperties(assetPO,assetVO);
+            voList.add(assetVO);
+        }
+        return voList;
+    }
+    @Override
+    public void export(HttpServletResponse response) {
         List<AssetPO> assetPOList = assetMapper.export();
+        method(response,assetPOList);
+    }
+
+    @Override
+    public void exportByType(HttpServletResponse response) {
+        List<AssetPO> assetPOList = assetMapper.exportByType();
+        method(response,assetPOList);
+
+    }
+
+    public void method(HttpServletResponse response,List<AssetPO> assetPOList){
         List<AssetExcelData> excelDataList = new ArrayList<>();
 
         for (AssetPO assetPO : assetPOList) {
