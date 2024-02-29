@@ -14,4 +14,7 @@ public interface AssetMapper {
     Integer numberSumQuery(String maxType);
 
     Double worthSumQuery(String maxType);
+
+    List<AssetPO> export();
+
 }

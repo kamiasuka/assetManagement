@@ -13,7 +13,7 @@ public class AssetPO implements Serializable {
     private String unit;
     private int life;
     private double amount;
-    private String userStatus;
+    private String useStatus;
     private String reviewStatus;
     private Date approvalDate;
     private String note;
