@@ -22,7 +22,7 @@ class AssetServerApplicationTests {
     void getAssetByType() {
         List<AssetPO> assetPOList = assetMapper.listAssetByCategory("办公用品");
         System.out.println(assetPOList.toString());
-
+    }
     /**
      * 获取所有分类的列表
      */

@@ -20,4 +20,8 @@
     <select id="worthSumQuery" resultType="java.lang.Double">
         select SUM(amount) from asset_info WHERE max_type = #{maxType};
     </select>
+    <select id="export" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
+        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
+        from asset_info where review_status = 1
+    </select>
 </mapper>
