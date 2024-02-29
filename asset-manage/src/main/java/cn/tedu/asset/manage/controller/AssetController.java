@@ -1,6 +1,7 @@
 package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
+import cn.tedu.asset.manage.pojo.param.AssetStatisticParam;
 import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
 import cn.tedu.asset.manage.service.IAssetService;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -33,6 +35,13 @@ public class AssetController {
         log.debug("开始处理【资产全局搜索】的请求");
         iAssetService.getAssetByES();
         return JsonResult.ok();
+    }
+
+    @GetMapping("/getStatistics")
+    @ApiOperation("显示统计信息")
+    public JsonResult getStatistics(){
+        List<AssetStatisticParam> list = iAssetService.getStatistics();
+        return JsonResult.ok(list);
     }
 
 }
