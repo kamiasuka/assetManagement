@@ -24,4 +24,7 @@
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where review_status = 1
     </select>
+    <!--资产录入-->
+    <insert id="insertNew"></insert>
+
 </mapper>

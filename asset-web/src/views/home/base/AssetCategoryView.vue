@@ -3,7 +3,7 @@
         <!--        <el-header>-->
         <!--        </el-header>-->
         <el-container>
-            <el-aside width="200px" style="border: 5px;border-color: black">
+            <el-aside width="160px" style="border: 5px;border-color: black">
                     <!-- Form -->
                     <el-button type="primary" @click="dialogFormVisible = true">编辑资产分类</el-button>
 
@@ -27,6 +27,7 @@
                             </span>
                         </template>
                     </el-dialog>
+
                 <el-row class="tac">
                     <el-col>
                         <h5 class="mb-2">资产分类</h5>
@@ -133,7 +134,9 @@
                             <!--                            <el-button link type="primary"  @click="handleClick">Detail</el-button>-->
                             <!--                            <el-button link type="primary" size="small">Edit</el-button>-->
                             <el-button type="success" size="small">编辑</el-button>
+                            <el-button type="success" size="small">附件查询</el-button>
                             <el-button type="danger" size="small">删除</el-button>
+
                         </template>
                     </el-table-column>
                 </el-table>
