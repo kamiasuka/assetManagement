@@ -8,4 +8,10 @@ public interface AssetMapper {
     List<String> listAllCategory();
 
     List<AssetPO> listAssetByCategory(String type);
+
+    List<String> listByLevel(int level);
+
+    Integer numberSumQuery(String maxType);
+
+    Double worthSumQuery(String maxType);
 }

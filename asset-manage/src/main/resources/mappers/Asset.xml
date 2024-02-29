@@ -11,4 +11,13 @@
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where type = #{type} and review_status = 1
     </select>
+    <select id="listByLevel" resultType="java.lang.String">
+        select name from asset_category where level = #{level};
+    </select>
+    <select id="numberSumQuery" resultType="java.lang.Integer">
+        select COUNT(*) from asset_info WHERE max_type = #{maxType};
+    </select>
+    <select id="worthSumQuery" resultType="java.lang.Double">
+        select SUM(amount) from asset_info WHERE max_type = #{maxType};
+    </select>
 </mapper>
