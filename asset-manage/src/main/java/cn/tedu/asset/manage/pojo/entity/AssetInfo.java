@@ -1,4 +1,4 @@
-package cn.tedu.asset.server.pojo.entity;
+package cn.tedu.asset.manage.pojo.entity;
 
 import lombok.Data;
 

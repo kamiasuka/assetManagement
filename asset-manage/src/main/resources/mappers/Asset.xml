@@ -8,6 +8,6 @@
         select distinct type from asset_info;
     </select>
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
-        select *  from asset_info where type=#{type} and review_status = 1
+        select *  from asset_info where type = #{type} and review_status = 1
     </select>
 </mapper>
