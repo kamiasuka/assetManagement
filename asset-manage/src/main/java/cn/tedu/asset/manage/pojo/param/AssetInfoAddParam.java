@@ -2,8 +2,6 @@ package cn.tedu.asset.manage.pojo.param;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class AssetInfoAddParam {
     private String code;
