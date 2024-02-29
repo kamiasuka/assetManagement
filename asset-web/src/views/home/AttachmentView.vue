@@ -272,7 +272,7 @@
                 } else {
                     ElMessage.error("附件添加失败");
                 }
-                // location.reload();
+                location.reload();
             })
             .catch(error => {
                 console.error("Error adding attachment:", error);
