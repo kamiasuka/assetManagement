@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.asset.attachment.mapper.ListMapper">
+
+    <insert id="insertUnit">
+    INSERT INTO attachmentlist
+    (unit,Type,Name,Tip,Status,Url,updatedTime)
+    VALUES (#{unit}, #{Type}, #{Name}, #{Tip}, #{Status}, #{Url}, #{updatedTime})
+</insert>
+
+    <delete id="deleteById">
+        DELETE
+        FROM attachmentlist
+        WHERE id = #{id}
+    </delete>
+
+    <select id="selectForAdmin"
+            resultType="cn.tedu.asset.attachment.pojo.vo.ListAdminVO">
+        SELECT  id,
+              unit,
+              Type,
+              Tip,
+              Name,
+              Status,
+              Url,
+              updatedTime
+        FROM attachmentlist
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectImgUrlById" resultType="string">
+        SELECT Url
+        FROM attachmentlist
+        WHERE id = #{id}
+    </select>
+
+    <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.entity.AList">
+        SELECT * FROM attachmentlist
+        <where>
+            <if test="unit != null and unit != ''">unit LIKE CONCAT('%',#{unit},'%')  AND </if>
+            <if test="name != null and name != ''">Name LIKE CONCAT('%',#{name},'%')  AND </if>
+            <if test="type != null and type != ''">Type = #{type} AND </if>
+            <if test="status != null and status != ''">Status = #{status}  </if>
+            <if test="status != null and status == ''">1 = 1</if>
+        </where>
+    </select>
+
+
+</mapper>
+

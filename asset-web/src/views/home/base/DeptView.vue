@@ -22,6 +22,7 @@
                 <el-table-column prop="name" label="所属单位" width="180"></el-table-column>
                 <el-table-column prop="address" label="部门编码"></el-table-column>
                 <el-table-column prop="address" label="部门电话"></el-table-column>
+                <el-table-column prop="address" label="部门传真"></el-table-column>
                 <el-table-column prop="address" label="操作">
                     <span>修改</span>
                     <span>删除</span>
@@ -42,6 +43,9 @@
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="部门电话:">
+                    <el-input style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="部门传真:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="备注:">
