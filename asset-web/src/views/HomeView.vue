@@ -4,7 +4,7 @@
             <!-- 左侧菜单栏 -->
             <el-aside class="el-aside">
                 <h1 class="logoBox">资产管理系统</h1>
-                <el-row class="tac" style="width: 201px;">
+                <el-row class="tac" style="width: 231px;">
 
                     <el-col >
                         <el-menu
@@ -58,7 +58,7 @@
                                 <el-menu-item-group class="b1" @click="router.push('/asset-manage')">
                                     <el-menu-item index="4-1">资产录入</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" @click="router.push('/asset-query')">
+                                <el-menu-item-group class="b1" @click="router.push('/asset-quary')">
                                     <el-menu-item index="4-2">资产查询</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
@@ -90,7 +90,7 @@
                 <!-- header头部菜单 -->
                 <el-header class="header" >
                     <el-col :span="0.5">
-                        <el-icon :size="25" style="left: 20px"><HomeFilled /></el-icon>
+                        <el-icon :size="35" style="left: 20px"><HomeFilled /></el-icon>
                     </el-col>
                     <el-col :span="20">
 
@@ -110,7 +110,7 @@
                             你好，资产管理员
                            <el-icon><CaretBottom /></el-icon>
                             </span>
-                            <template #dropdown>
+                            <template #dro  pdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item @click="router.push('/user')">个人中心</el-dropdown-item>
                                     <el-dropdown-item ></el-dropdown-item>
@@ -121,21 +121,32 @@
                     </el-col>
                     <el-col :span="1" >
                         <div class="hoverable-icon">
-                        <el-icon size="20px" @click="logout()" ><SwitchButton /></el-icon>
+                            <el-icon size="20px" @click="logout()" ><SwitchButton /></el-icon>
                         </div>
                     </el-col>
                 </el-header>
-                <div  class="div-tags">
-                        <router-link v-for="(tag, index) in generatedTags" :key="index" :to="getTagLink(tag)"
-                                     style=" text-decoration: none !important;" class="router">
-                            <el-tag closable @close="removeTag(tag)" class="tag1" >
-                                {{ tag }}
-                            </el-tag>
-                        </router-link>
+                <div class="div-tags">
+<!--                    <router-link v-if="!isHomePageTagGenerated" :to="{ path: '/' }" style="text-decoration: none !important;" class="router">-->
+<!--                        <el-tag class="tag1">-->
+<!--                            系统首页-->
+<!--                        </el-tag>-->
+<!--                    </router-link>-->
+<!--                    <router-link :to="{ path: '/' }" style="text-decoration: none !important;" class="router">-->
+<!--                        <el-tag class="tag1">-->
+<!--                            系统首页-->
+<!--                        </el-tag>-->
+<!--                    </router-link>-->
+
+                    <router-link v-for="(tag, index) in generatedTags" :key="index" :to="tag.link" style="text-decoration: none !important;" class="router">
+                        <el-tag v-if="!tag.isHomePage" closable @close="removeTag(tag)" class="tag1">
+                            {{ tag.name }}
+                        </el-tag>
+                    </router-link>
+
                 </div>
                 <!-- main主体模块：标签页 + 当前路由内容 -->
                 <el-main class="el-main" style="
-    padding: 3px;
+    padding: 5px;
 
 "><router-view/></el-main>
             </el-container>
@@ -151,14 +162,10 @@
     import { useRoute } from 'vue-router';
     const breadcrumbs = ref([]);
 
+    const isHomePageTagGenerated = ref(false);
+
 
     const getBreadcrumbLink = (breadcrumb) => {
-        // 根据面包屑内容返回相应的路由信息
-        const tagExists = generatedTags.value.includes(breadcrumb);
-        if (!tagExists) {
-            generatedTags.value.push(breadcrumb);
-        }
-
         return getBreadcrumbLinkInternal(breadcrumb);
     };
 
@@ -171,12 +178,12 @@
                 return '/attachment';
             case '资产分类':
                 return '/asset-category';
-            case '资产管理':
+            case '资产录入':
                 return '/asset-manage';
             case '使用年限':
                 return '/asset-life';
             case '资产查询':
-                return '/asset-query';
+                return '/asset-quary';
             case '资产上报':
                 return '/asset-post';
             case '资产报损':
@@ -186,7 +193,7 @@
             case '年度报表':
                 return '/annual-report';
             default:
-                return '/';
+                return null;
             // 添加其他面包屑链接，如果需要的话
         }
     };
@@ -219,20 +226,70 @@
     }
 
 
-    //标签页相关
+    //标签页相关//event.preventDefault();
     const generatedTags = ref([]);
 
+
+
     const removeTag = (tag) => {
+        event.preventDefault();
+        // 判断是否是系统首页标签
+        if (tag.isHomePage) return;
+
         const index = generatedTags.value.indexOf(tag);
         if (index !== -1) {
             generatedTags.value.splice(index, 1);
+            // 获取上一个标签的路由并跳转
+            const prevTag = generatedTags.value[index - 1];
+            if (prevTag) {
+                router.push(prevTag.link);
+            }
         }
     };
 
+
+
+
     const getTagLink = (tag) => {
-        return getBreadcrumbLinkInternal(tag);
-        console.log(getBreadcrumbLinkInternal(tag))
+        return tag.link;
     };
+
+    const generateTagsFromBreadcrumbs = () => {
+        const currentBreadcrumb = breadcrumbs.value[breadcrumbs.value.length - 1];
+        // 判断是否是首页标签
+        const isHomePage = currentBreadcrumb === '系统首页';
+
+        if (isHomePage) {
+            // 如果是系统首页标签，不再生成新标签
+            isHomePageTagGenerated.value = true;
+            return;
+        }
+
+        const currentTag = {
+            name: currentBreadcrumb,
+            link: getBreadcrumbLinkInternal(currentBreadcrumb),
+            isHomePage: false,
+        };
+
+        // 判断是否生成重复的标签
+        if (!generatedTags.value.some(tag => tag.link === currentTag.link)) {
+            // 保留当前标签
+            generatedTags.value.push(currentTag);
+        }
+    };
+
+
+
+    onMounted(() => {
+        generateTagsFromBreadcrumbs();
+    });
+
+
+    // 监听路由变化
+    watch(() => route.fullPath, () => {
+        generateTagsFromBreadcrumbs();
+    });
+
 
 
 
@@ -241,13 +298,13 @@
 
 <style scoped>
 
-.logoBox {
-    position: absolute;
-    top: -3px;
-    left: 25px;
-    font-size: 24px;
-    color: #fff;
-}
+    .logoBox {
+        position: absolute;
+        top: -3px;
+        left: 25px;
+        font-size: 24px;
+        color: #fff;
+    }
 
     .box {
         width: 100vw;
@@ -255,7 +312,7 @@
     }
     .header {
         padding: 0;
-        height: 50px;
+        height: 60px;
         background-color: #fff;
         display: flex;
         align-items: center;
@@ -265,13 +322,13 @@
     }
     .el-aside {
         overflow: hidden;
-        width: 200px;
+        width: 230px;
         background: #304156 ;
         padding-top: 58px;
     }
     .div-tags{
         padding: 0;
-        height: 31px;
+        height: 35px;
         background-color: #fff;
         display: flex;
         align-items: center;
@@ -288,12 +345,12 @@
         height: 64px;
     }
 
-.hoverable-icon:hover {
-    /* 在这里设置鼠标悬停时的样式 */
-    /* 例如，改变背景色或添加阴影效果 */
-    background-color: #eee;
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
-}
+    .hoverable-icon:hover {
+        /* 在这里设置鼠标悬停时的样式 */
+        /* 例如，改变背景色或添加阴影效果 */
+        background-color: #eee;
+        box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
+    }
     .hoverable-icon{
         display: flex;
         align-items: center;
@@ -308,9 +365,14 @@
         margin: 5px;
     }
 
-.tag1:hover {
-    background-color: #f0f0f0; /* 悬浮时的背景颜色 */
-}
+    .tag1:hover {
+        background-color: #f0f0f0; /* 悬浮时的背景颜色 */
+    }
+    .el-tag{
+        height:26px;
+        width: 95px;
+        font-size: 13px;
+    }
 
 
 
