@@ -2,10 +2,9 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
-import cn.tedu.asset.manage.pojo.param.AssetStatisticParam;
-import cn.tedu.asset.manage.pojo.po.AssetCategoryPO;
+import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
-import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.service.IAssetService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +45,9 @@ public class AssetServiceImpl implements IAssetService {
     }
 
     @Override
-    public List<AssetStatisticParam> getStatistics() {
+    public List<AssetStatisticDTO> getStatistics() {
         log.debug("开始处理【获取统计信息】的业务");
-        List<AssetStatisticParam> list = new ArrayList<>();
+        List<AssetStatisticDTO> list = new ArrayList<>();
 
         /**
          * 获取所有一级分类名称
@@ -58,8 +57,8 @@ public class AssetServiceImpl implements IAssetService {
 
 
         for (int i=0;i<types.size();i++){
-            log.debug("开始封装第{}个分类的统计信息AssetStatisticParam",i+1);
-            AssetStatisticParam asp = new AssetStatisticParam();
+            log.debug("开始封装第{}个分类的统计信息AssetStatisticDTO",i+1);
+            AssetStatisticDTO asp = new AssetStatisticDTO();
             asp.setType(types.get(i));
             /**
              * 获取该一级分类的资产总数
@@ -82,8 +81,19 @@ public class AssetServiceImpl implements IAssetService {
     }
 
     @Override
-    public AssetVO getAssetByES() {
+    public AssetVO getAssetByES(String code) {
+        log.debug("开始处理【资产ES全局查询】的业务");
 
         return null;
+    }
+
+    @Override
+    public void addNew(AssetAddDTO assetAddDTO) {
+        log.debug("开始处理【资产录入】的业务");
+        AssetPO assetPO = new AssetPO();
+        BeanUtils.copyProperties(assetAddDTO,assetPO);
+        assetPO.setUseStatus("在用");
+        assetPO.setReviewStatus("审核中");
+        assetMapper.insertNew();
     }
 }
