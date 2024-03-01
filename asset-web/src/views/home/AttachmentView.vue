@@ -252,7 +252,7 @@
         const data = {
             name: attachmentlist.value.name,
             unit: attachmentlist.value.unit,
-            type: value2.value,
+            type: value3.value,
             tip: textarea.value,
             // Assuming you have a field to store the address of the attachment
             url: fileList.value.length > 0 ? fileList.value[0].response.data : ''
