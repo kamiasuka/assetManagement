@@ -1,4 +1,4 @@
-package cn.tedu.asset.manage.dao.cache.repository;
+package cn.tedu.asset.manage.Util;
 
 public interface AssetCacheConsts {
     /**
