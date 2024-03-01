@@ -28,27 +28,28 @@ public class ExcelServiceImpl implements IExcelService {
         List<AssetPO> poList = assetMapper.export();
         List<AssetVO> voList = new ArrayList<>();
 
-        for (AssetPO assetPO:poList){
+        for (AssetPO assetPO : poList) {
             AssetVO assetVO = new AssetVO();
-            BeanUtils.copyProperties(assetPO,assetVO);
+            BeanUtils.copyProperties(assetPO, assetVO);
             voList.add(assetVO);
         }
         return voList;
     }
+
     @Override
     public void export(HttpServletResponse response) {
         List<AssetPO> assetPOList = assetMapper.export();
-        method(response,assetPOList);
+        method(response, assetPOList);
     }
 
     @Override
     public void exportByType(HttpServletResponse response) {
         List<AssetPO> assetPOList = assetMapper.exportByType();
-        method(response,assetPOList);
+        method(response, assetPOList);
 
     }
 
-    public void method(HttpServletResponse response,List<AssetPO> assetPOList){
+    public void method(HttpServletResponse response, List<AssetPO> assetPOList) {
         List<AssetExcelData> excelDataList = new ArrayList<>();
 
         for (AssetPO assetPO : assetPOList) {
@@ -61,10 +62,10 @@ public class ExcelServiceImpl implements IExcelService {
             response.setCharacterEncoding("utf-8");
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
             String fileName = URLEncoder.encode("资产报表", "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + "-" + System.currentTimeMillis() + ".xlsx");
             EasyExcel.write(response.getOutputStream(), AssetExcelData.class).sheet("asset").doWrite(excelDataList);
         } catch (IOException e) {
-            throw new ServiceException(StatusCode.OPERATION_FAILED,"资产报表下载失败");
+            throw new ServiceException(StatusCode.OPERATION_FAILED, "资产报表下载失败");
         }
     }
 }

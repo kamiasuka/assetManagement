@@ -3,17 +3,18 @@ package cn.tedu.asset.manage.service;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 
 import java.util.List;
 
 public interface IAssetService {
 
-    List<AssetVO> getAssetByType(String type);
+    PageData<AssetVO> getAssetByType(String type,Integer pageNum);
 
     void rebuildCache();
 
     List<AssetStatisticDTO> getStatistics();
-    AssetVO getAssetByES(String code);
+    AssetVO searchAssetByES(String code);
 
     void addNew(AssetAddDTO assetAddDTO);
 }
