@@ -111,3 +111,12 @@ VALUES ('1', '土地测试', '土地','土地', '', '宝相公司', 50, 1000000.
        ('2', '电脑a', '电脑', '通用设备','', '宝相公司', 5, 3000.00, DEFAULT, DEFAULT, DEFAULT),
        ('3', '办公桌a', '家具用具','家具用具', '', '宝相公司', 20, 10000.00, DEFAULT, DEFAULT, DEFAULT),
        ('4', '办公桌b', '家具用具','家具用具', '', '宝相公司', 20, 7000.00, DEFAULT, DEFAULT, DEFAULT);
+
+# 部门管理数据库表
+CREATE TABLE departments (
+                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                             name VARCHAR(255) NOT NULL,
+                             unit VARCHAR(255) NOT NULL,
+                             code VARCHAR(255) NOT NULL UNIQUE,
+                             phone VARCHAR(20),
+                             fax VARCHAR(20)
