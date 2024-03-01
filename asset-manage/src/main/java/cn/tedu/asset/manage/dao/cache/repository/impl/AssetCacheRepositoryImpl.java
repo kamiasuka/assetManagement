@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static cn.tedu.asset.manage.dao.cache.repository.AssetCacheConsts.KEY_ALL_KEYS;
+import static cn.tedu.asset.manage.Util.AssetCacheConsts.KEY_ALL_KEYS;
 
 @Slf4j
 @Repository
@@ -61,8 +61,8 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         Set<String> assetJsonSet = opsForSet.members(type);
 
         /** 缓存未命中 */
-        log.debug("根据type查询资产数据，缓存未命中，访问数据库，参数:"+type);
         if(assetJsonSet.isEmpty()){
+            log.debug("缓存未命中，访问数据库，参数:"+type);
             List<AssetPO> poList = assetMapper.listAssetByCategory(type);
             AssetVO assetVO = new AssetVO();
             List<AssetVO> voList = new ArrayList<>();

@@ -9,7 +9,7 @@
                 <el-dialog v-model="dialogFormVisible" title="按资产分类导出" style="width: 700px">
                     <el-form :model="form">
                         <el-form-item label="分类级别" :label-width="formLabelWidth">
-                            <el-select v-model="form.region" placeholder="请选择分类">
+                            <el-select :data="typeList" placeholder="请选择分类">
                                 <el-option label="土地" value="land"/>
                                 <el-option label="通用设备" value="device"/>
                             </el-select>
@@ -85,20 +85,31 @@ onMounted(() => {
     loadContents();
 })
 
-
 const exportExcel = () => {
     if (confirm("是否全部导出?")) {
-        axios.get('http://localhost:9002/v1/excel/download/')
-            .then((response) => {
-                console.log("导出全部数据到excel")
-            })
+        window.location.href = 'http://localhost:9002/v1/excel/download/';
     }
 }
 
+
+const loadTypeContents = () => {
+    //展示数据
+    axios.get('http://localhost:9002/v1/excel/listAll/')
+        .then((response) => {
+            if (response.data.code == 2001) {
+                tableData.value = response.data.data;
+            }
+        })
+}
+const typeList = ref([]);
+onMounted(() => {
+    loadTypeContents();
+})
 const dialogFormVisible = ref(false)
 const exportExcelByType = () => {
     if (confirm("是否导出?")) {
-        axios.get('http://localhost:9002/v1/excel/downloadByType/')
+        let data = qs.stringify(type);
+        axios.get('http://localhost:9002/v1/excel/downloadByType/',data)
             .then((response) => {
                 console.log("下载excel")
             })
