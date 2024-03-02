@@ -42,6 +42,9 @@
         <fastjson2.version>2.0.12</fastjson2.version>
         <jjwt.version>0.9.1</jjwt.version>
         <easyexcel.version>2.2.11</easyexcel.version>
+        <easyexcel.version>2.2.7</easyexcel.version>
+        <elasticsearch-rest-high-level-client.version>7.6.2</elasticsearch-rest-high-level-client.version>
+        <elasticsearch.version>7.6.2</elasticsearch.version>
     </properties>
     <!--
          1 把整个项目的依赖在父模块管理
@@ -133,7 +136,29 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
-                <version>2.2.7</version>
+                <version>${easyexcel.version}</version>
+            </dependency>
+            <!-- excel表格导出 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+            <!-- es搜索 -->
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch-rest-high-level-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${spring-boot-version}</version>
             </dependency>
 
         </dependencies>
