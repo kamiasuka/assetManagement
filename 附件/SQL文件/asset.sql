@@ -93,21 +93,66 @@ VALUES ('土地', DEFAULT, DEFAULT, DEFAULT),
        ('通用设备', DEFAULT, DEFAULT, DEFAULT),
        ('专用设备', DEFAULT, DEFAULT, DEFAULT),
        ('车辆', DEFAULT, DEFAULT, DEFAULT),
-       ('文物和陈列品', DEFAULT, DEFAULT, DEFAULT),
-       ('家具用具', DEFAULT, DEFAULT, DEFAULT),
        ('图书档案', DEFAULT, DEFAULT, DEFAULT),
        ('动植物', DEFAULT, DEFAULT, DEFAULT),
        ('无形资产', DEFAULT, DEFAULT, DEFAULT),
        ('在建工程', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
-VALUES ('电子设备', 8, 2, 0);
+
+
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('商业土地', 1, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('住房土地', 1, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('办公室', 2, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('食堂', 2, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('烟囱', 3, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('围墙', 3, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('家具用具', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文物和陈列品', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('电子设备', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('专用仪器仪表', 5, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文艺设备', 5, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('体育设备', 5, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('小轿车', 6, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('货车', 6, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('图书', 7 ,2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('档案', 7, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('动物', 8, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('植物', 8, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('金融资产', 9, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('专利权', 9, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('绿化工程', 10, 2, 0);
+
+
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('办公桌', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('椅子', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('沙发', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('取暖降温设备', 17, 3, 0);
+
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文物', 18, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('陈列品', 18, 3, 0);
+
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('电脑', 19, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('盆栽', 28, 3, 0);
+
+
 UPDATE asset.asset_category
 set is_parent=1
 where id = 8;
 
 # 资产信息表操作
 INSERT INTO asset.asset_info(code, name, type,max_type, dept, unit, life, amount, use_status, review_status, approval_date)
-VALUES ('1', '土地测试', '土地','土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('2', '电脑a', '电脑', '通用设备','', '宝相公司', 5, 3000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('3', '办公桌a', '家具用具','家具用具', '', '宝相公司', 20, 10000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('4', '办公桌b', '家具用具','家具用具', '', '宝相公司', 20, 7000.00, DEFAULT, DEFAULT, DEFAULT);
+VALUES ('1', '土地测试a', '商业土地','土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('2', '办公室a', '办公室', '房屋','', '宝相公司', 10, 300000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('3', '枫园食堂', '食堂', '房屋','', '宝相公司', 5, 300000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('4', '烟囱a', '烟囱', '构筑物','', '宝相公司', 5, 33000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('5', '围墙a', '围墙', '构筑物','', '宝相公司', 5, 433000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('6', '办公桌a', '办公桌', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('7', '椅子a', '椅子', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('8', '沙发a', '沙发', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('9', '空调a', '取暖降温设备', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('10', '电脑a', '电脑', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('11', '投影仪', '文艺设备', '专业设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('12', '乒乓球桌', '体育设备', '专业设备','', '宝相公司', 15, 8000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('13', '小轿车a', '小轿车','车辆', '', '宝相公司', 20, 200000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('14', '货车a', '货车','车辆', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('15', '绿萝盆栽', '盆栽','动植物', '', '宝相公司', 20, 70000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('16', '花坛', '绿化工程','在建工程', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT);
