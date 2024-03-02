@@ -9,6 +9,7 @@
         <module>asset-admin</module>
         <module>asset-common</module>
         <module>asset-attachment</module>
+        <module>asset-passport</module>
     </modules>
 
     <parent>

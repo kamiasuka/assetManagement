@@ -107,7 +107,7 @@
                             你好，资产管理员
                            <el-icon><CaretBottom /></el-icon>
                             </span>
-                            <template #dro  pdown>
+                            <template #dropdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item @click="router.push('/user')">个人中心</el-dropdown-item>
                                     <el-dropdown-item ></el-dropdown-item>
