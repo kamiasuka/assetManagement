@@ -14,15 +14,21 @@
                             <el-button size="normal" :icon="Search" />
                         </template>
                     </el-input></el-col>
-                <el-col :span="4" style="font-size: 14px;"   >
-                    批次号：
-                    <el-input style="width: 180px" size="normal"  ></el-input>
-
-                </el-col>
-                <el-col :span="5" style="font-size: 14px;" >
+                <el-col :span="4" style="font-size: 14px;" >
                     附件名称：
                     <el-input style="width: 180px" size="normal" v-model="searchlist.name" ></el-input>
+                </el-col>
+                <el-col :span="5" style="font-size: 14px;"   >
 
+                        <div class="block">
+                            <span class="demonstration">创建时间：</span>
+                            <el-date-picker
+                                    v-model="searchlist.time"
+                                    placeholder="附件创建时间"
+                                    :size="size"
+                                    value-format="yyyy-MM-dd"
+                            />
+                        </div>
                 </el-col>
                 <el-col :span="4" style="font-size: 14px;">
                     附件类型：
@@ -49,7 +55,7 @@
                     <el-button  type="primary" size="name" @click="search">查询</el-button>
                 </el-col>
             </el-row>
-            <el-table :data="arr" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
+            <el-table :data="currentPageData" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
                 <el-table-column :span="2" prop="unit" label="单位" width="80"></el-table-column>
                 <el-table-column :span="4" prop="name" label="批次号" width="200"></el-table-column>
                 <el-table-column :span="2" prop="type" label="类型" width="180"> <template #default="{ row }">
@@ -79,7 +85,16 @@
                     </template>
                 </el-table-column>
             </el-table>
-        </el-tab-pane>
+            <div class="pagination-wrapper">
+            <el-pagination
+                    style="margin-left: 1200px;margin-top: 30px"
+                    background
+                    layout="prev, pager, next"
+                    :total="arr.length"
+                    :page-size="pageSize"
+                    @current-change="handleCurrentChange"
+
+            />  </div>  </el-tab-pane>
         <el-tab-pane label="附件添加">
             <el-form label-width="100px" style="margin: 50px 150px">
                 <el-form-item  label="附件名称:">
@@ -143,7 +158,7 @@
 
 <script setup>
     import { Search } from '@element-plus/icons-vue';
-    import {onMounted, ref,reactive } from 'vue';
+    import {onMounted, ref,reactive,computed } from 'vue';
     import axios from "axios";
     import {ElMessage} from "element-plus";
     import router from "@/router";
@@ -206,7 +221,8 @@
         unit: '',
         type: '',
         name: '',
-        status:''
+        status:'',
+        time: '',
     });
     const arr2 = ref([]);
 
@@ -216,6 +232,7 @@
             status: value.value,
             unit: searchlist.value.unit,
             type: value2.value,
+            updatedTime:searchlist.value.time
 
         };
 
@@ -229,7 +246,7 @@
                 if (response.data.code==2001){
                     arr.value = response.data.data;
                 }
-                ElMessage.success("附件查询成功");
+                ElMessage.success("查询成功");
             })
             .catch(error => {
                 // 处理错误
@@ -252,7 +269,7 @@
         const data = {
             name: attachmentlist.value.name,
             unit: attachmentlist.value.unit,
-            type: value2.value,
+            type: value3.value,
             tip: textarea.value,
             // Assuming you have a field to store the address of the attachment
             url: fileList.value.length > 0 ? fileList.value[0].response.data : ''
@@ -321,6 +338,25 @@
     }
 
 
+    const pageSize = 12; // 每页显示的条目数
+    const currentPage = ref(1); // 当前页码
+
+    // 计算当前页的数据
+    const currentPageData = computed(() => {
+        const startIndex = (currentPage.value - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        return arr.value.slice(startIndex, endIndex);
+    });
+
+    // 处理页码改变的方法
+    const handleCurrentChange = (val) => {
+        currentPage.value = val;
+    };
+
+
+
+
+
 
 </script>
 
@@ -336,6 +372,11 @@
     .table{
         height: 20px;
     }
+    .pagination-wrapper{
+        position: fixed;
+        bottom: 50px;
+        left: 280px; /* 调整左边距 */
+    }
 
 </style>
 
@@ -343,35 +384,3 @@
 
 
 
-
-
-
-
-
-
-<!--<el-dialog v-model="dialogFormVisible" title="选择文件" width="30%" center  :modal="false" :show-close="false"  >-->
-<!--    <el-upload-->
-<!--            v-model:file-list="fileList"-->
-<!--            name="file"-->
-<!--            :limit="1"-->
-<!--            action="http://localhost:8080/v1/upload"-->
-<!--            list-type="picture-card"-->
-<!--            :on-preview="handlePictureCardPreview"-->
-<!--            :on-remove="handleRemove"-->
-<!--    >-->
-<!--        <el-icon><Plus /></el-icon>-->
-<!--    </el-upload>-->
-
-<!--    <el-dialog v-model="dialogVisible">-->
-<!--        <img w-full :src="dialogImageUrl" alt="Preview Image" />-->
-<!--    </el-dialog>-->
-
-<!--    <template #footer>-->
-<!--      <span class="dialog-footer">-->
-<!--        <el-button @click="dialogFormVisible = false">取消</el-button>-->
-<!--        <el-button type="primary" @click="dialogFormVisible = false">-->
-<!--          上传文件-->
-<!--        </el-button>-->
-<!--      </span>-->
-<!--    </template>-->
-<!--</el-dialog>-->
