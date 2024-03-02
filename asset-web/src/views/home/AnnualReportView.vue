@@ -26,17 +26,18 @@
             </el-header>
             <el-main>
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column fixed prop="code" label="资产编码" width="100"/>
-                    <el-table-column prop="name" label="资产名称" width="120"/>
-                    <el-table-column prop="type" label="资产分类" width="120"/>
-                    <el-table-column prop="dept" label="所属部门" width="120"/>
-                    <el-table-column prop="unit" label="所属单位" width="120"/>
-                    <el-table-column prop="life" label="使用年限" width="120"/>
-                    <el-table-column prop="amount" label="资产价值" width="120"/>
-                    <el-table-column prop="useStatus" label="使用状态" width="120"/>
-                    <el-table-column prop="reviewStatus" label="审核状态" width="120"/>
+                    <el-table-column prop="index" label="index" width="100"/>
+                    <el-table-column prop="code" label="资产编码" width="100"/>
+                    <el-table-column prop="name" label="资产名称" width="100"/>
+                    <el-table-column prop="type" label="资产分类" width="100"/>
+                    <el-table-column prop="dept" label="所属部门" width="100"/>
+                    <el-table-column prop="unit" label="所属单位" width="100"/>
+                    <el-table-column prop="life" label="使用年限" width="100"/>
+                    <el-table-column prop="amount" label="资产价值" width="100"/>
+                    <el-table-column prop="useStatus" label="使用状态" width="100"/>
+                    <el-table-column prop="reviewStatus" label="审核状态" width="100"/>
                     <el-table-column prop="approvalDate" label="审核通过日期" width="200"/>
-                    <el-table-column prop="note" label="备注" width="300"/>
+                    <el-table-column prop="note" label="备注" width="400"/>
                 </el-table>
 
                 <div style="margin: 20px 20px">
@@ -111,7 +112,9 @@ const exportExcelByType = () => {
         let data = qs.stringify(type);
         axios.get('http://localhost:9002/v1/excel/downloadByType/',data)
             .then((response) => {
-                console.log("下载excel")
+                console.log("下载excel");
+                window.location.href = 'http://localhost:9002/v1/excel/downloadByType/';
+
             })
     }
 }

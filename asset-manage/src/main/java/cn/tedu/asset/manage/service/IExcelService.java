@@ -13,4 +13,6 @@ public interface IExcelService {
     void exportByType(HttpServletResponse response);
 
     List<AssetVO> listAll();
+
+    List<AssetVO> listAllNoReview();
 }

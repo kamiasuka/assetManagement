@@ -37,6 +37,19 @@ public class ExcelServiceImpl implements IExcelService {
     }
 
     @Override
+    public List<AssetVO> listAllNoReview() {
+        List<AssetPO> poList = assetMapper.exportNoReview();
+        List<AssetVO> voList = new ArrayList<>();
+
+        for (AssetPO assetPO : poList) {
+            AssetVO assetVO = new AssetVO();
+            BeanUtils.copyProperties(assetPO, assetVO);
+            voList.add(assetVO);
+        }
+        return voList;
+    }
+
+    @Override
     public void export(HttpServletResponse response) {
         List<AssetPO> assetPOList = assetMapper.export();
         method(response, assetPOList);

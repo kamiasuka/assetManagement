@@ -1,11 +1,15 @@
 package cn.tedu.asset.manage.service.impl;
 
+import cn.tedu.asset.commom.ex.ServiceException;
+import cn.tedu.asset.commom.response.StatusCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
+import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
+import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
@@ -16,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +41,7 @@ public class AssetServiceImpl implements IAssetService {
         PageHelper.startPage(pageNum, defaultQueryPageSize);
         List<AssetVO> voList = iAssetCacheRepository.listByAsset(type);
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
-        PageData<AssetVO> pageData = PageInfoToPageDataConverter.convert(pageInfo);
-        return pageData;
+        return PageInfoToPageDataConverter.convert(pageInfo);
     }
 
     @Override
@@ -66,7 +70,6 @@ public class AssetServiceImpl implements IAssetService {
         List<String> types = assetMapper.listByLevel(1);
         log.debug("获取所有一级分类的名称types：{}",types);
 
-
         for (int i=0;i<types.size();i++){
             log.debug("开始封装第{}个分类的统计信息AssetStatisticDTO",i+1);
             AssetStatisticDTO asp = new AssetStatisticDTO();
@@ -92,7 +95,7 @@ public class AssetServiceImpl implements IAssetService {
     }
 
     @Override
-    public AssetVO searchAssetByES(String keyword) {
+    public AssetVO searchAsset(String keyword) {
         log.debug("开始处理【资产搜索】的请求,关键词：{}",keyword);
 
         return null;
@@ -101,10 +104,22 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public void addNew(AssetAddDTO assetAddDTO) {
         log.debug("开始处理【资产录入】的业务");
-        AssetPO assetPO = new AssetPO();
-        BeanUtils.copyProperties(assetAddDTO,assetPO);
-        assetPO.setUseStatus("在用");
-        assetPO.setReviewStatus("审核中");
-        assetMapper.insertNew();
+
+    }
+
+    @Override
+    public void assetUpdate(AssetUpdateDTO assetUpdateDTO) {
+        log.debug("开始处理【资产变更】的业务，参数：{}",assetUpdateDTO);
+        AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
+        BeanUtils.copyProperties(assetUpdateDTO,assetUpdatePO);
+        assetUpdatePO.setReviewStatus("审核中");
+
+        iAssetCacheRepository.updateCache(assetUpdatePO);
+
+        int num = assetMapper.assetUpdate(assetUpdatePO);
+        if (num != 1){
+            throw new ServiceException(StatusCode.OPERATION_FAILED,"资产变更失败！");
+        }
+
     }
 }

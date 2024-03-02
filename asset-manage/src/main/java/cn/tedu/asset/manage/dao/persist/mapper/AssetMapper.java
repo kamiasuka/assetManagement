@@ -1,6 +1,7 @@
 package cn.tedu.asset.manage.dao.persist.mapper;
 
 import cn.tedu.asset.manage.pojo.po.AssetPO;
+import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 
 import java.util.List;
@@ -17,9 +18,10 @@ public interface AssetMapper {
     Double worthSumQuery(String maxType);
 
     List<AssetPO> export();
-
-    void insertNew();
+    List<AssetPO> exportNoReview();
 
     List<AssetPO> exportByType();
+
+    int assetUpdate(AssetUpdatePO assetUpdatePO);
 
 }

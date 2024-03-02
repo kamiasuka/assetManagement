@@ -20,11 +20,21 @@
     <select id="worthSumQuery" resultType="java.lang.Double">
         select SUM(amount) from asset_info WHERE max_type = #{maxType};
     </select>
+
+<!--   报表导出 -->
     <select id="export" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
-        from asset_info where review_status = 1
+        from asset_info where review_status = '已通过'
     </select>
-    <!--资产录入-->
-    <insert id="insertNew"></insert>
+    <select id="exportNoReview" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
+        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
+        from asset_info where review_status = '审核中'
+    </select>
+
+    <!--资产变更-->
+    <update id="assetUpdate">
+
+    </update>
+
 
 </mapper>
