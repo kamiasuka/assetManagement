@@ -2,8 +2,8 @@
     <div>
         <div class="up-side">
             <el-card>
-                <el-row :gutter="12">
-                    <el-col :span="4" v-for="(item, index) in cardArr.slice(0,6)" :key="index">
+                <el-row :gutter="24">
+                    <el-col :span="4" v-for="(item, index) in cardArr.slice(0,5)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
                                 <p class="card-title">{{ item.worth }}元</p>
@@ -14,8 +14,8 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-row :gutter="12" style="margin-top: 8px;">
-                    <el-col :span="4" v-for="(item, index) in cardArr.slice(6,12)" :key="index">
+                <el-row :gutter="24" style="margin-top: 8px;">
+                    <el-col :span="4" v-for="(item, index) in cardArr.slice(5,10)" :key="index">
                         <el-card class="custom-card" :style="{ backgroundColor: item.color }">
                             <router-link to="#" style="color: #333;text-decoration: none">
                                 <p class="card-title">{{ item.worth }}元</p>
@@ -80,16 +80,15 @@ const colorData = [
     '#45B6B0',
     '#8775A9',
     '#4F5C65',
-    '#13AAE3',
+
     '#939EB0',
     '#F29603',
     '#9BCC34',
     '#BC8F8C',
     '#FDB35C',
-    '#49C0BE'
 ];
 
-const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆", "文物和陈列品", "家具用具", "图书档案", "动植物", "无形资产", "在建工程"];
+const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆",  "图书档案", "动植物", "无形资产", "在建工程"];
 // const numData = [5, 10, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
 
 const worthData = ref([]);
@@ -109,7 +108,7 @@ const getStatistics = ()=>{
         .then((response)=>{
             console.log("发送axios请求")
             if (response.data.code==2001){
-                ElMessage.success("操作成功");
+                // ElMessage.success("操作成功");
                 statistics.value = response.data.data;
                 for (let i = 0; i < typeData.length; i++){
                     numData.value.push(statistics.value[i].num);
@@ -120,36 +119,39 @@ const getStatistics = ()=>{
                 console.log(worthData);
             }
 
-            console.log("开始封装cardArr");
-            for (let i = 0; i < typeData.length; i++) {
-                cardArr.value.push({
-                    worth: worthData.value[i],
-                    color: colorData[i],
-                    type: typeData[i],
-                    num: numData.value[i]
-                });
-            }
-
-            console.log(cardArr);
-
-            console.log("开始封装pieChartArr");
-            for (let i = 0; i < typeData.length; i++) {
-                pieChartArr.value.push({
-                    value: worthData.value[i],
-                    itemStyle:  {color: colorData[i]},
-                    name: typeData[i]
-                });
-            }
-            console.log(pieChartArr);
-            //绘制柱状图
-            showBarChart();
-            //绘制饼图
-            showPieChart();
+            showIndexView();
 
         })
 }
 
+//绘制首页页面
+const showIndexView = ()=>{
+    console.log("开始封装cardArr");
+    for (let i = 0; i < typeData.length; i++) {
+        cardArr.value.push({
+            worth: worthData.value[i],
+            color: colorData[i],
+            type: typeData[i],
+            num: numData.value[i]
+        });
+    }
 
+    console.log(cardArr);
+
+    console.log("开始封装pieChartArr");
+    for (let i = 0; i < typeData.length; i++) {
+        pieChartArr.value.push({
+            value: worthData.value[i],
+            itemStyle:  {color: colorData[i]},
+            name: typeData[i]
+        });
+    }
+    console.log(pieChartArr);
+    //绘制柱状图
+    showBarChart();
+    //绘制饼图
+    showPieChart();
+}
 
 
 
