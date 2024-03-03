@@ -105,6 +105,6 @@ public class AssetServiceImpl implements IAssetService {
         BeanUtils.copyProperties(assetAddDTO,assetPO);
         assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
-        assetMapper.insertNew();
+        assetMapper.insertNew(assetPO);
     }
 }
