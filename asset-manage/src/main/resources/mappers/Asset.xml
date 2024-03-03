@@ -25,6 +25,9 @@
         from asset_info where review_status = 1
     </select>
     <!--资产录入-->
-    <insert id="insertNew"></insert>
+    <insert id="insertNew">
+        insert into asset.asset_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
+        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{approvalDate})
+    </insert>
 
 </mapper>

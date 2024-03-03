@@ -1,7 +1,6 @@
 package cn.tedu.asset.manage.dao.persist.mapper;
 
 import cn.tedu.asset.manage.pojo.po.AssetPO;
-import cn.tedu.asset.manage.pojo.vo.AssetVO;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface AssetMapper {
 
     List<AssetPO> export();
 
-    void insertNew();
+    void insertNew(AssetPO assetPO);
 
     List<AssetPO> exportByType();
 
