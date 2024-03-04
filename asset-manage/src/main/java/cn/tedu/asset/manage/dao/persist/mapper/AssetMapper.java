@@ -17,7 +17,7 @@ public interface AssetMapper {
 
     List<AssetPO> export();
 
-    void insertNew(AssetPO assetPO);
+    int insertNew(AssetPO assetPO);
 
     List<AssetPO> exportByType();
 

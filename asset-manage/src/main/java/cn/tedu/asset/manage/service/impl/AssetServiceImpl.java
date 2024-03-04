@@ -99,12 +99,12 @@ public class AssetServiceImpl implements IAssetService {
     }
 
     @Override
-    public void addNew(AssetAddDTO assetAddDTO) {
+    public int addNew(AssetAddDTO assetAddDTO) {
         log.debug("开始处理【资产录入】的业务");
         AssetPO assetPO = new AssetPO();
         BeanUtils.copyProperties(assetAddDTO,assetPO);
         assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
-        assetMapper.insertNew(assetPO);
+        return assetMapper.insertNew(assetPO);
     }
 }

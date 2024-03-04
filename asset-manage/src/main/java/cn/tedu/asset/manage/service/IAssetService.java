@@ -16,5 +16,5 @@ public interface IAssetService {
     List<AssetStatisticDTO> getStatistics();
     AssetVO searchAssetByES(String code);
 
-    void addNew(AssetAddDTO assetAddDTO);
+    int addNew(AssetAddDTO assetAddDTO);
 }
