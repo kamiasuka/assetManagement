@@ -2,6 +2,7 @@ package cn.tedu.asset.manage.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -15,4 +16,6 @@ public class SpringMVCConfig implements WebMvcConfigurer {
                 .allowCredentials(true) //允许携带cookie/session相关信息
                 .maxAge(3600);  //一小时内同一请求直接放行
     }
+
+
 }
