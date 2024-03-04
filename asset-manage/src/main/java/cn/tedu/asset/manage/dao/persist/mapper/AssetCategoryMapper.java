@@ -27,4 +27,6 @@ public interface AssetCategoryMapper {
     int countCategory(int parentId);
     int updateIsParent(int parentId);
 
+
+    List<AssetCategoryVO> listByCategoryOne();
 }
