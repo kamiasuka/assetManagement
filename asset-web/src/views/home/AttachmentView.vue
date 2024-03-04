@@ -8,15 +8,12 @@
                             size="normal"
                             style="width: 200px"
                             v-model="searchlist.unit"
-                            placeholder="XX公司"
+                            placeholder="全部"
                             class="input-with-select">
-                        <template #append >
-                            <el-button size="normal" :icon="Search" />
-                        </template>
                     </el-input></el-col>
                 <el-col :span="4" style="font-size: 14px;" >
                     附件名称：
-                    <el-input style="width: 180px" size="normal" v-model="searchlist.name" ></el-input>
+                    <el-input placeholder="全部" style="width: 180px" size="normal" v-model="searchlist.name" ></el-input>
                 </el-col>
                 <el-col :span="5" style="font-size: 14px;"   >
 
@@ -24,7 +21,7 @@
                             <span class="demonstration">创建时间：</span>
                             <el-date-picker
                                     v-model="searchlist.time"
-                                    placeholder="附件创建时间"
+                                    placeholder="全部"
                                     :size="size"
                                     value-format="yyyy-MM-dd"
                             />
@@ -57,7 +54,7 @@
             </el-row>
             <el-table :data="currentPageData" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
                 <el-table-column :span="2" prop="unit" label="单位" width="80"></el-table-column>
-                <el-table-column :span="4" prop="name" label="批次号" width="200"></el-table-column>
+                <el-table-column :span="4" prop="ainame" label="资产名称" width="200"></el-table-column>
                 <el-table-column :span="2" prop="type" label="类型" width="180"> <template #default="{ row }">
                     {{ getText(row.type) }}
                 </template>
