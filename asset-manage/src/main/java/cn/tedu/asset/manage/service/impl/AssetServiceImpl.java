@@ -33,14 +33,28 @@ public class AssetServiceImpl implements IAssetService {
     private Integer defaultQueryPageSize;
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;
-    @Autowired
+    @Autowired(required = false)
     private AssetMapper assetMapper;
 
     @Override
-    public PageData<AssetVO> getAssetByType(String type,Integer pageNum) {
-        log.debug("开始处理【根据分类加载资产】的业务，类别参数：{}，页码：{}",type,pageNum);
-        PageHelper.startPage(pageNum, 4);
-        Page<AssetVO> voList = assetMapper.pageListByAsset(type);
+    public PageData<AssetVO> getAssetByType(String type, Integer pageNum) {
+        log.debug("开始处理【根据分类加载资产】的业务，类别参数：{}，页码：{}", type, pageNum);
+//        PageHelper.startPage(pageNum, 4);
+//        Page<AssetVO> voList = assetMapper.pageListByAsset(type);
+//        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
+//        System.out.println(pageInfo+" size:===="+pageInfo.getPageSize());
+//        return PageInfoToPageDataConverter.convert(pageInfo);
+
+        PageHelper.startPage(pageNum, 5);
+        List<AssetVO> voList = iAssetCacheRepository.pageListByAsset(type);
+        System.out.println(voList);
+        Page<AssetVO> pageList = new Page<>();
+
+//        for (AssetVO assetVO : voList){
+//            Page page = new Page();
+//            pageList.add();
+//        }
+
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         System.out.println(pageInfo+" size:===="+pageInfo.getPageSize());
         return PageInfoToPageDataConverter.convert(pageInfo);
@@ -54,7 +68,7 @@ public class AssetServiceImpl implements IAssetService {
         List<String> categoryList = assetMapper.listAllCategory();
         List<AssetPO> assetPOList = null;
 
-        for (String type: categoryList){
+        for (String type : categoryList) {
             iAssetCacheRepository.save(type);
             assetPOList = assetMapper.listAssetByCategory(type);
             iAssetCacheRepository.saveByCategory(assetPOList);
@@ -70,11 +84,11 @@ public class AssetServiceImpl implements IAssetService {
          * 获取所有一级分类名称
          */
         List<String> types = assetMapper.listByLevel(1);
-        log.debug("获取所有一级分类的名称types：{}",types);
+        log.debug("获取所有一级分类的名称types：{}", types);
 
 
-        for (int i=0;i<types.size();i++){
-            log.debug("开始封装第{}个分类的统计信息AssetStatisticDTO",i+1);
+        for (int i = 0; i < types.size(); i++) {
+            log.debug("开始封装第{}个分类的统计信息AssetStatisticDTO", i + 1);
             AssetStatisticDTO asp = new AssetStatisticDTO();
             asp.setType(types.get(i));
             /**
@@ -87,19 +101,19 @@ public class AssetServiceImpl implements IAssetService {
              */
             Double worth = assetMapper.worthSumQuery(types.get(i));
             if (worth == null) worth = 0.0;
-            log.debug("worth = {}",worth);
+            log.debug("worth = {}", worth);
             asp.setWorth(worth);
-            log.debug("封装完成：{}",asp);
+            log.debug("封装完成：{}", asp);
             list.add(asp);
         }
-        log.debug("封装完成：{}",list);
+        log.debug("封装完成：{}", list);
 
         return list;
     }
 
     @Override
     public AssetVO searchAsset(String keyword) {
-        log.debug("开始处理【资产搜索】的请求,关键词：{}",keyword);
+        log.debug("开始处理【资产搜索】的请求,关键词：{}", keyword);
 
         return null;
     }
@@ -108,7 +122,7 @@ public class AssetServiceImpl implements IAssetService {
     public int addNew(AssetAddDTO assetAddDTO) {
         log.debug("开始处理【资产录入】的业务");
         AssetPO assetPO = new AssetPO();
-        BeanUtils.copyProperties(assetAddDTO,assetPO);
+        BeanUtils.copyProperties(assetAddDTO, assetPO);
         assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
         return assetMapper.insertNew(assetPO);
@@ -117,16 +131,16 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public void assetUpdate(AssetUpdateDTO assetUpdateDTO) {
-        log.debug("开始处理【资产变更】的业务，参数：{}",assetUpdateDTO);
+        log.debug("开始处理【资产变更】的业务，参数：{}", assetUpdateDTO);
         AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
-        BeanUtils.copyProperties(assetUpdateDTO,assetUpdatePO);
+        BeanUtils.copyProperties(assetUpdateDTO, assetUpdatePO);
         assetUpdatePO.setReviewStatus("审核中");
 
         iAssetCacheRepository.updateCache(assetUpdatePO);
 
         int num = assetMapper.assetUpdate(assetUpdatePO);
-        if (num != 1){
-            throw new ServiceException(StatusCode.OPERATION_FAILED,"资产变更失败！");
+        if (num != 1) {
+            throw new ServiceException(StatusCode.OPERATION_FAILED, "资产变更失败！");
         }
 
     }
