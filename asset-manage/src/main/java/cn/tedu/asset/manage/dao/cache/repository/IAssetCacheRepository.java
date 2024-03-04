@@ -1,7 +1,9 @@
 package cn.tedu.asset.manage.dao.cache.repository;
 
 import cn.tedu.asset.manage.pojo.po.AssetPO;
+import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import com.github.pagehelper.Page;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,4 +16,8 @@ public interface IAssetCacheRepository {
     void saveByCategory(List<AssetPO> assetPOList);
 
     List<AssetVO> listByAsset(String type);
+
+    void updateCache(AssetUpdatePO assetUpdatePO);
+
+//    Page<AssetVO> pageListByAsset(String type);
 }

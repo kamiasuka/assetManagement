@@ -107,6 +107,7 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper-spring-boot.version}</version>
             </dependency>
+
             <!-- Spring Boot支持Spring Data Redis的依赖项 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
