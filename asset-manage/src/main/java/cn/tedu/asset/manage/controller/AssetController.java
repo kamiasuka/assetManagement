@@ -53,7 +53,7 @@ public class AssetController {
     @ApiOperation("资产录入")
     public JsonResult addNew(AssetAddDTO assetAddDTO){
         log.debug("开始处理【资产录入】的操作，参数：{}",assetAddDTO);
-        iAssetService.addNew(assetAddDTO);
-        return JsonResult.ok();
+        int count = iAssetService.addNew(assetAddDTO);
+        return JsonResult.ok(count);
     }
 }
