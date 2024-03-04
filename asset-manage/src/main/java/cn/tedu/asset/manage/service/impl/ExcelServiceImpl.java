@@ -43,7 +43,7 @@ public class ExcelServiceImpl implements IExcelService {
 
     @Override
     public PageData<AssetVO> pageListAll(Integer pageNum) {
-        PageHelper.startPage(pageNum,10);
+        PageHelper.startPage(pageNum,5);
         Page<AssetVO> voList = assetMapper.pageExport();
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         return PageInfoToPageDataConverter.convert(pageInfo);

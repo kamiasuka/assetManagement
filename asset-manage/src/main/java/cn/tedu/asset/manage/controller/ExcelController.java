@@ -23,6 +23,7 @@ public class ExcelController {
     @Autowired
     private IExcelService iExcelService;
 
+
     @GetMapping("listAll/{pageNum}")
     @ApiOperation("展示报表")
     public JsonResult listAll(@PathVariable Integer pageNum){
@@ -30,13 +31,20 @@ public class ExcelController {
         return JsonResult.ok(pageData);
     }
 
-    @GetMapping("/download")
+    @GetMapping("listAllByType")
+    @ApiOperation("根据分类展示报表")
+    public JsonResult listAllByType(){
+        List<AssetVO> list = iExcelService.listAll();
+        return JsonResult.ok(list);
+    }
+
+    @GetMapping("download")
     @ApiOperation("下载报表")
     public void ExportExcel(HttpServletResponse response){
         iExcelService.export(response);
     }
 
-    @GetMapping("/exportByType")
+    @GetMapping("exportByType")
     @ApiOperation("根据分类下载报表")
     public void downloadByType(HttpServletResponse response){
         iExcelService.exportByType(response);

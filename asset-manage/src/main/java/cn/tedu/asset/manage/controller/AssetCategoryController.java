@@ -59,7 +59,7 @@ public class AssetCategoryController {
      */
     @ApiOperation("修改资产分类")
     @ApiOperationSupport(order = 300)
-    @PostMapping("/{categoryId}/updateCategory")
+    @PostMapping("{categoryId}/updateCategory")
     public JsonResult updateCategory( @RequestBody CategoryUpdateDTO categoryUpdateDTO, @PathVariable Integer categoryId) {
         log.debug("开始处理【修改资产分类】的请求，参数：{}", categoryUpdateDTO);
         categoryService.updateCategory(categoryId, categoryUpdateDTO);
