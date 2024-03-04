@@ -1,8 +1,11 @@
 package com.tedu.asset.passport.controller;
 
 import cn.tedu.asset.commom.consts.web.HttpConsts;
+import cn.tedu.asset.commom.pojo.authentication.CurrentPrincipal;
 import cn.tedu.asset.commom.response.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.tedu.asset.passport.pojo.dto.UserLoginInfoDTO;
+import com.tedu.asset.passport.pojo.vo.UserLoginResultVO;
 import com.tedu.asset.passport.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,5 +32,33 @@ import javax.servlet.http.HttpServletRequest;
 @Validated
 @Api(tags = "1. 单点登录")
 public class UserController implements HttpConsts {
+
+    @Autowired
+    private IUserService userService;
+
+    public UserController() {
+        log.info("创建控制器对象：UserController");
+    }
+
+    @PostMapping("/login")
+    @ApiOperation("用户登录")
+    @ApiOperationSupport(order = 20)
+    public JsonResult login(@Validated UserLoginInfoDTO userLoginInfoDTO,
+                            @ApiIgnore HttpServletRequest request) {
+        log.debug("开始处理【用户登录】的请求，参数：{}", userLoginInfoDTO);
+        String remoteAddr = request.getRemoteAddr();
+        String userAgent = request.getHeader(HEADER_USER_AGENT);
+        UserLoginResultVO userLoginResultVO = userService.login(userLoginInfoDTO, remoteAddr, userAgent);
+        return JsonResult.ok(userLoginResultVO);
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation("退出登录")
+    @ApiOperationSupport(order = 90)
+    public JsonResult logout(@AuthenticationPrincipal @ApiIgnore CurrentPrincipal currentPrincipal) {
+        log.debug("开始处理【退出登录】的请求，无参数");
+        userService.logout(currentPrincipal);
+        return JsonResult.ok();
+    }
 
 }
