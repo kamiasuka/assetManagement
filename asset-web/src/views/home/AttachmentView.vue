@@ -54,12 +54,12 @@
             </el-row>
             <el-table :data="currentPageData" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
                 <el-table-column :span="2" prop="unit" label="单位" width="80"></el-table-column>
-                <el-table-column :span="4" prop="ainame" label="资产名称" width="200"></el-table-column>
+                <el-table-column :span="4" prop="name" label="资产所属" width="200"></el-table-column>
                 <el-table-column :span="2" prop="type" label="类型" width="180"> <template #default="{ row }">
                     {{ getText(row.type) }}
                 </template>
                 </el-table-column>
-                <el-table-column :span="2" prop="name" label="名称" width="180"></el-table-column>
+                <el-table-column :span="2" prop="atName" label="名称" width="180"></el-table-column>
                 <el-table-column :span="4" prop="status" label="使用状态" width="180">
                     <template #default="{ row }">
                         <el-button :type="row.status === '1' ? 'success' : 'danger'"  :style="{ 'pointer-events': 'none' }" >
@@ -98,7 +98,7 @@
                     <el-input v-model="attachmentlist.name" style="width: 400px;" ></el-input>
                 </el-form-item>
                 <el-form-item  label="所属单位:">
-                    <el-input v-model="attachmentlist.unit" style="width: 400px;" ><template #append>
+                    <el-input v-model="attachmentlist.ainame" style="width: 400px;" ><template #append>
                         <el-button :icon="Search" />
                     </template></el-input>
                 </el-form-item>
@@ -255,7 +255,7 @@
     // Declare your reactive variables
     const attachmentlist = ref({
         name: '',
-        unit: '',
+        ainame: '',
     });
 
     const textarea = ref('');
@@ -265,7 +265,7 @@
         // Prepare data to send
         const data = {
             name: attachmentlist.value.name,
-            unit: attachmentlist.value.unit,
+            ainame: attachmentlist.value.ainame,
             type: value3.value,
             tip: textarea.value,
             // Assuming you have a field to store the address of the attachment
@@ -279,7 +279,7 @@
                 if (response.data.code === 2001) {
                     ElMessage.success("附件添加成功");
                     // Optionally, you can clear the form fields after successful submission
-                    attachmentlist.value.unit = '';
+                    attachmentlist.value.ainame = '';
                     value2.value = '';
                     textarea.value = '';
                     fileList.value = [];

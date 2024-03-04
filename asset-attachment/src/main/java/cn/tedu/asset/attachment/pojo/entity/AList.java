@@ -11,7 +11,7 @@ public class AList {
     private String unit;
     private String Type;
     private String Tip;
-    private String Name;
+    private String atName;
     private String Status;
     private String Url;
     @JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")

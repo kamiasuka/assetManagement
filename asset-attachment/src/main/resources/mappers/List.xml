@@ -6,8 +6,8 @@
 
     <insert id="insertUnit">
     INSERT INTO attachmentlist
-    (unit,Type,Name,Tip,Status,Url,updatedTime)
-    VALUES (#{unit}, #{Type}, #{Name}, #{Tip}, #{Status}, #{Url}, #{updatedTime})
+    (ainame,Type,atName,Tip,Url,updatedTime)
+    VALUES (#{ainame}, #{Type}, #{atName}, #{Tip}, #{Status}, #{Url}, #{updatedTime})
 </insert>
 
     <delete id="deleteById">
@@ -16,20 +16,19 @@
         WHERE id = #{id}
     </delete>
 
-    <select id="selectForAdmin"
-            resultType="cn.tedu.asset.attachment.pojo.vo.ListAdminVO">
-        SELECT  id,
-              unit,
-              Type,
-              Tip,
-              Name,
-              Status,
-              Url,
-              updatedTime
-        FROM attachmentlist
-        ORDER BY id DESC
-
-    </select>
+    <select id="selectForAdmin" resultType="cn.tedu.asset.attachment.pojo.vo.ListAdminVO">
+    SELECT al.id,
+           ai.unit AS unit,
+           al.Type AS Type,
+           al.Tip AS Tip,
+           al.atName AS atName,
+           ai.name AS name,
+           al.url AS Url,
+           al.updatedTime AS updatedTime
+    FROM attachmentlist al
+    LEFT JOIN asset_info ai ON al.assetId = ai.id
+    ORDER BY al.id DESC
+</select>
 
     <select id="selectImgUrlById" resultType="string">
         SELECT Url
@@ -38,17 +37,17 @@
     </select>
 
     <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.entity.AList">
-        SELECT * FROM attachmentlist
+        SELECT al.*, ai.unit AS unit_name,  ai.name AS asset_name
+        FROM AttachmentList al
+        LEFT JOIN asset_info ai ON al.assetId = ai.id
         <where>
-            <if test="unit != null and unit != ''">unit LIKE CONCAT('%',#{unit},'%')  AND </if>
-            <if test="name != null and name != ''">Name LIKE CONCAT('%',#{name},'%')  AND </if>
-            <if test="type != null and type != ''">Type = #{type} AND </if>
-            <if test="updatedTime != null and updatedTime != ''">updatedTime LIKE CONCAT('%',#{updatedTime},'%') AND </if>
-            <if test="status != null and status != ''">Status = #{status}  </if>
-            <if test="status != null and status == ''">1 = 1</if>
+            <if test="unit != null and unit != ''">AND ai.unit LIKE CONCAT('%',#{unit},'%')</if>
+            <if test="name != null and name != ''">AND al.atName LIKE CONCAT('%',#{atName},'%')</if>
+            <if test="type != null and type != ''">AND al.Type = #{type}</if>
+            <if test="updatedTime != null and updatedTime != ''">AND al.updatedTime LIKE CONCAT('%',#{updatedTime},'%')</if>
+            <if test="status != null and status != ''">AND al.Status = #{status}</if>
         </where>
-        ORDER BY id DESC
-
+        ORDER BY al.id DESC
     </select>
 
 

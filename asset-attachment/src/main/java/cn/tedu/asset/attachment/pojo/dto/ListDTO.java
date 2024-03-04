@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class ListDTO {
     private Long id;
-    private String unit;
+    private String ainame;//入参改为资产名称
     private String Type;
-    private String Name;
+    private String atName;
     private String Tip;
     private String Url;
 }

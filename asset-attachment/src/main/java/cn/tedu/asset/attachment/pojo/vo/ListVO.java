@@ -9,7 +9,7 @@ import java.util.Date;
 public class ListVO {
     private String unit;
     private String Type;
-    private String Name;
+    private String atName;
     private String Status;
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private String updatedTime;
