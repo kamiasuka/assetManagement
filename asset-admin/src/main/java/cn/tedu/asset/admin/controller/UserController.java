@@ -65,7 +65,7 @@ public class UserController {
     })
     public JsonResult updatePassword(@PathVariable @Range(min = 1, message = "请提交合法的用户ID值！") Long id,
                                      @Pattern(regexp = "^[a-zA-Z]{1}[a-zA-Z0-9_]{3,14}$", message = "密码必须是4~15长度的字符组成") String newPassword) {
-        log.debug("开始处理【修改密码】的请求，用户：{}，新密码：{}", id, newPassword);
+        log.debug("开始处理【修改密码】的请求，用户名：{}，新密码：{}", id, newPassword);
         userService.updatePassword(id, newPassword);
         return JsonResult.ok();
     }
