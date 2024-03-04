@@ -25,7 +25,7 @@
 
             </el-header>
             <el-main>
-                <el-table :data="tableData" style="width: 100%">
+                <el-table :data="currentPageData" style="width: 100%">
                     <el-table-column prop="index" label="index" width="100"/>
                     <el-table-column prop="code" label="资产编码" width="100"/>
                     <el-table-column prop="name" label="资产名称" width="100"/>
@@ -40,9 +40,12 @@
                     <el-table-column prop="note" label="备注" width="400"/>
                 </el-table>
 
-                <div style="margin: 20px 20px">
-                    <el-pagination background layout="prev, pager, next" :total="1000"/>
-                </div>
+                <el-pagination
+                        background layout="prev, pager, next"
+                        :total="tableData.length"
+                        :page-size="pageSize"
+                        @current-change="handleCurrentChange"
+                />
             </el-main>
         </el-container>
     </div>
@@ -52,21 +55,7 @@
 
 </style>
 <script setup>
-import {
-    Document,
-    Menu as IconMenu,
-    Location,
-    Setting,
-    Check,
-    Delete,
-    Edit,
-    Message,
-    Search,
-    Star,
-} from '@element-plus/icons-vue'
-import {onMounted, reactive, ref} from "vue";
-import {ElMessageBox} from 'element-plus'
-import router from "@/router";
+import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import qs from "qs";
 
@@ -74,7 +63,7 @@ const dialogVisible = ref(false)
 
 const loadContents = () => {
     //展示数据
-    axios.get('http://localhost:9002/v1/excel/listAll/')
+    axios.get('http://localhost:9002/v1/excel/listAll/'+currentPage)
         .then((response) => {
             if (response.data.code == 2001) {
                 tableData.value = response.data.data;
@@ -82,6 +71,7 @@ const loadContents = () => {
         })
 }
 const tableData = ref([]);
+
 onMounted(() => {
     loadContents();
 })
@@ -110,7 +100,7 @@ const dialogFormVisible = ref(false)
 const exportExcelByType = () => {
     if (confirm("是否导出?")) {
         let data = qs.stringify(type);
-        axios.get('http://localhost:9002/v1/excel/downloadByType/',data)
+        axios.get('http://localhost:9002/v1/excel/downloadByType/', data)
             .then((response) => {
                 console.log("下载excel");
                 window.location.href = 'http://localhost:9002/v1/excel/downloadByType/';
@@ -130,5 +120,16 @@ const form = reactive({
     desc: '',
 })
 
+const pageSize = 12; // 每页显示的条目数
+const currentPage = ref(1); // 当前页码
+// 计算当前页的数据
+const currentPageData = computed(() => {
+    const startIndex = (currentPage.value - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return tableData.value.slice(startIndex, endIndex);
+});
+const handleCurrentChange = (val) => {
+    currentPage.value = val;
+};
 
 </script>

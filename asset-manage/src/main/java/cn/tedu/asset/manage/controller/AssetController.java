@@ -50,7 +50,7 @@ public class AssetController {
     /**
      * 根据分类显示资产
      */
-    @GetMapping("getAsset/{type}&&{page}")
+    @GetMapping("getAsset/{type}&{pageNum}")
     @ApiOperation("根据分类显示资产")
     public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer pageNum){
         log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,pageNum);

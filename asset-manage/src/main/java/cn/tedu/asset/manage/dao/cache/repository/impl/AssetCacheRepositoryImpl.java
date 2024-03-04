@@ -6,6 +6,7 @@ import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import com.alibaba.fastjson2.JSON;
+import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,10 +86,48 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         return voList;
     }
 
+/*
+    @Override
+    public Page<AssetVO> pageListByAsset(String type) {
+        log.debug("开始处理【根据type查询资产数据】的分页查询缓存数据访问，参数:"+type);
+        SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
+        Set<String> assetJsonSet = opsForSet.members(type);
+
+        */
+/** 缓存未命中 *//*
+
+        if(assetJsonSet.isEmpty()){
+            log.debug("缓存未命中，访问数据库，参数:"+type);
+            List<AssetPO> poList = assetMapper.listAssetByCategory(type);
+            AssetVO assetVO = new AssetVO();
+            Page<AssetVO> voList = new Page<>();
+            for (AssetPO assetPO : poList ){
+                BeanUtils.copyProperties(assetPO,assetVO);
+                voList.add(assetVO);
+                */
+/** 更新缓存 *//*
+
+                String assetPOJson = JSON.toJSONString(assetPO);
+                opsForSet.add(assetPO.getType(), assetPOJson);
+            }
+            return voList;
+        }
+
+        Page<AssetVO> voList = new Page<>();
+        for (String assetPOJson : assetJsonSet){
+            AssetVO assetVO = JSON.toJavaObject(JSON.parseObject(assetPOJson), AssetVO.class);
+            voList.add(assetVO);
+        }
+        return voList;    }
+*/
+
+
     @Override
     public void updateCache(AssetUpdatePO assetUpdatePO) {
         SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
         String assetPOJson = JSON.toJSONString(assetUpdatePO);
         opsForSet.add(assetUpdatePO.getType(), assetPOJson);
     }
+
+
 }

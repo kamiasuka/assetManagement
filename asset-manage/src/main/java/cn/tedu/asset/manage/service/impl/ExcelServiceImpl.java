@@ -2,12 +2,17 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
+import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.entity.AssetExcelData;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.alibaba.excel.EasyExcel;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +25,7 @@ import java.util.List;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
-    @Autowired
+    @Autowired(required = false)
     private AssetMapper assetMapper;
 
     @Override
@@ -37,6 +42,14 @@ public class ExcelServiceImpl implements IExcelService {
     }
 
     @Override
+    public PageData<AssetVO> pageListAll(Integer pageNum) {
+        PageHelper.startPage(pageNum,10);
+        Page<AssetVO> voList = assetMapper.pageExport();
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
+        return PageInfoToPageDataConverter.convert(pageInfo);
+    }
+
+    @Override
     public List<AssetVO> listAllNoReview() {
         List<AssetPO> poList = assetMapper.exportNoReview();
         List<AssetVO> voList = new ArrayList<>();
@@ -48,6 +61,8 @@ public class ExcelServiceImpl implements IExcelService {
         }
         return voList;
     }
+
+
 
     @Override
     public void export(HttpServletResponse response) {

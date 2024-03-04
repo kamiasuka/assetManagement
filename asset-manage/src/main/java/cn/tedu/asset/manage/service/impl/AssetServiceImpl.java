@@ -13,6 +13,7 @@ import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,10 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public PageData<AssetVO> getAssetByType(String type,Integer pageNum) {
         log.debug("开始处理【根据分类加载资产】的业务，类别参数：{}，页码：{}",type,pageNum);
-        PageHelper.startPage(pageNum, 5);
-        List<AssetVO> voList = iAssetCacheRepository.listByAsset(type);
+        PageHelper.startPage(pageNum, 4);
+        Page<AssetVO> voList = assetMapper.pageListByAsset(type);
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
+        System.out.println(pageInfo+" size:===="+pageInfo.getPageSize());
         return PageInfoToPageDataConverter.convert(pageInfo);
     }
 
