@@ -9,7 +9,7 @@
     </select>
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
-        from asset_info where type = #{type} and review_status = 1
+        from asset_info where type = #{type} and review_status = '已通过'
     </select>
     <select id="listByLevel" resultType="java.lang.String">
         select name from asset_category where level = #{level};

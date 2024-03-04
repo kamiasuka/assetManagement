@@ -7,6 +7,7 @@ import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
 import java.util.List;
 
 public interface IAssetCategoryService {
+    //List<AssetCategoryVO> getCategoryOne();
     List<AssetCategoryVO> getAllCategory();
 
     void addCategory(CategoryAddDTO categoryDTO);

@@ -38,7 +38,7 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public PageData<AssetVO> getAssetByType(String type,Integer pageNum) {
         log.debug("开始处理【根据分类加载资产】的业务，类别参数：{}，页码：{}",type,pageNum);
-        PageHelper.startPage(pageNum, defaultQueryPageSize);
+        PageHelper.startPage(pageNum, 5);
         List<AssetVO> voList = iAssetCacheRepository.listByAsset(type);
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         return PageInfoToPageDataConverter.convert(pageInfo);

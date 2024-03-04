@@ -27,10 +27,10 @@ public class AssetCategoryController {
      *
      * @return
      */
-    @GetMapping("ListAll")
+    @GetMapping("listAllCategory")
     @ApiOperation("资产分类展示")
     @ApiOperationSupport(order = 100)
-    public JsonResult ListAll() {
+    public JsonResult listAllCategory() {
         log.debug("开始处理【显示所有资产分类】的请求");
         List<AssetCategoryVO> categoryList = categoryService.getAllCategory();
         return JsonResult.ok(categoryList);
