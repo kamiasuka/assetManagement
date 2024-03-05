@@ -54,22 +54,62 @@ CREATE TABLE asset_info
     amount        decimal(10, 2) DEFAULT 0.00 COMMENT '资产价值',
     use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
+    submit_date   datetime       DEFAULT NULL COMMENT '提交日期日期',
+    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
+) COMMENT '资产变更信息' CHARSET = utf8mb4;
+
+# 资产数据变更存储表
+DROP TABLE IF EXISTS asset_change_info;
+CREATE TABLE asset_change_info
+(
+    id            bigint primary key auto_increment COMMENT '主键',
+    code          varchar(30) unique not null COMMENT '资产编码',
+    name          varchar(50)        not null COMMENT '资产名',
+    type          varchar(50)        not null COMMENT '资产类型',
+    max_type      varchar(50)        not null COMMENT '所属的一级分类',
+    dept          varchar(30)    DEFAULT '' COMMENT '所属部门',
+    unit          varchar(30)    DEFAULT '' COMMENT '所属单位',
+    life          int unsigned   DEFAULT 0 COMMENT '使用年限',
+    amount        decimal(10, 2) DEFAULT 0.00 COMMENT '资产价值',
+    use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
+    review_status varchar(30) COMMENT '审核状态，包括审核中，已通过，未通过',
+    submit_date   datetime       DEFAULT NULL COMMENT '提交日期日期',
     approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
 ) COMMENT '资产信息' CHARSET = utf8mb4;
 
-# 修改记录表
-DROP TABLE IF EXISTS modify_record;
-CREATE TABLE modify_record
+
+# 资产数据录入存储表
+DROP TABLE IF EXISTS asset_add_info;
+CREATE TABLE asset_add_info
 (
-    id          bigint primary key auto_increment COMMENT '主键',
+    id            bigint primary key auto_increment COMMENT '主键',
+    code          varchar(30) unique not null COMMENT '资产编码',
+    name          varchar(50)        not null COMMENT '资产名',
+    type          varchar(50)        not null COMMENT '资产类型',
+    max_type      varchar(50)        not null COMMENT '所属的一级分类',
+    dept          varchar(30)    DEFAULT '' COMMENT '所属部门',
+    unit          varchar(30)    DEFAULT '' COMMENT '所属单位',
+    life          int unsigned   DEFAULT 0 COMMENT '使用年限',
+    amount        decimal(10, 2) DEFAULT 0.00 COMMENT '资产价值',
+    use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
+    review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
+    submit_date   datetime       DEFAULT NULL COMMENT '提交日期日期',
+    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
+) COMMENT '资产录入信息' CHARSET = utf8mb4;
+
+# 修改日志记录表
+DROP TABLE IF EXISTS modify_log;
+CREATE TABLE modify_log
+(
+    id          bigint primary key auto_increment COMMENT '主键id',
     operator    varchar(50)  not null COMMENT '操作者',
-    obj         varchar(255) not null COMMENT '被修改的对象',
-    content     varchar(255) not null COMMENT '修改的内容',
-    update_time datetime     not null COMMENT '修改时间',
+    type        varchar(255) not null comment '操作类型',
+    description varchar(255) not null comment '操作描述',
+    model       varchar(255) not null comment '操作模块',
+    date        datetime     not null comment '操作日期',
     reviewer    varchar(50)  not null COMMENT '审核者',
     past_time   datetime     not null COMMENT '审核通过时间'
-) COMMENT '修改记录' CHARSET = utf8mb4;
-
+) COMMENT '修改日志' CHARSET = utf8mb4;
 
 # 用户表操作
 INSERT INTO asset.user(username, password, nickname, identity, tel, email, dept, unit)
@@ -99,39 +139,68 @@ VALUES ('土地', DEFAULT, DEFAULT, DEFAULT),
        ('在建工程', DEFAULT, DEFAULT, DEFAULT);
 
 
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('商业土地', 1, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('住房土地', 1, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('办公室', 2, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('食堂', 2, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('烟囱', 3, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('围墙', 3, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('家具用具', 4, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文物和陈列品', 4, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('电子设备', 4, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('专用仪器仪表', 5, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文艺设备', 5, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('体育设备', 5, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('小轿车', 6, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('货车', 6, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('图书', 7 ,2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('档案', 7, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('动物', 8, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('植物', 8, 2, 1);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('金融资产', 9, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('专利权', 9, 2, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('绿化工程', 10, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('商业土地', 1, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('住房土地', 1, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('办公室', 2, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('食堂', 2, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('烟囱', 3, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('围墙', 3, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('家具用具', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('文物和陈列品', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('电子设备', 4, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('专用仪器仪表', 5, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('文艺设备', 5, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('体育设备', 5, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('小轿车', 6, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('货车', 6, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('图书', 7, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('档案', 7, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('动物', 8, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('植物', 8, 2, 1);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('金融资产', 9, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('专利权', 9, 2, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('绿化工程', 10, 2, 0);
 
 
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('办公桌', 17, 3, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('椅子', 17, 3, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('沙发', 17, 3, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('取暖降温设备', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('办公桌', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('椅子', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('沙发', 17, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('取暖降温设备', 17, 3, 0);
 
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('文物', 18, 3, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('陈列品', 18, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('文物', 18, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('陈列品', 18, 3, 0);
 
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('电脑', 19, 3, 0);
-INSERT INTO asset.asset_category(name, parent_id, level, is_parent) VALUES ('盆栽', 28, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('电脑', 19, 3, 0);
+INSERT INTO asset.asset_category(name, parent_id, level, is_parent)
+VALUES ('盆栽', 28, 3, 0);
 
 
 UPDATE asset.asset_category
@@ -139,20 +208,21 @@ set is_parent=1
 where id = 8;
 
 # 资产信息表操作
-INSERT INTO asset.asset_info(code, name, type,max_type, dept, unit, life, amount, use_status, review_status, approval_date)
-VALUES ('1', '土地测试a', '商业土地','土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('2', '办公室a', '办公室', '房屋','', '宝相公司', 10, 300000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('3', '枫园食堂', '食堂', '房屋','', '宝相公司', 5, 300000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('4', '烟囱a', '烟囱', '构筑物','', '宝相公司', 5, 33000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('5', '围墙a', '围墙', '构筑物','', '宝相公司', 5, 433000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('6', '办公桌a', '办公桌', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('7', '椅子a', '椅子', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('8', '沙发a', '沙发', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('9', '空调a', '取暖降温设备', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('10', '电脑a', '电脑', '通用设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('11', '投影仪', '文艺设备', '专业设备','', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('12', '乒乓球桌', '体育设备', '专业设备','', '宝相公司', 15, 8000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('13', '小轿车a', '小轿车','车辆', '', '宝相公司', 20, 200000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('14', '货车a', '货车','车辆', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('15', '绿萝盆栽', '盆栽','动植物', '', '宝相公司', 20, 70000.00, DEFAULT, DEFAULT, DEFAULT),
-       ('16', '花坛', '绿化工程','在建工程', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO asset.asset_info(code, name, type, max_type, dept, unit, life, amount, use_status, review_status,
+                             approval_date)
+VALUES ('1', '土地测试a', '商业土地', '土地', '', '宝相公司', 50, 1000000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('2', '办公室a', '办公室', '房屋', '', '宝相公司', 10, 300000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('3', '枫园食堂', '食堂', '房屋', '', '宝相公司', 5, 300000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('4', '烟囱a', '烟囱', '构筑物', '', '宝相公司', 5, 33000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('5', '围墙a', '围墙', '构筑物', '', '宝相公司', 5, 433000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('6', '办公桌a', '办公桌', '通用设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('7', '椅子a', '椅子', '通用设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('8', '沙发a', '沙发', '通用设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('9', '空调a', '取暖降温设备', '通用设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('10', '电脑a', '电脑', '通用设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('11', '投影仪', '文艺设备', '专业设备', '', '宝相公司', 10, 5000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('12', '乒乓球桌', '体育设备', '专业设备', '', '宝相公司', 15, 8000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('13', '小轿车a', '小轿车', '车辆', '', '宝相公司', 20, 200000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('14', '货车a', '货车', '车辆', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('15', '绿萝盆栽', '盆栽', '动植物', '', '宝相公司', 20, 70000.00, DEFAULT, DEFAULT, DEFAULT),
+       ('16', '花坛', '绿化工程', '在建工程', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT);
