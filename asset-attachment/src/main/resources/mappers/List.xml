@@ -38,7 +38,7 @@
     </select>
 
     <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.entity.AList">
-        SELECT al.*, ai.unit AS unit,  ai.name AS name
+        SELECT al.*, ai.unit AS unit,  ai.name AS name ,ai. use_status AS Status
         FROM AttachmentList al
         LEFT JOIN asset_info ai ON al.assetId = ai.id
         <where>
