@@ -103,8 +103,8 @@
                     </el-col>
                     <el-col :span="2.5" >
                         <el-dropdown :hide-on-click="false" >
-                         <span class="el-dropdown-link" style="padding-top: 3px;">
-                            你好，资产管理员
+                         <span v-if="user !== null" class="el-dropdown-link" style="padding-top: 3px;">
+                            你好，{{ user.nickname }}
                            <el-icon><CaretBottom /></el-icon>
                             </span>
                             <template #dropdown>
@@ -281,6 +281,7 @@
 
     onMounted(() => {
         generateTagsFromBreadcrumbs();
+        // const role = user.value.nickname;
     });
 
 
