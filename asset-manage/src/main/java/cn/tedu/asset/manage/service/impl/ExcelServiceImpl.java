@@ -51,36 +51,13 @@ public class ExcelServiceImpl implements IExcelService {
     public PageData<AssetVO> pageListAll(Integer pageNum) {
         PageHelper.startPage(pageNum, defaultQueryPageSize);
         List<AssetVO> voList = assetMapper.exportVo();
-        Page<AssetVO> pageList = new Page<>();
+//        for (AssetVO assetVO : voList) {
+//            pageList.add(assetVO);
+//        }
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
+        return PageInfoToPageDataConverter.convert(pageInfo);
 
-        int start = (pageNum - 1) * defaultQueryPageSize;
-        int end = pageNum * defaultQueryPageSize;
-
-        pageList.setPageNum(pageNum);
-        pageList.setPageSize(5);
-        pageList.setStartRow(start);
-        pageList.setEndRow(end);
-        pageList.setTotal(voList.size());
-        pageList.setReasonable(false);
-
-        if (end>voList.size()){
-            List<AssetVO> selectlist = voList.subList(start,voList.size());
-            for (AssetVO assetVO:selectlist){
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        }
-        else {
-            List<AssetVO> selectlist = voList.subList(start,end);
-            for (AssetVO assetVO:selectlist){
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        }    }
+    }
 
     @Override
     public List<AssetVO> listAllNoReview() {
@@ -94,7 +71,6 @@ public class ExcelServiceImpl implements IExcelService {
         }
         return voList;
     }
-
 
 
     @Override
