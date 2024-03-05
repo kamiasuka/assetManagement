@@ -1,9 +1,11 @@
 package cn.tedu.asset.admin.dao.persist.repository;
 
-import cn.tedu.asset.admin.pojo.po.UserPO;
+import cn.tedu.asset.admin.pojo.entity.User;
+import cn.tedu.asset.admin.pojo.vo.UserVO;
 
 public interface IUserRepository {
 
 
-    int updateById(UserPO userPO);
+    int updateById(User user);
+
 }
