@@ -37,7 +37,7 @@
                             />
                         </div>
                 </el-col>
-                <el-col :span="4" style="font-size: 14px;">
+                <el-col :span="3.5" style="font-size: 14px;">
                     附件类型：
                     <el-select v-model="value2" class="m-2" placeholder="Select" size="normal" style="width: 130px">
                         <el-option
@@ -58,8 +58,9 @@
 <!--                        />-->
 <!--                    </el-select>-->
 <!--                </el-col>-->
-                <el-col :span="2" >
+                <el-col :span="3" >
                     <el-button  type="primary" size="name" @click="search">查询</el-button>
+                    <el-button type="primary" size="name" @click="searchAll">查询所有</el-button>
                 </el-col>
             </el-row>
             <el-table :data="currentPageData" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
@@ -85,13 +86,17 @@
                         <a :href="'http://localhost:9004/' + scope.row.url" target="_blank">
                         <el-button type="success">查看</el-button>
                         </a>
-                        <el-button style=";margin-left: 20px" type="primary" @click="edit(scope.row)">编辑</el-button>
+<!--                        <el-button style=";margin-left: 20px" type="primary"  @click="openEditDialog(scope.row)">编辑</el-button>-->
                     <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger"  @click="del(scope.$index,scope.row)">
                         删除附件
                     </el-button>
+
                     </template>
                 </el-table-column>
             </el-table>
+
+
+
             <div class="pagination-wrapper">
             <el-pagination
                     style="margin-left: 1200px;margin-top: 30px"
@@ -229,7 +234,7 @@
         unit: '',
         type: '',
         atName: '',
-        status:'',
+        // status:'',
         time: '',
         name:'',
     });
@@ -252,10 +257,10 @@
         const searchData = {
 
             atName: searchlist.value.atName,
-            status: value.value,
+            // status: value.value,
             name: searchlist.value.name,
             type: value2.value,
-            updatedTime:formattedDate.value,
+            updatedTime:updatedTime,
             unit: searchlist.value.unit
 
         };
@@ -264,18 +269,30 @@
 
         axios.post('http://localhost:9004/v1/asset-attachment/search', searchData)
             .then(response => {
-                // 处理来自后端的响应
+
                 console.log('来自后端的响应:', response.data);
-                // 可选择根据响应更新前端
+
                 if (response.data.code==2001){
                     arr.value = response.data.data;
                 }
                 ElMessage.success("查询成功");
             })
             .catch(error => {
-                // 处理错误
+
                 console.error('发送数据到后端时出错:', error);
             });
+    };
+
+    const searchAll = () => {
+        // 将搜索条件对象中的所有属性值设置为空字符串
+        for (const key in searchlist.value) {
+            searchlist.value[key] = '';
+        }
+        // 重置时间查询结果
+        timedate.value = {};
+        formattedDate.value = '';
+        // 执行搜索
+        search();
     };
 
     //添加附件相关
@@ -390,7 +407,6 @@
     const handleCurrentChange = (val) => {
         currentPage.value = val;
     };
-
 
 
 
