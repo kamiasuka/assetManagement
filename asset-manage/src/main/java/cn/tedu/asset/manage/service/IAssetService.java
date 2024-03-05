@@ -17,8 +17,6 @@ public interface IAssetService {
     List<AssetStatisticDTO> getStatistics();
     AssetVO searchAsset(String code);
 
-    void addNew(AssetAddDTO assetAddDTO);
-
     void assetUpdate(AssetUpdateDTO assetUpdateDTO);
     int addNew(AssetAddDTO assetAddDTO);
 }

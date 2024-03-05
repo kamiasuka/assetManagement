@@ -1,11 +1,13 @@
 package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
+import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
+import cn.tedu.asset.manage.service.IAssetCategoryService;
 import cn.tedu.asset.manage.service.IAssetService;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -27,6 +29,8 @@ public class AssetController {
     private IAssetService iAssetService;
     @Autowired
     private IExcelService iExcelService;
+    @Autowired
+    private IAssetCacheRepository iAssetCacheRepository;
 
     /**
      * 显示所有资产(审核通过)
@@ -50,13 +54,13 @@ public class AssetController {
     /**
      * 根据分类显示资产
      */
-    @GetMapping("getAsset/{type}&{pageNum}")
+    @GetMapping("getAsset/{type}&{page}")
     @ApiOperation("根据分类显示资产")
-    public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer pageNum){
-        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,pageNum);
-        //Integer pageNum = page == null ? 1 : page;
-        PageData<AssetVO> pageData = iAssetService.getAssetByType(type,pageNum);
-        return JsonResult.ok(pageData);
+    public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer page){
+        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,page);
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetVO> pageData2 = iAssetService.getAssetByType(type,pageNum);
+        return JsonResult.ok(pageData2);
     }
 
     /**
@@ -112,7 +116,6 @@ public class AssetController {
     @ApiOperationSupport(order = 400)
     public JsonResult assetDelete(@PathVariable String code){
         log.debug("开始处理【资产删除】的请求");
-
         return JsonResult.ok();
     }
 

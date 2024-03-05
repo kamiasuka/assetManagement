@@ -2,11 +2,10 @@ package cn.tedu.asset.admin.service.impl;
 
 import cn.tedu.asset.admin.dao.persist.mapper.UserMapper;
 import cn.tedu.asset.admin.dao.persist.repository.IUserRepository;
+import cn.tedu.asset.admin.pojo.dto.UserInfoUpdateDTO;
 import cn.tedu.asset.admin.pojo.dto.UserLoginDTO;
-import cn.tedu.asset.admin.pojo.dto.UserUpdateDTO;
 import cn.tedu.asset.admin.pojo.entity.User;
-import cn.tedu.asset.admin.pojo.param.UserUpdateInfoParam;
-import cn.tedu.asset.admin.pojo.po.UserPO;
+import cn.tedu.asset.admin.pojo.vo.LoginResultVO;
 import cn.tedu.asset.admin.pojo.vo.UserVO;
 import cn.tedu.asset.admin.service.IUserService;
 import cn.tedu.asset.commom.ex.ServiceException;
@@ -26,8 +25,8 @@ public class UserServiceImpl implements IUserService {
     private IUserRepository userRepository;
 
     @Override
-    public UserVO login(UserLoginDTO userLoginDTO) {
-        UserVO userVO = userMapper.selectByUsername(userLoginDTO.getUsername());
+    public LoginResultVO login(UserLoginDTO userLoginDTO) {
+        UserVO userVO = userMapper.getByUsername(userLoginDTO.getUsername());
         if (userVO==null){
             System.out.println(("用户名并不存在"));
             throw new ServiceException(StatusCode.USERNAME_ERROR);
@@ -36,16 +35,19 @@ public class UserServiceImpl implements IUserService {
             System.out.println(("输入的密码不正确"));
             throw new ServiceException(StatusCode.PASSWORD_ERROR);
         }
-        return userVO;
+        LoginResultVO loginResultVO = new LoginResultVO();
+        BeanUtils.copyProperties(userVO,loginResultVO);
+        log.debug("登录成功，正在封装用户登录信息:{}",loginResultVO);
+        return loginResultVO;
     }
 
     @Override
-    public void updateInfo(Long userId, UserUpdateInfoParam userUpdateInfoParam) {
-        log.debug("开始处理【修改基本信息】的业务，用户ID：{}，新基本信息：{}", userId, userUpdateInfoParam);
-        UserPO userPO = new UserPO();
-        BeanUtils.copyProperties(userUpdateInfoParam, userPO);
-        userPO.setId(userId);
-        int rows = userRepository.updateById(userPO);
+    public void updateInfo(Long userId, UserInfoUpdateDTO userInfoUpdateDTO) {
+        log.debug("开始处理【修改基本信息】的业务，用户ID：{}，新基本信息：{}", userId, userInfoUpdateDTO);
+        User user = new User();
+        BeanUtils.copyProperties(userInfoUpdateDTO, user);
+        user.setId(userId);
+        int rows = userRepository.updateById(user);
         if (rows != 1) {
             String message = "修改基本信息失败，服务器忙，请稍后再尝试！";
             log.warn(message);
@@ -56,14 +58,20 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updatePassword(Long userId, String newPassword) {
         log.debug("开始处理【修改密码】的业务，用户ID：{}，新密码：{}", userId, newPassword);
-        UserPO userPO = new UserPO();
-        userPO.setId(userId);
-        userPO.setPassword(newPassword);
-        int rows = userRepository.updateById(userPO);
+        User user = new User();
+        user.setId(userId);
+        user.setPassword(newPassword);
+        int rows = userRepository.updateById(user);
         if (rows != 1) {
             String message = "修改密码失败，服务器忙，请稍后再尝试！";
             log.warn(message);
             throw new ServiceException(StatusCode.OPERATION_FAILED,message);
         }
     }
+
+    @Override
+    public UserVO getInfoById(Long id) {
+        return userMapper.getById(id);
+    }
+
 }
