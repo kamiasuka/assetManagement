@@ -1,5 +1,6 @@
 package cn.tedu.asset.attachment.service;
 
+import cn.tedu.asset.attachment.pojo.dto.AssetDTO;
 import cn.tedu.asset.attachment.pojo.dto.ListDTO;
 import cn.tedu.asset.attachment.pojo.vo.ListAdminVO;
 import cn.tedu.asset.attachment.pojo.vo.ListVO;
@@ -15,4 +16,6 @@ public interface ListService {
         List<ListAdminVO> listForAdmin();
 
     List<List> search2(ListVO listVO);
+
+        Long checkAsset(AssetDTO assetDTO);
 }
