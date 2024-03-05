@@ -47,7 +47,7 @@ const getUserInfo = ()=>{
   axios.get("http://localhost:9001/v1/users/getInfoById/"+userId)
       .then((response)=>{
           if (response.data.code=2001){
-              ElMessage.success("已获取用户个人数据");
+              // ElMessage.success("已获取用户个人数据");
               console.log(response.data.data);
               userinfo.value = response.data.data;
               console.log(userinfo);
