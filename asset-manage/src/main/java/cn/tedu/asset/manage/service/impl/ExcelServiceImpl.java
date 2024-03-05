@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.service.impl;
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
+import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.entity.AssetExcelData;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
@@ -15,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,10 @@ import java.util.List;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
+    @Value("5")
+    private Integer defaultQueryPageSize;
+    @Autowired
+    private IAssetCacheRepository iAssetCacheRepository;
     @Autowired(required = false)
     private AssetMapper assetMapper;
 
@@ -43,11 +49,38 @@ public class ExcelServiceImpl implements IExcelService {
 
     @Override
     public PageData<AssetVO> pageListAll(Integer pageNum) {
-        PageHelper.startPage(pageNum,5);
-        Page<AssetVO> voList = assetMapper.pageExport();
-        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
-        return PageInfoToPageDataConverter.convert(pageInfo);
-    }
+        PageHelper.startPage(pageNum, defaultQueryPageSize);
+        List<AssetVO> voList = assetMapper.exportVo();
+        Page<AssetVO> pageList = new Page<>();
+
+        int start = (pageNum - 1) * defaultQueryPageSize;
+        int end = pageNum * defaultQueryPageSize;
+
+        pageList.setPageNum(pageNum);
+        pageList.setPageSize(5);
+        pageList.setStartRow(start);
+        pageList.setEndRow(end);
+        pageList.setTotal(voList.size());
+        pageList.setReasonable(false);
+
+        if (end>voList.size()){
+            List<AssetVO> selectlist = voList.subList(start,voList.size());
+            for (AssetVO assetVO:selectlist){
+                pageList.add(assetVO);
+            }
+            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
+            return PageInfoToPageDataConverter.convert(pageInfo);
+
+        }
+        else {
+            List<AssetVO> selectlist = voList.subList(start,end);
+            for (AssetVO assetVO:selectlist){
+                pageList.add(assetVO);
+            }
+            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
+            return PageInfoToPageDataConverter.convert(pageInfo);
+
+        }    }
 
     @Override
     public List<AssetVO> listAllNoReview() {

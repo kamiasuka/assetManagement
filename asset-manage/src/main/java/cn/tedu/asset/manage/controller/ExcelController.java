@@ -34,8 +34,8 @@ public class ExcelController {
     @GetMapping("listAllByType")
     @ApiOperation("根据分类展示报表")
     public JsonResult listAllByType(){
-        List<AssetVO> list = iExcelService.listAll();
-        return JsonResult.ok(list);
+//        List<AssetVO> list = iExcelService.listAll();
+        return JsonResult.ok();
     }
 
     @GetMapping("download")

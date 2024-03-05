@@ -54,12 +54,11 @@ public class AssetController {
     /**
      * 根据分类显示资产
      */
-    @GetMapping("getAsset/{type}&{pageNum}")
+    @GetMapping("getAsset/{type}&{page}")
     @ApiOperation("根据分类显示资产")
-    public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer pageNum){
-        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,pageNum);
-        //Integer pageNum = page == null ? 1 : page;
-        //PageData<AssetVO> pageData = iAssetService.getAssetByType(type,pageNum);
+    public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer page){
+        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,page);
+        Integer pageNum = page == null ? 1 : page;
         PageData<AssetVO> pageData2 = iAssetService.getAssetByType(type,pageNum);
         return JsonResult.ok(pageData2);
     }
@@ -117,7 +116,6 @@ public class AssetController {
     @ApiOperationSupport(order = 400)
     public JsonResult assetDelete(@PathVariable String code){
         log.debug("开始处理【资产删除】的请求");
-
         return JsonResult.ok();
     }
 

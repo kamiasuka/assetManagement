@@ -19,5 +19,4 @@ public interface IAssetCacheRepository {
 
     void updateCache(AssetUpdatePO assetUpdatePO);
 
-    Page<AssetVO> pageListByAsset(String type);
 }

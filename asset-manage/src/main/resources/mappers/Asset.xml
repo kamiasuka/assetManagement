@@ -26,7 +26,8 @@
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where review_status = '已通过'
     </select>
-    <select id="pageExport" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
+
+    <select id="exportVo" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where review_status = '已通过'
     </select>
@@ -35,15 +36,13 @@
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where review_status = '审核中'
     </select>
+
     <!--资产录入-->
     <insert id="insertNew">
         insert into asset.asset_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
         values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{approvalDate})
     </insert>
-    <select id="pageListByAsset" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
-        from asset_info where type = #{type} and review_status = '已通过'
-    </select>
+
 
 
     <!--资产变更-->

@@ -38,26 +38,39 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public PageData<AssetVO> getAssetByType(String type, Integer pageNum) {
-        log.debug("开始处理【根据分类加载资产】的业务，类别参数：{}，页码：{}", type, pageNum);
-//        PageHelper.startPage(pageNum, 4);
-//        Page<AssetVO> voList = assetMapper.pageListByAsset(type);
-//        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
-//        System.out.println(pageInfo+" size:===="+pageInfo.getPageSize());
-//        return PageInfoToPageDataConverter.convert(pageInfo);
-
-        PageHelper.startPage(pageNum, 5);
-        List<AssetVO> voList = iAssetCacheRepository.pageListByAsset(type);
-        System.out.println(voList);
+        PageHelper.startPage(pageNum, defaultQueryPageSize);
+        List<AssetVO> voList = iAssetCacheRepository.listByAsset(type);
         Page<AssetVO> pageList = new Page<>();
 
-//        for (AssetVO assetVO : voList){
-//            Page page = new Page();
-//            pageList.add();
-//        }
 
-        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
-        System.out.println(pageInfo+" size:===="+pageInfo.getPageSize());
-        return PageInfoToPageDataConverter.convert(pageInfo);
+        int start = (pageNum - 1) * defaultQueryPageSize;
+        int end = pageNum * defaultQueryPageSize;
+
+        pageList.setPageNum(pageNum);
+        pageList.setPageSize(5);
+        pageList.setStartRow(start);
+        pageList.setEndRow(end);
+        pageList.setTotal(voList.size());
+        pageList.setReasonable(false);
+
+        if (end>voList.size()){
+            List<AssetVO> selectlist = voList.subList(start,voList.size());
+            for (AssetVO assetVO:selectlist){
+                pageList.add(assetVO);
+            }
+            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
+            return PageInfoToPageDataConverter.convert(pageInfo);
+
+        }
+        else {
+            List<AssetVO> selectlist = voList.subList(start,end);
+            for (AssetVO assetVO:selectlist){
+                pageList.add(assetVO);
+            }
+            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
+            return PageInfoToPageDataConverter.convert(pageInfo);
+
+        }
     }
 
     @Override
