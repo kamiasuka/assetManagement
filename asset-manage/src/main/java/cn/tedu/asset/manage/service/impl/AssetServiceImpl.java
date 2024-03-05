@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -35,6 +36,8 @@ public class AssetServiceImpl implements IAssetService {
     private IAssetCacheRepository iAssetCacheRepository;
     @Autowired(required = false)
     private AssetMapper assetMapper;
+    @Autowired
+    private IAssetService iAssetService;
 
     @Override
     public PageData<AssetVO> getAssetByType(String type, Integer pageNum) {
@@ -53,18 +56,17 @@ public class AssetServiceImpl implements IAssetService {
         pageList.setTotal(voList.size());
         pageList.setReasonable(false);
 
-        if (end>voList.size()){
-            List<AssetVO> selectlist = voList.subList(start,voList.size());
-            for (AssetVO assetVO:selectlist){
+        if (end > voList.size()) {
+            List<AssetVO> selectlist = voList.subList(start, voList.size());
+            for (AssetVO assetVO : selectlist) {
                 pageList.add(assetVO);
             }
             PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
             return PageInfoToPageDataConverter.convert(pageInfo);
 
-        }
-        else {
-            List<AssetVO> selectlist = voList.subList(start,end);
-            for (AssetVO assetVO:selectlist){
+        } else {
+            List<AssetVO> selectlist = voList.subList(start, end);
+            for (AssetVO assetVO : selectlist) {
                 pageList.add(assetVO);
             }
             PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
@@ -142,19 +144,39 @@ public class AssetServiceImpl implements IAssetService {
 
     }
 
+
     @Override
     public void assetUpdate(AssetUpdateDTO assetUpdateDTO) {
         log.debug("开始处理【资产变更】的业务，参数：{}", assetUpdateDTO);
+        int updateNum = assetMapper.assetUpdate(assetUpdateDTO.getCode());
+
         AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
         BeanUtils.copyProperties(assetUpdateDTO, assetUpdatePO);
         assetUpdatePO.setReviewStatus("审核中");
+        assetUpdatePO.setSubmitDate(new Date());
 
-        iAssetCacheRepository.updateCache(assetUpdatePO);
+        int ReviewNum = assetMapper.ReviewAssetUpdate(assetUpdatePO);
 
-        int num = assetMapper.assetUpdate(assetUpdatePO);
-        if (num != 1) {
-            throw new ServiceException(StatusCode.OPERATION_FAILED, "资产变更失败！");
+        if (updateNum != 1 && ReviewNum != 1) {
+            throw new ServiceException(StatusCode.OPERATION_FAILED, "资产变更申请提交失败！");
         }
-
+        iAssetService.rebuildCache();
     }
+
+    @Override
+    public void assetDelete(String code) {
+        log.debug("开始处理【资产删除】的业务，参数：{}", code);
+        AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
+        assetUpdatePO.setCode(code);
+        assetUpdatePO.setReviewStatus("审核中");
+
+        assetMapper.assetUpdate(code);
+
+        int num = assetMapper.assetUpdate(code);
+        if (num != 1) {
+            throw new ServiceException(StatusCode.OPERATION_FAILED, "资产删除申请提交失败！");
+        }
+        iAssetService.rebuildCache();
+    }
+
 }

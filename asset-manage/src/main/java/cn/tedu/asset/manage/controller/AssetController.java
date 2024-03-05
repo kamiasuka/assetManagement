@@ -36,6 +36,7 @@ public class AssetController {
      * 显示所有资产(审核通过)
      */
     @GetMapping("listAllAsset")
+    @ApiOperation("显示所有资产")
     public JsonResult listAllAsset(){
         List<AssetVO> list = iExcelService.listAll();
         return JsonResult.ok(list);
@@ -44,7 +45,8 @@ public class AssetController {
     /**
      * 显示所有资产(未审核)
      */
-    @GetMapping("listAll")
+    @GetMapping("listAllNoReview")
+    @ApiOperation("未审核资产（审核员用）")
     public JsonResult listAllNoReview(){
         List<AssetVO> list = iExcelService.listAllNoReview();
         return JsonResult.ok(list);
@@ -116,6 +118,7 @@ public class AssetController {
     @ApiOperationSupport(order = 400)
     public JsonResult assetDelete(@PathVariable String code){
         log.debug("开始处理【资产删除】的请求");
+        iAssetService.assetDelete(code);
         return JsonResult.ok();
     }
 

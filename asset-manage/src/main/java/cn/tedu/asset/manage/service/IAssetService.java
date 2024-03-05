@@ -19,4 +19,6 @@ public interface IAssetService {
 
     void assetUpdate(AssetUpdateDTO assetUpdateDTO);
     int addNew(AssetAddDTO assetAddDTO);
+
+    void assetDelete(String code);
 }
