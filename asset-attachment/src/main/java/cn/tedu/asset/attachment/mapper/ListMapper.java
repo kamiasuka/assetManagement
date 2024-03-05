@@ -1,7 +1,9 @@
 package cn.tedu.asset.attachment.mapper;
 
 
+import cn.tedu.asset.attachment.pojo.dto.AssetDTO;
 import cn.tedu.asset.attachment.pojo.entity.AList;
+import cn.tedu.asset.attachment.pojo.vo.AssetVO;
 import cn.tedu.asset.attachment.pojo.vo.ListAdminVO;
 import cn.tedu.asset.attachment.pojo.vo.ListVO;
 import org.springframework.stereotype.Repository;
@@ -19,4 +21,6 @@ public interface ListMapper {
     List<ListAdminVO> selectForAdmin();
 
     List<List> search3(ListVO listVO);
+
+    AssetVO findByName(AssetDTO assetDTO);
 }

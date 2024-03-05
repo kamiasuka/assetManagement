@@ -10,7 +10,7 @@ public class ListVO {
     private String unit;
     private String Type;
     private String atName;
-    private String Status;
+    private String name;
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private String updatedTime;
 

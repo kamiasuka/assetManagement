@@ -19,16 +19,11 @@ const routes = [
       {path:'/asset-report', component: () => import( '../views/home/assetManage/AssetReportView'), meta: { breadcrumb: ['资产管理','资产报损'] }},
       {path:'/asset-value-change', component: () => import( '../views/home/assetManage/AssetValueChangeView'), meta: { breadcrumb: ['资产管理','资产修改'] }},
       {path:'/annual-report', component: () => import( '../views/home/AnnualReportView'),  meta: { breadcrumb: [ '资产年表','年度报表'] } },
-
-
-
-
-
+      {path:'/user', component: () => import( '../views/home/UserView'),  meta: { breadcrumb: ['个人中心'] } },
     ]
   },
-  {path:'/user', component: () => import( '../views/home/UserView'),  meta: { breadcrumb: ['资产管理','用户管理'] } },
 
-  {path:'/login', component: () => import( '../views/home/LoginView')}
+  {path:'/login', component: () => import( '../views/home/LoginView')},
 ]
 
 const router = createRouter({

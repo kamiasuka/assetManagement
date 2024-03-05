@@ -189,6 +189,8 @@
                 return '/asset-value-change';
             case '年度报表':
                 return '/annual-report';
+            case '个人中心':
+                return '/user';
             default:
                 return null;
             // 添加其他面包屑链接，如果需要的话

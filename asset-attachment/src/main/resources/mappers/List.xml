@@ -6,8 +6,8 @@
 
     <insert id="insertUnit">
     INSERT INTO attachmentlist
-    (ainame,Type,atName,Tip,Url,updatedTime)
-    VALUES (#{ainame}, #{Type}, #{atName}, #{Tip}, #{Status}, #{Url}, #{updatedTime})
+    (assetId,Type,atName,Tip,Url,updatedTime)
+    VALUES (#{assetId}, #{Type}, #{atName}, #{Tip},  #{Url}, #{updatedTime})
 </insert>
 
     <delete id="deleteById">
@@ -24,7 +24,8 @@
            al.atName AS atName,
            ai.name AS name,
            al.url AS Url,
-           al.updatedTime AS updatedTime
+           al.updatedTime AS updatedTime,
+           ai.use_status AS status
     FROM attachmentlist al
     LEFT JOIN asset_info ai ON al.assetId = ai.id
     ORDER BY al.id DESC
@@ -37,18 +38,23 @@
     </select>
 
     <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.entity.AList">
-        SELECT al.*, ai.unit AS unit_name,  ai.name AS asset_name
+        SELECT al.*, ai.unit AS unit,  ai.name AS name
         FROM AttachmentList al
         LEFT JOIN asset_info ai ON al.assetId = ai.id
         <where>
             <if test="unit != null and unit != ''">AND ai.unit LIKE CONCAT('%',#{unit},'%')</if>
-            <if test="name != null and name != ''">AND al.atName LIKE CONCAT('%',#{atName},'%')</if>
+            <if test="name != null and name != ''">AND ai.name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="atName != null and atName != ''">AND al.atName LIKE CONCAT('%',#{atName},'%')</if>
             <if test="type != null and type != ''">AND al.Type = #{type}</if>
             <if test="updatedTime != null and updatedTime != ''">AND al.updatedTime LIKE CONCAT('%',#{updatedTime},'%')</if>
-            <if test="status != null and status != ''">AND al.Status = #{status}</if>
+<!--            <if test="status != null and status != ''">AND al.Status = #{status}</if>-->
         </where>
         ORDER BY al.id DESC
     </select>
+
+<select id="findByName" resultType="cn.tedu.asset.attachment.pojo.vo.AssetVO">
+    SELECT id FROM asset_info WHERE name = #{name};
+</select>
 
 
 </mapper>
