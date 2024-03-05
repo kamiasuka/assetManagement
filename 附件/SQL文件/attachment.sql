@@ -1,8 +1,7 @@
 use asset;
 CREATE TABLE AttachmentList (
     id INT PRIMARY KEY auto_increment,
-    unit VARCHAR(255),
-    BatchId VARCHAR(255),
+    assetId VARCHAR(255),
     Type VARCHAR(255),
     Name VARCHAR(255),
     Tip  VARCHAR(255),
