@@ -1,108 +1,103 @@
 <template>
     <div class="common-layout">
-        <el-container>
-            <!--
-                        <el-header>
-                            <el-row :gutter="10" class="search">
-                                <el-col :span="4" style="font-size: 14px;">
-                                    资产编码：
-                                    <el-input style="width: 180px" size="normal" v-model="searchlist.code"></el-input>
-                                </el-col>
+        <el-container >
+            <el-header style="margin-top: 15px">
+                <el-row :gutter="10" class="search">
+                    <el-col :span="4" style="font-size: 14px;">
+                        资产编码：
+                        <el-input style="width: 180px" size="normal"></el-input>
+                    </el-col>
 
-                                <el-col :span="4" style="font-size: 14px;">
-                                    资产名称：
-                                    <el-input style="width: 180px" size="normal" v-model="searchlist.name"></el-input>
-                                </el-col>
+                    <el-col :span="4" style="font-size: 14px;">
+                        资产名称：
+                        <el-input style="width: 180px" size="normal"></el-input>
+                    </el-col>
 
-                                <el-col :span="5" style="font-size: 14px;">
-                                    <div class="block">
-                                        <span class="demonstration">创建时间：</span>
-                                        <el-date-picker
-                                                v-model="searchlist.time"
-                                                placeholder="附件创建时间"
-                                                :size="size"
-                                                value-format="yyyy-MM-dd"
-                                        />
-                                    </div>
-                                </el-col>
+                    <el-col :span="5" style="font-size: 14px;">
+                        <div class="block">
+                            <span class="demonstration">创建时间：</span>
+                            <el-date-picker
+                                    placeholder="附件创建时间"
+                                    value-format="yyyy-MM-dd"
+                            />
+                        </div>
+                    </el-col>
 
-                                <el-col :span="4" style="font-size: 14px;">
-                                    使用状态：
-                                    <el-select v-model="value" class="m-2" placeholder="Select" size="normal" style="width: 130px">
-                                        <el-option
-                                                v-for="item in options"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value"
-                                        />
-                                    </el-select>
-                                </el-col>
-                                <el-col :span="2">
-                                    <el-button type="primary" size="name" @click="search">查询</el-button>
-                                </el-col>
-                            </el-row>
-                        </el-header>
-            -->
-            <el-container style="margin-top: -25px;">
-                <el-aside width="180px">
-                    <div>
-                        <el-row class="tac">
-                            <el-col>
-                                <h5 class="mb-2">资产分类</h5>
-                                <el-menu
-                                        default-active="2"
-                                        class="el-menu-vertical"
-                                        @open="handleOpen"
-                                        @close="handleClose"
-                                >
-                                    <template v-for="category in categoryOne" :key="category.id">
-                                        <el-sub-menu :index="category.id" v-if="category.isParent===0">
-                                            <template #title>
-                                                <el-icon>
-                                                    <document/>
-                                                </el-icon>
-                                                <span>{{ category.name }}</span>
-                                            </template>
-                                        </el-sub-menu>
+                    <el-col :span="4" style="font-size: 14px;">
+                        使用状态：
+                        <el-select class="m-2" placeholder="Select" size="normal" style="width: 130px">
 
-                                        <el-sub-menu :index="category.id" v-if="category.isParent===1">
-                                            <template #title>
-                                                <el-icon><document/></el-icon>
-                                                <span>{{ category.name }}</span>
-                                            </template>
-                                            <el-sub-menu v-for="category2 in categoryTwo" :index="category2.id">
-                                                <template #title>{{ category2.name }}</template>
-<!--                                                <el-menu-item index="1-1-1">三级分类</el-menu-item>-->
-                                            </el-sub-menu>
-                                        </el-sub-menu>
-                                    </template>
-                                </el-menu>
-                            </el-col>
-                        </el-row>
-                    </div>
-                    <div>
-                        <el-button type="primary" @click="dialogFormVisible = true">编辑资产分类</el-button>
-                        <el-dialog v-model="dialogFormVisible" title="编辑资产分类">
-                            <el-form :model="form">
-                                <el-form-item label="分类名称" :label-width="formLabelWidth">
-                                    <el-input v-model="form.name" autocomplete="off"/>
-                                </el-form-item>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button type="primary" size="name">查询</el-button>
+                    </el-col>
+                </el-row>
+            </el-header>
+            <el-container>
+            <el-aside width="180px">
+                <div>
+                    <el-button type="primary" @click="dialogFormVisible = true">编辑资产分类</el-button>
+                    <el-dialog v-model="dialogFormVisible" title="编辑资产分类">
+                        <el-form :model="form">
+                            <el-form-item label="分类名称" :label-width="formLabelWidth">
+                                <el-input v-model="form.name" autocomplete="off"/>
+                            </el-form-item>
 
-                                <el-form-item label="分类级别" :label-width="formLabelWidth">
-                                    <el-select v-model="form.region" placeholder="请选择分类级别">
-                                        <el-option label="Zone No.1" value="shanghai"/>
-                                        <el-option label="Zone No.2" value="beijing"/>
-                                    </el-select>
-                                </el-form-item>
-                            </el-form>
-                            <template #footer>
+                            <el-form-item label="分类级别" :label-width="formLabelWidth">
+                                <el-select v-model="form.region" placeholder="请选择分类级别">
+                                    <el-option label="Zone No.1" value="shanghai"/>
+                                    <el-option label="Zone No.2" value="beijing"/>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <template #footer>
                             <span class="dialog-footer">
                                 <el-button @click="dialogFormVisible = false">取消</el-button>
                                 <el-button type="primary" @click="dialogFormVisible = false">提交</el-button>
                             </span>
-                            </template>
-                        </el-dialog>
-                    </div>
+                        </template>
+                    </el-dialog>
+                </div>
+
+                <div>
+                    <el-row class="tac">
+                        <el-col>
+                            <h5 class="mb-2">资产分类</h5>
+                            <el-menu
+                                    default-active="2"
+                                    class="el-menu-vertical"
+                                    @open="handleOpen"
+                                    @close="handleClose"
+                                    unique-opened
+                            >
+                                <template v-for="category in categoryOne" :key="category.id">
+                                    <el-sub-menu :index="category.id" v-if="category.isParent===0">
+                                        <template #title>
+                                            <el-icon>
+                                                <document/>
+                                            </el-icon>
+                                            <span>{{ category.name }}</span>
+                                        </template>
+                                    </el-sub-menu>
+
+                                    <el-sub-menu :index="category.id" v-if="category.isParent===1">
+                                        <template #title>
+                                            <el-icon>
+                                                <document/>
+                                            </el-icon>
+                                            <span>{{ category.name }}</span>
+                                        </template>
+                                        <el-sub-menu v-for="category2 in categoryTwo" :index="category2.id">
+                                            <template #title>{{ category2.name }}</template>
+                                            <!--                                                <el-menu-item index="1-1-1">三级分类</el-menu-item>-->
+                                        </el-sub-menu>
+                                    </el-sub-menu>
+                                </template>
+                            </el-menu>
+                        </el-col>
+                    </el-row>
+                </div>
 
                 </el-aside>
                 <el-main>
@@ -134,12 +129,12 @@
 
                     </el-table>
 
-                    <div style="margin: 20px 20px">
-                        <el-pagination background layout="prev, pager, next" :total="1000"/>
-                    </div>
-                </el-main>
+                <div style="margin: 20px 20px">
+                    <el-pagination background layout="prev, pager, next" :total="1000"/>
+                </div>
+            </el-main>
 
-            </el-container>
+        </el-container>
         </el-container>
     </div>
 </template>
