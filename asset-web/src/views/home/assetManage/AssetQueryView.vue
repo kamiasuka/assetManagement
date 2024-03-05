@@ -99,27 +99,35 @@
                     </el-row>
                 </div>
 
-            </el-aside>
-            <el-main>
-                <el-table :data="tableData">
-                    <el-table-column fixed prop="id" label="资产编码" width="100"/>
-                    <el-table-column prop="name" label="资产名称" width="120"/>
-                    <el-table-column prop="type" label="资产分类" width="120"/>
-                    <el-table-column prop="dept" label="所属部门" width="120"/>
-                    <el-table-column prop="unit" label="所属单位" width="120"/>
-                    <el-table-column prop="life" label="使用年限" width="120"/>
-                    <el-table-column prop="amount" label="资产价值" width="120"/>
-                    <el-table-column prop="useStatus" label="使用状态" width="120"/>
-                    <el-table-column prop="reviewStatus" label="审核状态" width="120"/>
-                    <el-table-column prop="approvalDate" label="审核通过日期" width="120"/>
-                    <el-table-column prop="note" label="备注" width="120"/>
-                    <el-table-column fixed="right" label="操作" width="140">
-                        <template #default>
-                            <el-button type="success" size="small">编辑</el-button>
-                            <el-button type="danger" size="small">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                </el-aside>
+                <el-main>
+                    <el-table :data="tableData">
+                        <el-table-column fixed prop="id" label="资产编码" width="100"/>
+                        <el-table-column prop="name" label="资产名称" width="120"/>
+                        <el-table-column prop="type" label="资产分类" width="120"/>
+                        <el-table-column prop="dept" label="所属部门" width="120"/>
+                        <el-table-column prop="unit" label="所属单位" width="120"/>
+                        <el-table-column prop="life" label="使用年限" width="120"/>
+                        <el-table-column prop="amount" label="资产价值" width="120"/>
+                        <el-table-column prop="useStatus" label="使用状态" width="120"/>
+                        <el-table-column prop="reviewStatus" label="审核状态" width="120"/>
+                        <el-table-column prop="approvalDate" label="审核通过日期" width="120"/>
+                        <el-table-column prop="note" label="备注" width="120"/>
+                        <el-table-column fixed="right" label="操作" width="140">
+
+
+                                <template #default>
+                                    <div v-if="user.identity==='管理员'">
+                                    <el-button type="success" size="small">编辑</el-button>
+                                    <el-button type="danger" size="small">删除</el-button>
+                                    </div>
+                                </template>
+
+
+                        </el-table-column>
+
+
+                    </el-table>
 
                 <div style="margin: 20px 20px">
                     <el-pagination background layout="prev, pager, next" :total="1000"/>
@@ -147,6 +155,8 @@ import {
 import {onMounted, reactive, ref} from 'vue'
 import axios from "axios";
 
+//获取用户登录信息（session）
+const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
 
 const loadContents = () => {
     //展示数据
@@ -167,6 +177,8 @@ const categoryTwo = ref([]);
 const categoryThree = ref([]);
 onMounted(() => {
     loadContents();
+    console.log(user.value.identity);
+    console.log(typeof user.value.identity);
 })
 
 
