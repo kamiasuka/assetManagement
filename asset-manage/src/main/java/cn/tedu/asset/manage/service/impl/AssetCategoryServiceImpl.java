@@ -2,7 +2,6 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
-import cn.tedu.asset.manage.dao.cache.repository.IAssetCategoryCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetCategoryMapper;
 import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
 import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
@@ -22,13 +21,11 @@ import java.util.List;
 public class AssetCategoryServiceImpl implements IAssetCategoryService {
     @Autowired(required = false)
     private AssetCategoryMapper categoryMapper;
-    @Autowired
-    private IAssetCategoryCacheRepository categoryCacheRepository;
 
     @Override
     public List<AssetCategoryVO> getAllCategory() {
         log.debug("开始处理【预热所有资产分类】的业务");
-        List<AssetCategoryVO> listByCategory = categoryCacheRepository.listByCategory();
+        List<AssetCategoryVO> listByCategory = categoryMapper.selectListAll();
         return listByCategory;
     }
 

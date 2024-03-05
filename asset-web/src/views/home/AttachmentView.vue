@@ -106,7 +106,9 @@
                     :page-size="pageSize"
                     @current-change="handleCurrentChange"
 
-            />  </div>  </el-tab-pane>
+            />
+            </div>
+        </el-tab-pane>
         <el-tab-pane label="附件添加">
             <el-form label-width="100px" style="margin: 50px 150px">
                 <el-form-item  label="附件名称:">
