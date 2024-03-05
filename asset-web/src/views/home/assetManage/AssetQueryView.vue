@@ -119,11 +119,19 @@
                         <el-table-column prop="approvalDate" label="审核通过日期" width="120"/>
                         <el-table-column prop="note" label="备注" width="120"/>
                         <el-table-column fixed="right" label="操作" width="140">
-                            <template #default>
-                                <el-button type="success" size="small">编辑</el-button>
-                                <el-button type="danger" size="small">删除</el-button>
-                            </template>
+
+
+                                <template #default>
+                                    <div v-if="user.identity==='管理员'">
+                                    <el-button type="success" size="small">编辑</el-button>
+                                    <el-button type="danger" size="small">删除</el-button>
+                                    </div>
+                                </template>
+
+
                         </el-table-column>
+
+
                     </el-table>
 
                     <div style="margin: 20px 20px">
@@ -152,6 +160,8 @@ import {
 import {onMounted, reactive, ref} from 'vue'
 import axios from "axios";
 
+//获取用户登录信息（session）
+const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
 
 const loadContents = () => {
     //展示数据
@@ -172,6 +182,8 @@ const categoryTwo = ref([]);
 const categoryThree = ref([]);
 onMounted(() => {
     loadContents();
+    console.log(user.value.identity);
+    console.log(typeof user.value.identity);
 })
 
 
