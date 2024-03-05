@@ -20,7 +20,8 @@
                                 v-model="searchlist.name"
                                 placeholder="全部"
                                 class="input-with-select">
-                        </el-input></el-col>
+                        </el-input>
+                    </el-col>
                     <el-col :span="4" style="font-size: 14px;" >
                     附件名称：
                     <el-input placeholder="全部" style="width: 180px" size="normal" v-model="searchlist.atName" ></el-input>
@@ -87,10 +88,27 @@
                         <el-button type="success">查看</el-button>
                         </a>
 <!--                        <el-button style=";margin-left: 20px" type="primary"  @click="openEditDialog(scope.row)">编辑</el-button>-->
-                    <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger"  @click="del(scope.$index,scope.row)">
+<!--                        <el-button style=";margin-left: 20px" type="primary"  @click="dialogTableVisible = true">编辑</el-button>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger"  @click="del(scope.$index,scope.row)">
                         删除附件
                     </el-button>
-
                     </template>
                 </el-table-column>
             </el-table>
@@ -114,9 +132,9 @@
                 <el-form-item  label="附件名称:">
                     <el-input v-model="attachmentlist.atName" style="width: 400px;" ></el-input>
                 </el-form-item>
-                <el-form-item  label="所属资产:">
-                    <el-input v-model="attachmentlist.name" style="width: 400px;" ><template #append>
-                    </template></el-input>
+                <el-form-item  label="资产编码:">
+                    <el-input v-model="attachmentlist.code" style="width: 400px;" >
+                    </el-input>
                 </el-form-item>
                     <el-form-item label="附件类型:">
                         <el-select v-model="value3" class="m-2" placeholder="Select"  style="width: 400px;">
@@ -167,6 +185,10 @@
             </el-form>
         </el-tab-pane>
     </el-tabs>
+
+
+
+
 </template>
 
 <script setup>
@@ -278,6 +300,7 @@
                     arr.value = response.data.data;
                 }
                 ElMessage.success("查询成功");
+
             })
             .catch(error => {
 
@@ -298,19 +321,22 @@
     };
 
     //添加附件相关
-    // Declare your reactive variables
     const attachmentlist = ref({
         atName: '',
-        name: '',
+        code: '',
     });
 
     const textarea = ref('');
 
     const saveAttachment = () => {
+        if (!attachmentlist.value.atName || !attachmentlist.value.code || !value3.value || !textarea.value) {
+            ElMessage.error("请填写完整的附件信息");
+            return;
+        }
 
         const data = {
             atName: attachmentlist.value.atName,
-            name: attachmentlist.value.name,
+            code: attachmentlist.value.code,
             type: value3.value,
             tip: textarea.value,
             assetId: '',
@@ -319,7 +345,7 @@
         console.log(data);
 
 
-        axios.post('http://localhost:9004/v1/asset-attachment/check', {name:data.name})
+        axios.post('http://localhost:9004/v1/asset-attachment/check', {code:data.code})
             .then(response => {
                 if (response.data.code === 2001 && response.data.data) {
                     console.log("Response from /check endpoint:", response.data);
@@ -331,21 +357,21 @@
                             if (response.data.code === 2001) {
                                 ElMessage.success("附件添加成功");
                                 attachmentlist.value.atName ='';
-                                attachmentlist.value.name = '';
+                                attachmentlist.value.code = '';
                                 value2.value = '';
                                 textarea.value = '';
                                 fileList.value = [];
                             } else {
                                 ElMessage.error("附件添加失败");
                             }
-                            // location.reload();
+                            location.reload();
                         })
                         .catch(error => {
                             console.error("Error adding attachment:", error);
                             ElMessage.error("附件添加失败");
                         });
                 } else {
-                    ElMessage.error("请填入正确的资产名称");
+                    ElMessage.error("请填入正确的资产编码");
                 }
             })
             .catch(error => {
