@@ -3,8 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.tedu.asset.admin.dao.persist.mapper.UserMapper">
-    <select id="selectByUsername" resultType="cn.tedu.asset.admin.pojo.vo.UserVO">
+    <select id="getByUsername" resultType="cn.tedu.asset.admin.pojo.vo.UserVO">
         SELECT  id,username,password,identity,nickname,tel,email,dept,unit FROM asset.user WHERE username = #{username}
+    </select>
+    <select id="getById" resultType="cn.tedu.asset.admin.pojo.vo.UserVO">
+        SELECT  id,username,password,identity,nickname,tel,email,dept,unit FROM asset.user WHERE id = #{id}
     </select>
     <update id="updateById">
         UPDATE asset.user

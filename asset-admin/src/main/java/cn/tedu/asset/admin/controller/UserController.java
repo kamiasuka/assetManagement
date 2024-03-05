@@ -1,8 +1,8 @@
 package cn.tedu.asset.admin.controller;
 
+import cn.tedu.asset.admin.pojo.dto.UserInfoUpdateDTO;
 import cn.tedu.asset.admin.pojo.dto.UserLoginDTO;
-import cn.tedu.asset.admin.pojo.dto.UserUpdateDTO;
-import cn.tedu.asset.admin.pojo.param.UserUpdateInfoParam;
+import cn.tedu.asset.admin.pojo.vo.LoginResultVO;
 import cn.tedu.asset.admin.pojo.vo.UserVO;
 import cn.tedu.asset.admin.service.IUserService;
 import cn.tedu.asset.commom.response.JsonResult;
@@ -13,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
@@ -36,9 +33,9 @@ public class UserController {
     @ApiOperationSupport(order = 290)
     @PostMapping("/login")
     public JsonResult login(UserLoginDTO userLoginDTO){
-        UserVO userVO = userService.login(userLoginDTO);
-        System.out.println("userVO="+userVO);
-        return JsonResult.ok(userVO);
+        LoginResultVO loginResultVO = userService.login(userLoginDTO);
+        System.out.println("loginResultVO="+loginResultVO);
+        return JsonResult.ok(loginResultVO);
     }
 
     @PostMapping("/{id:[0-9]+}/info/update")
@@ -49,9 +46,9 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "long")
     })
     public JsonResult updateInfo(@PathVariable @Range(min = 1, message = "请提交合法的用户ID值！") Long id,
-                                 @Valid UserUpdateInfoParam userUpdateInfoParam) {
-        log.debug("开始处理【修改基本信息】的请求，用户：{}，新基本信息：{}", id, userUpdateInfoParam);
-        userService.updateInfo(id, userUpdateInfoParam);
+                                 @Valid UserInfoUpdateDTO userInfoUpdateDTO) {
+        log.debug("开始处理【修改基本信息】的请求，用户：{}，新基本信息：{}", id, userInfoUpdateDTO);
+        userService.updateInfo(id, userInfoUpdateDTO);
         return JsonResult.ok();
     }
 
@@ -70,5 +67,14 @@ public class UserController {
         return JsonResult.ok();
     }
 
+    @GetMapping("getInfoById/{id}")
+    @ApiOperation("根据id获取用户信息")
+    @ApiOperationSupport(order = 320)
+    public JsonResult getInfoById(@PathVariable Long id){
+        log.debug("开始根据用户ID获取用户个人信息");
+        UserVO userVO = userService.getInfoById(id);
+        log.debug("正在封装用户个人信息:{}",userVO);
+        return JsonResult.ok(userVO);
+    }
 
 }
