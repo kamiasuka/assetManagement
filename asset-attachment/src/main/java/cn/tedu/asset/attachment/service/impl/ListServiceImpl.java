@@ -1,8 +1,10 @@
 package cn.tedu.asset.attachment.service.impl;
 
 import cn.tedu.asset.attachment.mapper.ListMapper;
+import cn.tedu.asset.attachment.pojo.dto.AssetDTO;
 import cn.tedu.asset.attachment.pojo.dto.ListDTO;
 import cn.tedu.asset.attachment.pojo.entity.AList;
+import cn.tedu.asset.attachment.pojo.vo.AssetVO;
 import cn.tedu.asset.attachment.pojo.vo.ListAdminVO;
 import cn.tedu.asset.attachment.pojo.vo.ListVO;
 import cn.tedu.asset.attachment.service.ListService;
@@ -61,6 +63,16 @@ public class ListServiceImpl implements ListService {
     @Override
     public List<List> search2(ListVO listVO) {
         return mapper.search3(listVO);
+    }
+
+    @Override
+    public Long checkAsset(AssetDTO assetDTO) {
+        AssetVO assetVO = mapper.findByName(assetDTO);
+        if (assetVO != null) {
+            return assetVO.getId();
+        } else {
+            return null;
+        }
     }
 
 

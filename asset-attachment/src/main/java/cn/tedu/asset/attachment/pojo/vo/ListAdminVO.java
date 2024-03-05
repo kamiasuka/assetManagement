@@ -9,9 +9,10 @@ import java.util.Date;
 public class ListAdminVO {
     private Long id;
     private String unit;
+    private String name;
     private String Type;
     private String Tip;
-    private String Name;
+    private String atName;
     private String Status;
     private String Url;
     @JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")
