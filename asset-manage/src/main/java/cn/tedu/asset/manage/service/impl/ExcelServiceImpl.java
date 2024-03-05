@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.service.impl;
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
+import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.entity.AssetExcelData;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
@@ -15,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,10 @@ import java.util.List;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
+    @Value("5")
+    private Integer defaultQueryPageSize;
+    @Autowired
+    private IAssetCacheRepository iAssetCacheRepository;
     @Autowired(required = false)
     private AssetMapper assetMapper;
 
@@ -43,10 +49,14 @@ public class ExcelServiceImpl implements IExcelService {
 
     @Override
     public PageData<AssetVO> pageListAll(Integer pageNum) {
-        PageHelper.startPage(pageNum,5);
-        Page<AssetVO> voList = assetMapper.pageExport();
+        PageHelper.startPage(pageNum, defaultQueryPageSize);
+        List<AssetVO> voList = assetMapper.exportVo();
+//        for (AssetVO assetVO : voList) {
+//            pageList.add(assetVO);
+//        }
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         return PageInfoToPageDataConverter.convert(pageInfo);
+
     }
 
     @Override
@@ -61,7 +71,6 @@ public class ExcelServiceImpl implements IExcelService {
         }
         return voList;
     }
-
 
 
     @Override
