@@ -18,15 +18,15 @@ public interface AssetMapper {
 
     Double worthSumQuery(String maxType);
 
-    Page<AssetVO> pageExport();
     List<AssetPO> export();
+    List<AssetVO> exportVo();
+
     List<AssetPO> exportNoReview();
 
     int insertNew(AssetPO assetPO);
 
-    List<AssetPO> exportByType();
-
     int assetUpdate(AssetUpdatePO assetUpdatePO);
 
-    Page<AssetVO> pageListByAsset(String type);
+    List<AssetPO> exportByType();
+
 }
