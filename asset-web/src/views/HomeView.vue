@@ -111,7 +111,6 @@
                                 <el-dropdown-menu>
                                     <el-dropdown-item @click="router.push('/user')">个人中心</el-dropdown-item>
                                     <el-dropdown-item ></el-dropdown-item>
-                                    <el-dropdown-item divided>修改密码</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>

@@ -51,6 +51,7 @@ public class ListController {
 
     @PostMapping("/check")
     public JsonResult checkAsset(@RequestBody AssetDTO assetDTO) {
+        log.info("assetDTO"+assetDTO);
         Long assetId = service.checkAsset(assetDTO);
         log.info("assetId"+assetId);
         if (assetId != null) {
@@ -59,6 +60,8 @@ public class ListController {
             return new JsonResult(StatusCode.OPERATION_FAILED, "未找到对应资产");
         }
     }
+
+
 }
 
 

@@ -28,7 +28,7 @@
            ai.use_status AS status
     FROM attachmentlist al
     LEFT JOIN asset_info ai ON al.assetId = ai.id
-    ORDER BY al.id DESC
+    ORDER BY al.id
 </select>
 
     <select id="selectImgUrlById" resultType="string">
@@ -49,11 +49,11 @@
             <if test="updatedTime != null and updatedTime != ''">AND al.updatedTime LIKE CONCAT('%',#{updatedTime},'%')</if>
 <!--            <if test="status != null and status != ''">AND al.Status = #{status}</if>-->
         </where>
-        ORDER BY al.id DESC
+        ORDER BY al.id
     </select>
 
 <select id="findByName" resultType="cn.tedu.asset.attachment.pojo.vo.AssetVO">
-    SELECT id FROM asset_info WHERE name = #{name};
+    SELECT id FROM asset_info WHERE code = #{code};
 </select>
 
 
