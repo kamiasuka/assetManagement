@@ -13,6 +13,8 @@ public class AssetUpdateDTO {
     private int life;
     private double amount;
     private String userStatus;
+    private String reviewStatus;
+    private Date submitDate;
     private Date approvalDate;
     private String note;
 }
