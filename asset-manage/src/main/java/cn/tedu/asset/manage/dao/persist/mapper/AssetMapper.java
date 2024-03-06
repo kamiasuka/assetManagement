@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.dao.persist.mapper;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
+import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import com.github.pagehelper.Page;
 
@@ -31,17 +32,28 @@ public interface AssetMapper {
     List<AssetPO> exportByType();
 
     //资产变更
-    AssetVO listAllAdd();
+    List<AssetVO> listAllAdd();
 
-    AssetVO listAllChange();
+    List<AssetVO> listAllChange();
 
     int assetUpdate(String code);//更新审核状态
 
+    void idempotent(String code);
+
     int ReviewAssetUpdate(AssetUpdatePO assetUpdatePO);//临时存储待审核的数据
+
+    AssetAddVO getAddNew(String code);
+
+    int saveAddNew(AssetPO assetPO);//保存录入审核成功资产
+    void updateAddInfo(AssetPO assetPO);//更新录入表
+
+    int deleteAddNew(String code);//删除录入审核失败资产
 
     AssetUpdateDTO getSubmitAsset(String code);
 
-    void saveSubmitAsset(AssetUpdateDTO assetUpdateDTO);//存储已审核的数据
+    int saveSubmitAsset(AssetUpdateDTO assetUpdateDTO);//存储已审核的数据
 
+    void updateChangeInfo(String code);
 
+    int updateChangeOff(String code);
 }

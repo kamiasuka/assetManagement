@@ -39,9 +39,31 @@
 
     <!--资产录入-->
     <insert id="insertNew">
-        insert into asset_add_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
+        insert into asset_add_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date)
+        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{submitDate},#{approvalDate})
+    </insert>
+    <select id="getAddNew" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date
+        from asset_add_info where  code = #{code}
+    </select>
+
+    <insert id="saveAddNew">
+        insert into asset_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
         values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{approvalDate})
     </insert>
+    <update id="updateAddInfo">
+        update asset_add_info
+        set name = #{name},type = #{type},max_type = #{maxType},dept=#{dept},unit=#{unit},life=#{life},amount=#{amount},
+            use_status=#{useStatus},review_status=#{reviewStatus},approval_date=#{approvalDate}
+        where code = #{code}
+    </update>
+
+
+    <delete id="deleteAddNew">
+        delete from asset_info
+        where code=#{code};
+    </delete>
+
 
     <!--资产变更-->
     <select id="listAllAdd" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
@@ -57,23 +79,39 @@
 
     <update id="assetUpdate">
         update asset_info
-        value(review_status=#{ReviewStatus})
+        set review_status='审核中'
         where code = #{code}
     </update>
 
+    <delete id="idempotent">
+        delete from asset_change_info
+        where code = #{code}
+    </delete>
+
     <insert id="ReviewAssetUpdate">
-        insert into asset_change_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
-        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{approvalDate})
+        insert into asset_change_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date)
+        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{submitDate},#{approvalDate})
     </insert>
 
     <select id="getSubmitAsset" resultType="cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date,submit_date
         from asset_change_info where  code = #{code} and review_status = '审核中'
     </select>
 
     <update id="saveSubmitAsset">
         update asset_info
-        values (name = #{name},type = #{type},maxType = #{maxType},dept=#{dept},unit=#{unit},life=#{life},amount=#{amount},useStatus=#{useStatus},reviewStatus=#{reviewStatus},approvalDate=#{approvalDate})
+        set name = #{name},type = #{type},max_type = #{maxType},dept=#{dept},unit=#{unit},life=#{life},amount=#{amount},
+            use_status=#{useStatus},review_status=#{reviewStatus},approval_date=#{approvalDate}
+        where code = #{code}
+    </update>
+    <update id="updateChangeInfo">
+        update asset_change_info
+        set review_status='已通过',approval_date=NOW()
+        where code = #{code}
+    </update>
+    <update id="updateChangeOff">
+        update asset_change_info
+        set review_status='未通过',approval_date=NOW()
         where code = #{code}
     </update>
 

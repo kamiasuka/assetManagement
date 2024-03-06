@@ -2,10 +2,12 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
+import cn.tedu.asset.manage.Util.AssetCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
+import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
@@ -136,31 +138,33 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public int addNew(AssetAddDTO assetAddDTO) {
         log.debug("开始处理【资产录入】的业务");
+        AssetCode assetCode = new AssetCode();
         AssetPO assetPO = new AssetPO();
         BeanUtils.copyProperties(assetAddDTO, assetPO);
+        assetPO.setCode(assetCode.buildCode());
         assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
+        assetPO.setSubmitDate(new Date());
         return assetMapper.insertNew(assetPO);
-
     }
 
 
     @Override
-    public void assetUpdate(AssetUpdateDTO assetUpdateDTO) {
-        log.debug("开始处理【资产变更】的业务，参数：{}", assetUpdateDTO);
-        int updateNum = assetMapper.assetUpdate(assetUpdateDTO.getCode());
+    public void assetChange(AssetChangeDTO assetChangeDTO) {
+        log.debug("开始处理【资产变更】的业务，参数：{}", assetChangeDTO);
+        int updateNum = assetMapper.assetUpdate(assetChangeDTO.getCode());
 
         AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
-        BeanUtils.copyProperties(assetUpdateDTO, assetUpdatePO);
+        BeanUtils.copyProperties(assetChangeDTO, assetUpdatePO);
         assetUpdatePO.setReviewStatus("审核中");
         assetUpdatePO.setSubmitDate(new Date());
 
+        assetMapper.idempotent(assetUpdatePO.getCode());//幂等
         int ReviewNum = assetMapper.ReviewAssetUpdate(assetUpdatePO);
 
         if (updateNum != 1 && ReviewNum != 1) {
             throw new ServiceException(StatusCode.OPERATION_FAILED, "资产变更申请提交失败！");
         }
-        iAssetService.rebuildCache();
     }
 
     @Override
@@ -176,7 +180,6 @@ public class AssetServiceImpl implements IAssetService {
         if (num != 1) {
             throw new ServiceException(StatusCode.OPERATION_FAILED, "资产删除申请提交失败！");
         }
-        iAssetService.rebuildCache();
     }
 
 }
