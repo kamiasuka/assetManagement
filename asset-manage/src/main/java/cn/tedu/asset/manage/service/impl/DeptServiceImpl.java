@@ -18,6 +18,12 @@ import java.util.List;
 public class DeptServiceImpl implements IDeptService {
     @Autowired
     private DeptMapper deptMapper;
+
+    @Override
+    public DeptVO getDeptByCode(String code) {
+        return deptMapper.getDeptByCode(code);
+    }
+
     @Override
     public List<DeptVO> listAll() {
         return deptMapper.listAll();

@@ -25,6 +25,15 @@ public class DeptController {
     @Autowired
     private IDeptService deptService;
 
+    @GetMapping("/getDeptByCode/{code}")
+    @ApiOperation("1.根据资产编号code查找部门")
+    @ApiOperationSupport(order = 50)
+    public JsonResult getDeptByCode(@PathVariable String code){
+        log.debug("开始处理【根据资产编号code查找部门】的操作");
+        DeptVO deptVO  = deptService.getDeptByCode(code);
+        return JsonResult.ok(deptVO);
+    }
+
     @GetMapping("/listAll")
     @ApiOperation("1.显示所有部门")
     @ApiOperationSupport(order = 100)

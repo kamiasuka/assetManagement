@@ -7,6 +7,10 @@
         SELECT code,name,tel,unit FROM asset.dept;
     </select>
 
+    <select id="getDeptByCode" resultType="cn.tedu.asset.manage.pojo.vo.DeptVO">
+        SELECT code,name,tel,unit FROM asset.dept WHERE code = #{code};
+    </select>
+
     <insert id="insert">
         INSERT INTO asset.dept(code,name,tel,unit)
         VALUES(#{code},#{name},#{tel},#{unit})

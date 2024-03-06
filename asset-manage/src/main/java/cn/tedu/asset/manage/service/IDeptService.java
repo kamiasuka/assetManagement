@@ -15,4 +15,5 @@ public interface IDeptService {
 
     int deptDelete(String code);
 
+    DeptVO getDeptByCode(String code);
 }
