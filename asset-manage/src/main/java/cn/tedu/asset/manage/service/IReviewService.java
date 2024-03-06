@@ -2,10 +2,12 @@ package cn.tedu.asset.manage.service;
 
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 
-public interface IReviewService {
-    AssetVO listAllAdd();
+import java.util.List;
 
-    AssetVO  listAllChange();
+public interface IReviewService {
+    List<AssetVO> listAllAdd();
+
+    List<AssetVO>  listAllChange();
 
     void addNewOn(String code);
 

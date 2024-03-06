@@ -1,13 +1,20 @@
 package cn.tedu.asset.manage.service.impl;
 
+import cn.tedu.asset.commom.ex.ServiceException;
+import cn.tedu.asset.commom.response.StatusCode;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
+import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
+import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.service.IReviewService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements IReviewService {
@@ -15,40 +22,57 @@ public class ReviewServiceImpl implements IReviewService {
     private AssetMapper assetMapper;
 
     @Override
-    public AssetVO listAllAdd() {
-        return assetMapper.listAllAdd();
+    public List<AssetVO> listAllAdd() {
+        List<AssetVO> list = assetMapper.listAllAdd();
+        return list;
     }
 
     @Override
-    public AssetVO listAllChange() {
-        return assetMapper.listAllChange();
+    public List<AssetVO> listAllChange() {
+        List<AssetVO> list = assetMapper.listAllChange();
+        return list;
     }
 
     @Override
     public void addNewOn(String code) {
-
+        AssetAddVO addNew = assetMapper.getAddNew(code);
+        AssetPO assetPO = new AssetPO();
+        BeanUtils.copyProperties(addNew,assetPO);
+        assetPO.setReviewStatus("已通过");
+        assetPO.setApprovalDate(new Date());
+        assetMapper.updateAddInfo(assetPO);
+        int num = assetMapper.saveAddNew(assetPO);
+        if (num != 1){
+            throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
+        }
     }
 
     @Override
     public void addNewOff(String code) {
-
+        int num = assetMapper.deleteAddNew(code);
+        if (num != 1){
+            throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
+        }
     }
 
     @Override
     public void changeOn(String code) {
         AssetUpdateDTO assetUpdateDTO = assetMapper.getSubmitAsset(code);
         assetUpdateDTO.setReviewStatus("已通过");
-        assetMapper.saveSubmitAsset(assetUpdateDTO);
+        assetUpdateDTO.setApprovalDate(new Date());
+        int num = assetMapper.saveSubmitAsset(assetUpdateDTO);
+        assetMapper.updateChangeInfo(code);
+        if (num != 1 ){
+            throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
+        }
     }
 
     @Override
     public void changeOff(String code) {
-        AssetUpdateDTO assetUpdateDTO = assetMapper.getSubmitAsset(code);
-
-        AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
-        BeanUtils.copyProperties(assetUpdateDTO, assetUpdatePO);
-        assetUpdatePO.setReviewStatus("未通过");
-        assetMapper.ReviewAssetUpdate(assetUpdatePO);
+        int num = assetMapper.updateChangeOff(code);
+        if (num != 1){
+            throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
+        }
     }
 
 

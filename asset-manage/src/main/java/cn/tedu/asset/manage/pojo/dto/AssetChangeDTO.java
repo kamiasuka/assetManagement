@@ -3,8 +3,9 @@ package cn.tedu.asset.manage.pojo.dto;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
-public class AssetUpdateDTO {
+public class AssetChangeDTO {
     private String code;
     private String name;
     private String type;
@@ -14,8 +15,5 @@ public class AssetUpdateDTO {
     private int life;
     private double amount;
     private String useStatus;
-    private String reviewStatus;
-    private Date submitDate;
-    private Date approvalDate;
     private String note;
 }

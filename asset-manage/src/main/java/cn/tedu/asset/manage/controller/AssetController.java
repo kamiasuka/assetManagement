@@ -3,11 +3,11 @@ package cn.tedu.asset.manage.controller;
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
+import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
-import cn.tedu.asset.manage.service.IAssetCategoryService;
 import cn.tedu.asset.manage.service.IAssetService;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -68,7 +68,7 @@ public class AssetController {
     /**
      * 显示统计信息
      */
-    @GetMapping("/getStatistics")
+    @GetMapping("getStatistics")
     @ApiOperation("显示统计信息")
     public JsonResult getStatistics(){
         List<AssetStatisticDTO> list = iAssetService.getStatistics();
@@ -78,9 +78,8 @@ public class AssetController {
     /**
      * 资产搜索
      */
-    @GetMapping("/search/{keyword}")
+    @GetMapping("search/{keyword}")
     @ApiOperation("1.资产搜索")
-    @ApiOperationSupport(order = 100)
     public JsonResult searchAsset(
             @PathVariable
             @Pattern(regexp = "^(?! )\\S{1,20}(?<! )$", message = "关键词必须是1~20个字符，且首尾不可以是空格！")String keyword){
@@ -89,9 +88,8 @@ public class AssetController {
         return JsonResult.ok();
     }
 
-    @PostMapping("/add-new")
+    @PostMapping("add-new")
     @ApiOperation("2.资产录入")
-    @ApiOperationSupport(order = 200)
     public JsonResult addNew(AssetAddDTO assetAddDTO){
         log.debug("开始处理【资产录入】的操作，参数：{}",assetAddDTO);
         int count = iAssetService.addNew(assetAddDTO);
@@ -101,19 +99,18 @@ public class AssetController {
     /**
      * 资产变更
      */
-    @PostMapping("/update")
+    @PostMapping("update")
     @ApiOperation("3.资产变更")
-    @ApiOperationSupport(order = 300)
-    public JsonResult assetUpdate(AssetUpdateDTO assetUpdateDTO){
-        log.debug("开始处理【资产变更】的请求，参数：{}",assetUpdateDTO);
-        iAssetService.assetUpdate(assetUpdateDTO);
+    public JsonResult assetUpdate(AssetChangeDTO assetChangeDTO){
+        log.debug("开始处理【资产变更】的请求，参数：{}",assetChangeDTO);
+        iAssetService.assetChange(assetChangeDTO);
         return JsonResult.ok();
     }
 
     /**
      * 资产删除
      */
-    @GetMapping("/delete/{code}")
+    @GetMapping("delete/{code}")
     @ApiOperation("4.资产删除")
     @ApiOperationSupport(order = 400)
     public JsonResult assetDelete(@PathVariable String code){
@@ -125,12 +122,20 @@ public class AssetController {
     /**
      * 资产批量删除
      */
-    @PostMapping("/delete")
+    @PostMapping("delete")
     @ApiOperation("5.资产批量删除")
     @ApiOperationSupport(order = 500)
     public JsonResult assetDeleteList(){
         log.debug("开始处理【资产批量删除】的请求");
 
+        return JsonResult.ok();
+    }
+
+    @GetMapping("Refresh")
+    @ApiOperation("6.数据刷新")
+    public JsonResult Refresh(){
+        log.debug("开始处理【数据刷新】的请求");
+        iAssetService.rebuildCache();
         return JsonResult.ok();
     }
 }

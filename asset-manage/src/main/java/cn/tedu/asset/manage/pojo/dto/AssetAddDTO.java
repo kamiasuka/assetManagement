@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class AssetAddDTO {
-    private String code;
     private String name;
     private String type;
     private String maxType;
