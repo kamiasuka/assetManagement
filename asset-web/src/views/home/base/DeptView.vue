@@ -139,22 +139,22 @@ const deptUpdateInfo = ref({unit:'',name:'',code:'',tel:''});
 
 const handleClickOnEdit = (row) => {
     dialogVisible.value = true;
-    console.log("dialogVisible已设置true");
+    // console.log("dialogVisible已设置true");
     getDeptByCode(row);
     // console.log("获取row:"+row);
 }
 
 const handleClickOnUpdate = () => {
     dialogVisible.value = false;
-    console.log("dialogVisible已设置false");
+    // console.log("dialogVisible已设置false");
     updateDept();
 }
 
 const getDeptByCode = (row)=>{
-    console.log("调用获取row的方法")
-    console.log("获取row:"+row);
+    // console.log("调用获取row的方法")
+    // console.log("获取row:"+row);
     let code = row.code;
-    console.log("获取code:"+code);
+    // console.log("获取code:"+code);
     axios.get("http://localhost:9002/v1/dept/getDeptByCode/"+code)
         .then((response)=>{
             if (response.data.code==2001){
@@ -183,7 +183,7 @@ const getAllDept = ()=>{
 
 const saveDept = ()=>{
     let data = qs.stringify(deptAddInfo.value)
-    console.log(data);
+    // console.log(data);
     axios.post("http://localhost:9002/v1/dept/add-new/",data)
         .then((response)=>{
             if (response.data.code==2001){
@@ -202,9 +202,9 @@ const goToTab = (tabName) => {
 };
 
 const deleteByCode = (row)=>{
-    console.log(row);
+    // console.log(row);
     let code = row.code;
-    console.log(code);
+    // console.log(code);
     axios.get("http://localhost:9002/v1/dept/delete/"+code)
         .then((response)=>{
             if (response.data.code==2001){
@@ -217,9 +217,9 @@ const deleteByCode = (row)=>{
 }
 
 const updateDept = ()=>{
-    console.log("正在执行更新部门操作");
+    // console.log("正在执行更新部门操作");
     let data = qs.stringify(deptUpdateInfo.value)
-    console.log(data);
+    // console.log(data);
     axios.post("http://localhost:9002/v1/dept/update/",data)
         .then((response)=>{
             if (response.data.code==2001){
