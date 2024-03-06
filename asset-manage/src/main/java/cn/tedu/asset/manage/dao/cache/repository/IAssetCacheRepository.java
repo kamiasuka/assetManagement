@@ -14,9 +14,12 @@ public interface IAssetCacheRepository {
     void save(String type);
 
     void saveByCategory(List<AssetPO> assetPOList);
+    void saveAll();
 
     List<AssetVO> listByAsset(String type);
 
     void updateCache(AssetUpdatePO assetUpdatePO);
+
+    List<AssetVO> listAll();
 
 }

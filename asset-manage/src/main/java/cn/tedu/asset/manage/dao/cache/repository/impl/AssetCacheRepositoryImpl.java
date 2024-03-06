@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static cn.tedu.asset.manage.Util.AssetCacheConsts.ALL_ASSET;
 import static cn.tedu.asset.manage.Util.AssetCacheConsts.KEY_ALL_KEYS;
 
 @Slf4j
@@ -49,12 +50,37 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     }
 
     @Override
+    public void saveAll() {
+        List<AssetVO> voList = assetMapper.exportVo();
+        ListOperations<String, String> opsForList = redisTemplate.opsForList();
+        String assetPOJson = JSON.toJSONString(voList);
+        opsForList.rightPush(ALL_ASSET, assetPOJson);
+
+    }
+
+    @Override
     public void deleteAll() {
         log.debug("开始处理【清理缓存】的业务");
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
         List keys = opsForList.range(KEY_ALL_KEYS,0,-1);
         redisTemplate.delete(keys);
 
+    }
+
+    @Override
+    public List<AssetVO> listAll() {
+        //?缓存里是根据资产分类存的数据，把所有资产数据装进一个list里返回？
+
+        log.debug("开始处理【查询资产数据】的缓存数据访问" );
+        ListOperations<String, String> opsForList = redisTemplate.opsForList();
+        List<String> assetJsonSet = opsForList.range(ALL_ASSET,0,-1);
+
+        List<AssetVO> voList = new ArrayList<>();
+        for (String assetPOJson : assetJsonSet) {
+            AssetVO assetVO = JSON.toJavaObject(JSON.parseObject(assetPOJson), AssetVO.class);
+            voList.add(assetVO);
+        }
+        return voList;
     }
 
     @Override
@@ -94,6 +120,8 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         String assetPOJson = JSON.toJSONString(assetUpdatePO);
         opsForSet.add(assetUpdatePO.getType(), assetPOJson);
     }
+
+
 
 
 }

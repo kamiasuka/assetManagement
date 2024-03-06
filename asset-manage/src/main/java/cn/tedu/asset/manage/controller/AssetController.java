@@ -35,11 +35,13 @@ public class AssetController {
     /**
      * 显示所有资产(审核通过)
      */
-    @GetMapping("listAllAsset")
+    @GetMapping("listAllAsset/{page}")
     @ApiOperation("显示所有资产")
-    public JsonResult listAllAsset(){
-        List<AssetVO> list = iExcelService.listAll();
-        return JsonResult.ok(list);
+    public JsonResult listAllAsset(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        System.out.println(pageNum);
+        PageData<AssetVO> pageData = iExcelService.pageListAll(pageNum);
+        return JsonResult.ok(pageData);
     }
 
     /**
