@@ -189,6 +189,8 @@
 
 
 
+
+
 </template>
 
 <script setup>
@@ -243,7 +245,6 @@
     const arr = ref([]);
     onMounted(()=>{
         if (!isMounted.value) {
-
             isMounted.value = true;
         }
         axios.get("http://localhost:9004"+"/v1/asset-attachment/admin").then((response)=>{

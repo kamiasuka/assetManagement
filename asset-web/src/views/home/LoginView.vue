@@ -30,7 +30,7 @@
     import router from "@/router";
 
     const user = ref({username:'',password:''});
-   /* const  ADMIN_URL = 'http://localhost:9001';*/
+    /* const  ADMIN_URL = 'http://localhost:9001';*/
     const login = ()=>{
         let data = qs.stringify(user.value);
         axios.post(ADMIN_URL+'/v1/users/login',data)
@@ -40,10 +40,18 @@
                     let user = response.data.data;
                     localStorage.setItem('user',JSON.stringify(user));
                     location.href='/';   //跳转到首页  整个页面重新加载
+                    const keys = Object.keys(localStorage);
+
+                    // 遍历每个键，并打印对应的值
+                    keys.forEach(key => {
+                        const value = localStorage.getItem(key);
+                        console.log(`${key}: ${value}`);
+                    });
                 }else{
                     ElMessage.error(response.data.msg);
                 }
             })
+
     }
 </script>
 

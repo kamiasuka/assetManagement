@@ -23,3 +23,6 @@ app.config.globalProperties.ADMIN_URL = ADMIN_URL;
 
 //在VUE实例中添加全局变量（供页面标签中使用）
 app.use(ElementPlus).use(store).use(router).mount('#app');
+
+
+
