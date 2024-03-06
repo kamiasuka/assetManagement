@@ -16,6 +16,7 @@ public class AssetPO implements Serializable {
     private double amount;
     private String useStatus;
     private String reviewStatus;
+    private Date submitDate;
     private Date approvalDate;
     private String note;
 }
