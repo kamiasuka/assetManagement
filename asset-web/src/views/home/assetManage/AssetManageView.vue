@@ -19,168 +19,65 @@
                 <el-button type="primary">刷新</el-button>
 
             </div>
-            <el-table stripe border style="width: 100%">
-                <el-table-column prop="" label="资产编号" width="180">{{tableArr.name}}</el-table-column>
-                <el-table-column prop="" label="资产名称" width="180"></el-table-column>
-                <el-table-column prop="" label="资产分类"></el-table-column>
-                <el-table-column prop="" label="所属单位"></el-table-column>
-                <el-table-column prop="" label="代管单位"></el-table-column>
-                <el-table-column prop="" label="产权单位"></el-table-column>
-                <el-table-column prop="" label="上报状态"></el-table-column>
-                <el-table-column prop="" label="财务入账状态"></el-table-column>
-                <el-table-column prop="" label="财务入账日期">
-                        <template>
-                            <el-form-item label="Activity time">
-                                <el-col :span="11">
-                                    <el-date-picker
-                                            v-model="form.date1"
-                                            type="date"
-                                            placeholder="Pick a date"
-                                            style="width: 100%"
-                                    />
-                                </el-col>
-                            </el-form-item>
-                        </template>
-                </el-table-column>
-                <el-table-column prop="" label="价值类型"></el-table-column>
-                <el-table-column prop="" label="价值(元)"></el-table-column>
-                <el-table-column prop="" label="使用状况"></el-table-column>
-                <el-table-column prop="" label="当前状态"></el-table-column>
-                <el-table-column prop="" label="操作">
+            <el-table :data="tableData" stripe border style="width: 100%">
+                <el-table-column prop="code" label="资产编号" width="150"></el-table-column>
+                <el-table-column prop="name" label="资产名称" width="150"></el-table-column>
+                <el-table-column prop="type" label="资产分类" width="150"></el-table-column>
+                <el-table-column prop="maxType" label="所属最大分类" width="120"></el-table-column>
+                <el-table-column prop="dept" label="所属部门" width="100"></el-table-column>
+                <el-table-column prop="unit" label="所属单位" width="100"></el-table-column>
+                <el-table-column prop="life" label="使用年限" width="100"></el-table-column>
+                <el-table-column prop="amount" label="价值(元)" width="100"></el-table-column>
+                <el-table-column prop="useStatus" label="使用状况" width="100"></el-table-column>
+                <el-table-column prop="reviewStatus" label="审核状态" width="100"></el-table-column>
+                <el-table-column prop="approvalDate" label="审核通过日期" width="150"></el-table-column>
+                <el-table-column prop="" label="操作" width="200">
                     <span>浏览</span>
                     <span>添加照片</span>
                     <span>修改</span>
                     <span>删除</span>
                 </el-table-column>
+                <!-- 表头样式 -->
+<!--                <template slot="header">-->
+<!--                    <thead style="height: 60px;">-->
+<!--                    <tr>-->
+<!--                        <th>资产编号</th>-->
+<!--                        <th>资产名称</th>-->
+<!--                        &lt;!&ndash; 其他表头内容 &ndash;&gt;-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                </template>-->
             </el-table>
         </el-tab-pane>
+
         <el-tab-pane label="资产添加">
             <el-form label-width="100px" style="margin: 50px 150px">
-                <el-form-item label="所属单位:">
+
+                <el-form-item label="资产名称:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="资产分类:">
-                    <el-input style="width: 300px;">
-                        <template #append>
-                            <el-button :icon="Search" />
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="本年财政拨款:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="财政拨款结转:">
+                <el-form-item label="所属最大分类:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="其他资金:">
+                <el-form-item label="所属部门:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="预计使用年限:">
+                <el-form-item label="所属单位:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="使用人:">
+                <el-form-item label="使用年限:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="使用管理部门:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="预算项目编号:">
+                <el-form-item label="价值:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="合计凭证号:">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="产权形式:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="使用权类型:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="权属证明:">
+                <el-form-item label="在用状态:">
                     <el-input style="width: 300px;"></el-input>
                 </el-form-item>
 
-                <el-form-item label="坐落位置:">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="权属性质:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="取得方式:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="选择资产附件">
-                    <el-input style="width: 300px;">
-                        <template #append>
-                            <el-button :icon="Search" @click="dialogFormVisible = true"/>
-                        </template>
-                    </el-input>
-                    <el-dialog v-model="dialogFormVisible" title="选择资产附件">
-                        <el-form :model="form">
-                            <el-form-item label="资产附件:" :label-width="formLabelWidth">
-                                <el-input v-model="form.name" autocomplete="off">
-                                    <template #append>
-                                        <el-button :icon="Search" />
-                                    </template>
-                                </el-input>
-                            </el-form-item>
-                        </el-form>
-                        <template #footer>
-                            <span class="dialog-footer">
-                                <el-button @click="dialogFormVisible = false">提交</el-button>
-                            </span>
-                        </template>
-                    </el-dialog>
-                </el-form-item>
-                <el-form-item label="使用状况:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="Zone one" value="shanghai" />
-                        <el-option label="Zone two" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="在建工程转入:">
-                    <el-select v-model="form.region" placeholder="please select your zone">
-                        <el-option label="是" value="shanghai" />
-                        <el-option label="否" value="beijing" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="Activity time">
-                    <el-col :span="11">
-                        <el-date-picker
-                                v-model="form.date1"
-                                type="date"
-                                placeholder="Pick a date"
-                                style="width: 100%"
-                        />
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="维修费用合计:">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="地类(用途):">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="使用权面积:">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="权属年限:">
-                    <el-input style="width: 300px;"></el-input>
-                </el-form-item>
                 <el-form-item>
                     <el-button style="" type="primary">保存</el-button>
                     <el-button style="" type="" >返回</el-button>
@@ -191,11 +88,13 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    import { reactive} from 'vue'
-    import {Search} from '@element-plus/icons-vue';
-    let dialogTableVisible = ref(false);
-    let dialogFormVisible = ref(false);
+import {onMounted, reactive, ref} from 'vue'
+import axios from "axios";
+import qs from "qs";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {Search} from '@element-plus/icons-vue';
+    // let dialogTableVisible = ref(false);
+    // let dialogFormVisible = ref(false);
     const form = reactive({
         name: '',
         region: '',
@@ -206,6 +105,28 @@
         resource: '',
         desc: '',
     })
+
+    const tableData = ref([{code:'',name:'',type:'',maxType:'',dept:'',unit:'',life:'',amount:'',useStatus:'',reviewStatus:'',approvalDate:''}]);
+
+
+    const getAllAssets = ()=>{
+        axios.get("http://localhost:9002/v1/assetReview/listAllAdd")
+            .then((response)=>{
+                if (response.data.code==2001){
+                    ElMessage.success("成功获取所有录入资产!");
+                    tableData.value = response.data.data;
+                    console.log("tableData:"+tableData.value);
+                }else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    }
+
+onMounted(()=>{
+   getAllAssets();
+});
+
+
 </script>
 
 <style scoped>
