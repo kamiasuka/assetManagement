@@ -14,4 +14,6 @@ public interface DeptMapper {
     int update(Dept dept);
 
     int delete(String code);
+
+    DeptVO getDeptByCode(String code);
 }
