@@ -34,7 +34,6 @@ public class ReviewController {
     public JsonResult listAllAdd(@PathVariable Integer page){
         Integer pageNum = page == null ? 1 : page;
         PageData<AssetAddVO> pageData = iReviewService.listAllAdd(pageNum);
-        System.out.println("add"+pageData);
         return JsonResult.ok(pageData);
     }
 
@@ -47,7 +46,6 @@ public class ReviewController {
     public JsonResult listAllChange(@PathVariable Integer page){
         Integer pageNum = page == null ? 1 : page;
         PageData<AssetAddVO> pageData = iReviewService.listAllChange(pageNum);
-        System.out.println("change"+pageData);
         return JsonResult.ok(pageData);
     }
 

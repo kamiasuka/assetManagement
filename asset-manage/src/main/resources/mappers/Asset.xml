@@ -51,6 +51,7 @@
         insert into asset_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,approval_date)
         values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{approvalDate})
     </insert>
+
     <update id="updateAddInfo">
         update asset_add_info
         set name = #{name},type = #{type},max_type = #{maxType},dept=#{dept},unit=#{unit},life=#{life},amount=#{amount},
@@ -58,6 +59,11 @@
         where code = #{code}
     </update>
 
+    <update id="updateAddOff">
+        update asset_add_info
+        set review_status='未通过'
+        where code = #{code}
+    </update>
 
     <delete id="deleteAddNew">
         delete from asset_info
