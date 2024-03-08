@@ -232,7 +232,7 @@ const updateAsset = ()=>{
         .then((response)=>{
             if (response.data.code==2001){
                 ElMessage.success("更新成功");
-                // location.reload();
+                location.reload();
 
             }
         })
