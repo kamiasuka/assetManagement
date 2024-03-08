@@ -2,10 +2,7 @@ package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
-import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
+import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
@@ -79,7 +76,7 @@ public class AssetController {
     /**
      * 资产搜索
      */
-    @GetMapping("search/{keyword}")
+/*    @GetMapping("search/{keyword}")
     @ApiOperation("1.资产搜索")
     public JsonResult searchAsset(
             @PathVariable
@@ -87,7 +84,15 @@ public class AssetController {
         log.debug("开始处理【资产搜索】的请求,关键词：{}",keyword);
         iAssetService.searchAsset(keyword);
         return JsonResult.ok();
+    }*/
+    @GetMapping("search/{code}")
+    @ApiOperation("1.资产搜索")
+    public JsonResult search(@RequestBody AssetSearchDTO searchDTO){
+        log.debug("开始处理【资产搜索】的请求,关键词：{}",searchDTO);
+        iAssetService.searchAsset(searchDTO);
+        return JsonResult.ok();
     }
+
 
     @PostMapping("add-new")
     @ApiOperation("2.资产录入")

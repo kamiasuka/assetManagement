@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements IReviewService {
-    @Value("12")
+    @Value("16")
     private Integer defaultQueryPageSize;
 
     @Autowired(required = false)
@@ -53,6 +53,7 @@ public class ReviewServiceImpl implements IReviewService {
         assetPO.setReviewStatus("已通过");
         assetPO.setApprovalDate(new Date());
         assetMapper.updateAddInfo(assetPO);
+        assetMapper.deleteAddNew(code);//幂等
         int num = assetMapper.saveAddNew(assetPO);
         if (num != 1){
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
@@ -61,7 +62,7 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public void addNewOff(String code) {
-        int num = assetMapper.deleteAddNew(code);
+        int num = assetMapper.updateAddOff(code);
         if (num != 1){
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
         }

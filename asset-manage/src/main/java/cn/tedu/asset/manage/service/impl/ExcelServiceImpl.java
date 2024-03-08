@@ -27,7 +27,7 @@ import java.util.List;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
-    @Value("12")
+    @Value("16")
     private Integer defaultQueryPageSize;
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;

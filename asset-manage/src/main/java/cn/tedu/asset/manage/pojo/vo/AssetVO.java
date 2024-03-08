@@ -16,6 +16,6 @@ public class AssetVO implements Serializable {
     private double amount;
     private String useStatus;
     private String reviewStatus;
-    private Date approvalDate;
+    private String approvalDate;
     private String note;
 }

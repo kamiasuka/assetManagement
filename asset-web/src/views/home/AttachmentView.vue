@@ -34,7 +34,6 @@
                                     v-model="timedate"
                                     placeholder="全部"
                                     :size="size"
-
                             />
                         </div>
                 </el-col>
@@ -89,22 +88,6 @@
                         </a>
 <!--                        <el-button style=";margin-left: 20px" type="primary"  @click="openEditDialog(scope.row)">编辑</el-button>-->
 <!--                        <el-button style=";margin-left: 20px" type="primary"  @click="dialogTableVisible = true">编辑</el-button>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger"  @click="del(scope.$index,scope.row)">
                         删除附件

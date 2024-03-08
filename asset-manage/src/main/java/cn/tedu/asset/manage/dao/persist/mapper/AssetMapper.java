@@ -56,4 +56,6 @@ public interface AssetMapper {
     void updateChangeInfo(String code);
 
     int updateChangeOff(String code);
+
+    int updateAddOff(String code);
 }
