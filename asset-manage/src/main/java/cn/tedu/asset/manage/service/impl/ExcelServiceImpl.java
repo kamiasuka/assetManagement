@@ -11,12 +11,16 @@ import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.fastjson2.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +37,9 @@ public class ExcelServiceImpl implements IExcelService {
     private IAssetCacheRepository iAssetCacheRepository;
     @Autowired(required = false)
     private AssetMapper assetMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @Override
     public List<AssetVO> listAll() {
@@ -55,6 +62,7 @@ public class ExcelServiceImpl implements IExcelService {
         return PageInfoToPageDataConverter.convert(pageInfo);
 
     }
+
 
     @Override
     public List<AssetVO> listAllNoReview() {
@@ -101,5 +109,33 @@ public class ExcelServiceImpl implements IExcelService {
         } catch (IOException e) {
             throw new ServiceException(StatusCode.OPERATION_FAILED, "资产报表下载失败");
         }
+    }
+
+
+    @Override
+    public PageData<AssetVO> pageTest(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        Page<AssetVO> page = assetMapper.pageTest();
+        System.out.println(page);
+
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
+        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
+
+        System.out.println("pageDate:"+pageData);
+        String key = "key_All_"+pageNum;
+        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+        String assetPOJson = JSON.toJSONString(pageData);
+
+        opsForValue.set(key, assetPOJson);
+        System.out.println(assetPOJson);
+
+
+        String json = opsForValue.get(key);
+        System.out.println(json);
+
+        PageData data = JSON.toJavaObject(JSON.parseObject(json), PageData.class);
+        System.out.println("Date:"+data);
+
+        return data;
     }
 }

@@ -36,7 +36,8 @@ public class AssetController {
     @ApiOperation("显示所有资产")
     public JsonResult listAllAsset(@PathVariable Integer page){
         Integer pageNum = page == null ? 1 : page;
-        PageData<AssetVO> pageData = iExcelService.pageListAll(pageNum);
+//        PageData<AssetVO> pageData = iExcelService.pageListAll(pageNum);
+        PageData<AssetVO> pageData = iExcelService.pageTest(pageNum);
         return JsonResult.ok(pageData);
     }
 

@@ -6,7 +6,7 @@
                 <el-input style="width: 150px"></el-input>
                 资产名称:
                 <el-input style="width: 150px"></el-input>
-                通用类别：
+                审核状态：
                 <el-select v-model="value" class="m-2" placeholder="全部" size="large" style="width: 150px">
                     <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label"
                                :value="item.value"/>
@@ -69,10 +69,8 @@
                     <el-input style="width: 150px"></el-input>
                     资产名称:
                     <el-input style="width: 150px"></el-input>
-                    通用类别：
                     <el-select v-model="value" class="m-2" placeholder="全部" size="large" style="width: 150px">
-                        <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label"
-                                   :value="item.value"/>
+                        <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value"/>
                     </el-select>
                     <el-button type="primary">查询</el-button>
                     <el-button type="primary">刷新</el-button>

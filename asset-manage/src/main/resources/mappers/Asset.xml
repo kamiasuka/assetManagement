@@ -7,6 +7,9 @@
     <select id="listAllCategory" resultType="java.lang.String">
         select distinct type from asset_info;
     </select>
+    <select id="listAllType" resultType="cn.tedu.asset.manage.controller.TypeListVO">
+        select distinct type from asset_info;
+    </select>
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where type = #{type} and review_status = '已通过'
@@ -120,5 +123,10 @@
         set review_status='未通过',approval_date=NOW()
         where code = #{code}
     </update>
+
+    <select id="pageTest" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
+        select *
+        from asset_info group by id
+    </select>
 
 </mapper>
