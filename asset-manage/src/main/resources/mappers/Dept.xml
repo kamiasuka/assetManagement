@@ -21,6 +21,7 @@
         <set>
             <if test="tel != null">tel=#{tel},</if>
             <if test="name != null">name=#{name},</if>
+            <if test="unit != null">unit=#{unit},</if>
         </set>
         WHERE code=#{code}
     </update>

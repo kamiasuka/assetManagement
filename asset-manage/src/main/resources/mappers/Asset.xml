@@ -94,6 +94,11 @@
         where code = #{code}
     </delete>
 
+    <delete id="addDelete">
+        delete from asset_add_info
+        where code = #{code}
+    </delete>
+
     <insert id="ReviewAssetUpdate">
         insert into asset_change_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date)
         values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{submitDate},#{approvalDate})

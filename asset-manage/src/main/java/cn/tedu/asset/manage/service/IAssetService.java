@@ -21,4 +21,12 @@ public interface IAssetService {
 
     void assetDelete(String code);
 
+    /**
+     * 更新asset_add_info
+     * @param addUpdateDTO
+     * @return
+     */
+    void addUpdate(AddUpdateDTO addUpdateDTO);
+
+    void addDelete(String code);
 }
