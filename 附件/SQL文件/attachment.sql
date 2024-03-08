@@ -9,10 +9,3 @@ CREATE TABLE AttachmentList (
     url    varchar(255),
     updatedTime datetime
 );
-
-CREATE TABLE Attachment (
-    id INT PRIMARY KEY,
-    assetId INT,
-    attachmentUrl VARCHAR(255),
-    FOREIGN KEY (assetId) REFERENCES AttachmentList(id)
-);

@@ -1,9 +1,6 @@
 package cn.tedu.asset.manage.service;
 
-import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
+import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 
@@ -24,4 +21,12 @@ public interface IAssetService {
 
     void assetDelete(String code);
 
+    /**
+     * 更新asset_add_info
+     * @param addUpdateDTO
+     * @return
+     */
+    void addUpdate(AddUpdateDTO addUpdateDTO);
+
+    void addDelete(String code);
 }

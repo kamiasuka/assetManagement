@@ -2,10 +2,7 @@ package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
-import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
+import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
@@ -98,6 +95,19 @@ public class AssetController {
     }
 
     /**
+     * 更新asset_add_info
+     * @param addUpdateDTO
+     * @return
+     */
+    @PostMapping("add-update")
+    @ApiOperation("2.资产录入时修改")
+    public JsonResult AddUpdate(AddUpdateDTO addUpdateDTO){
+        log.debug("开始处理【资产录入时修改】的操作，参数：{}",addUpdateDTO);
+        iAssetService.addUpdate(addUpdateDTO);
+        return JsonResult.ok();
+    }
+
+    /**
      * 资产变更
      */
     @PostMapping("update")
@@ -105,6 +115,14 @@ public class AssetController {
     public JsonResult assetUpdate(AssetChangeDTO assetChangeDTO){
         log.debug("开始处理【资产变更】的请求，参数：{}",assetChangeDTO);
         iAssetService.assetChange(assetChangeDTO);
+        return JsonResult.ok();
+    }
+
+    @GetMapping("add-delete/{code}")
+    @ApiOperation("2.资产录入时删除")
+    public JsonResult AddDelete(@PathVariable String code){
+        log.debug("开始处理【资产录入时删除】的请求");
+        iAssetService.addDelete(code);
         return JsonResult.ok();
     }
 
