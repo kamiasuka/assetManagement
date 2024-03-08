@@ -76,7 +76,7 @@ public class AssetController {
     /**
      * 资产搜索
      */
-    @GetMapping("search/{keyword}")
+/*    @GetMapping("search/{keyword}")
     @ApiOperation("1.资产搜索")
     public JsonResult searchAsset(
             @PathVariable
@@ -84,7 +84,15 @@ public class AssetController {
         log.debug("开始处理【资产搜索】的请求,关键词：{}",keyword);
         iAssetService.searchAsset(keyword);
         return JsonResult.ok();
+    }*/
+    @GetMapping("search/{code}")
+    @ApiOperation("1.资产搜索")
+    public JsonResult search(@RequestBody AssetSearchDTO searchDTO){
+        log.debug("开始处理【资产搜索】的请求,关键词：{}",searchDTO);
+        iAssetService.searchAsset(searchDTO);
+        return JsonResult.ok();
     }
+
 
     @PostMapping("add-new")
     @ApiOperation("2.资产录入")

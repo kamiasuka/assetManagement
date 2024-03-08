@@ -27,7 +27,7 @@
             <el-main>
                 <div>
                     <el-table :data="tableData" style="width: 100%">
-                        <el-table-column prop="code" label="资产编码" width="100"/>
+                        <el-table-column prop="code" label="资产编码" width="150"/>
                         <el-table-column prop="name" label="资产名称" width="100"/>
                         <el-table-column prop="type" label="资产分类" width="100"/>
                         <el-table-column prop="dept" label="所属部门" width="100"/>
@@ -75,7 +75,7 @@ const loadContents = () => {
 }
 const Total = ref();
 const tableData = ref([]);
-const pageSize = 5; // 每页显示的条目数
+const pageSize = 16; // 每页显示的条目数
 const pageNum = ref(1); // 当前页码
 // 计算当前页的数据
 const handleCurrentChange = (val) => {

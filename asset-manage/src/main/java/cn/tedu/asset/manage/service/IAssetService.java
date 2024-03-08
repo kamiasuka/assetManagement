@@ -14,7 +14,7 @@ public interface IAssetService {
     void rebuildCache();
 
     List<AssetStatisticDTO> getStatistics();
-    AssetVO searchAsset(String code);
+    AssetVO searchAsset(AssetSearchDTO assetSearchDTO);
 
     void assetChange(AssetChangeDTO assetChangeDTO);
     int addNew(AssetAddDTO assetAddDTO);

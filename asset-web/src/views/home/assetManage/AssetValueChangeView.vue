@@ -62,7 +62,7 @@ const loadContents = () => {
 }
 const Total = ref();
 const tableData = ref([]);
-const pageSize = 12; // 每页显示的条目数
+const pageSize = 16; // 每页显示的条目数
 const pageNum = ref(1); // 当前页码
 // 计算当前页的数据
 const handleCurrentChange = (val) => {

@@ -6,9 +6,9 @@ import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import com.github.pagehelper.Page;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 public interface AssetMapper {
     List<String> listAllCategory();
 
@@ -60,4 +60,6 @@ public interface AssetMapper {
     int addUpdate(AssetPO assetPO);
 
     void addDelete(String code);
+
+    int updateAddOff(String code);
 }

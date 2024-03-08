@@ -9,6 +9,7 @@ import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.AddUpdateDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
+import cn.tedu.asset.manage.pojo.dto.AssetSearchDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
@@ -31,7 +32,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class AssetServiceImpl implements IAssetService {
-    @Value("8")
+    @Value("16")
     private Integer defaultQueryPageSize;
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;
@@ -108,8 +109,8 @@ public class AssetServiceImpl implements IAssetService {
     }
 
     @Override
-    public AssetVO searchAsset(String keyword) {
-        log.debug("开始处理【资产搜索】的请求,关键词：{}", keyword);
+    public AssetVO searchAsset(AssetSearchDTO assetSearchDTO) {
+        log.debug("开始处理【资产搜索】的请求,关键词：{}", assetSearchDTO);
 
         return null;
     }
