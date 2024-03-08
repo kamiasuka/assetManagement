@@ -24,7 +24,7 @@
                 <el-table-column prop="tel" label="部门电话" width="200"></el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                     <template #default="scope">
-                        <div v-if="user.identity==='管理员'&& tableData.length > 1">
+                        <div v-if="user.identity==='管理员'&& tableData.length >= 1">
                             <el-button type="success" size="small" @click="handleClickOnEdit(scope.row)">编辑</el-button>
                             <el-button type="danger" size="small" @click="deleteByCode(scope.row)">删除</el-button>
                         </div>
@@ -59,7 +59,7 @@
 
 <!--    部门修改按钮的弹窗-->
     <el-dialog
-        v-model="dialogVisible"
+        v-model="deptUpdateDialogVisible"
         title="部门修改"
         width="500"
     >
@@ -81,7 +81,7 @@
         </el-form>
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button @click="deptUpdateDialogVisible = false">取消</el-button>
                 <el-button type="primary" @click="handleClickOnUpdate()">
                     确认
                 </el-button>
@@ -121,7 +121,7 @@ const deptAddInfo = ref({unit:'',name:'',code:'',tel:''});
 const deptTab = ref('tab1');
 // const tableData = ref([{name:"cc",code:"a",unit:"ab",tel:"111"}]);
 
-const dialogVisible = ref(false)
+const deptUpdateDialogVisible = ref(false)
 
 const deptUpdateInfo = ref({unit:'',name:'',code:'',tel:''});
 
@@ -138,15 +138,15 @@ const deptUpdateInfo = ref({unit:'',name:'',code:'',tel:''});
 // }
 
 const handleClickOnEdit = (row) => {
-    dialogVisible.value = true;
-    // console.log("dialogVisible已设置true");
+    deptUpdateDialogVisible.value = true;
+    // console.log("deptUpdateDialogVisible已设置true");
     getDeptByCode(row);
     // console.log("获取row:"+row);
 }
 
 const handleClickOnUpdate = () => {
-    dialogVisible.value = false;
-    // console.log("dialogVisible已设置false");
+    deptUpdateDialogVisible.value = false;
+    // console.log("deptUpdateDialogVisible已设置false");
     updateDept();
 }
 
@@ -201,19 +201,22 @@ const goToTab = (tabName) => {
     deptTab.value = tabName;
 };
 
+//删除按钮操作
 const deleteByCode = (row)=>{
-    // console.log(row);
-    let code = row.code;
-    // console.log(code);
-    axios.get("http://localhost:9002/v1/dept/delete/"+code)
-        .then((response)=>{
-            if (response.data.code==2001){
-                ElMessage.success("删除成功");
-                location.reload();
-            }else {
-                ElMessage.error(response.data.msg);
-            }
-        })
+    if (confirm("是否要删除该数据？")){
+        // console.log(row);
+        let code = row.code;
+        // console.log(code);
+        axios.get("http://localhost:9002/v1/dept/delete/"+code)
+            .then((response)=>{
+                if (response.data.code==2001){
+                    ElMessage.success("删除成功");
+                    location.reload();
+                }else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    }
 }
 
 const updateDept = ()=>{

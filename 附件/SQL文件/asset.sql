@@ -226,6 +226,8 @@ VALUES ('1', '土地测试a', '商业土地', '土地', '', '宝相公司', 50, 
        ('15', '绿萝盆栽', '盆栽', '动植物', '', '宝相公司', 20, 70000.00, DEFAULT, DEFAULT, DEFAULT),
        ('16', '花坛', '绿化工程', '在建工程', '', '宝相公司', 20, 700000.00, DEFAULT, DEFAULT, DEFAULT);
 
+
+
 INSERT INTO asset.asset_info(code, name, type, max_type, dept, unit, life, amount, use_status, review_status,
                              approval_date)
 VALUES ('17', '电脑a', '电脑', '通用设备', '开发部门', '宝相公司', 10, 5000.00, DEFAULT,  '已通过', DEFAULT),

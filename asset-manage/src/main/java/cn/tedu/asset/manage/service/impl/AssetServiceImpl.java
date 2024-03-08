@@ -6,6 +6,7 @@ import cn.tedu.asset.manage.Util.AssetCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
+import cn.tedu.asset.manage.pojo.dto.AddUpdateDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
 import cn.tedu.asset.manage.pojo.dto.AssetSearchDTO;
@@ -161,4 +162,20 @@ public class AssetServiceImpl implements IAssetService {
         }
     }
 
+    @Override
+    public void addUpdate(AddUpdateDTO addUpdateDTO) {
+        log.debug("开始处理【资产录入时修改】的业务");
+        AssetPO assetPO = new AssetPO();
+        BeanUtils.copyProperties(addUpdateDTO, assetPO);
+        assetPO.setUseStatus("在用");
+        assetPO.setReviewStatus("审核中");
+        log.debug("assetPO类信息封装完毕:{}"+assetPO);
+        assetMapper.updateAddInfo(assetPO);
+    }
+
+    @Override
+    public void addDelete(String code) {
+        log.debug("开始处理【资产录入时删除】的业务，参数：{}", code);
+        assetMapper.addDelete(code);
+    }
 }

@@ -57,5 +57,9 @@ public interface AssetMapper {
 
     int updateChangeOff(String code);
 
+    int addUpdate(AssetPO assetPO);
+
+    void addDelete(String code);
+
     int updateAddOff(String code);
 }
