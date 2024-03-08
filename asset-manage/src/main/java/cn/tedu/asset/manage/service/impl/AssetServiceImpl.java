@@ -30,7 +30,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class AssetServiceImpl implements IAssetService {
-    @Value("12")
+    @Value("8")
     private Integer defaultQueryPageSize;
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;
@@ -41,73 +41,15 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public PageData<AssetVO> getAsset(Integer pageNum) {
-        PageHelper.startPage(pageNum, defaultQueryPageSize);
-        List<AssetVO> voList = iAssetCacheRepository.listAll();
-        Page<AssetVO> pageList = new Page<>();
-
-
-        int start = (pageNum - 1) * defaultQueryPageSize;
-        int end = pageNum * defaultQueryPageSize;
-
-        pageList.setPageNum(pageNum);
-        pageList.setPageSize(5);
-        pageList.setStartRow(start);
-        pageList.setEndRow(end);
-        pageList.setTotal(voList.size());
-        pageList.setReasonable(false);
-
-        if (end > voList.size()) {
-            List<AssetVO> selectlist = voList.subList(start, voList.size());
-            for (AssetVO assetVO : selectlist) {
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        } else {
-            List<AssetVO> selectlist = voList.subList(start, end);
-            for (AssetVO assetVO : selectlist) {
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        }    }
+        return null;
+    }
 
     @Override
     public PageData<AssetVO> getAssetByType(String type, Integer pageNum) {
         PageHelper.startPage(pageNum, defaultQueryPageSize);
-        List<AssetVO> voList = iAssetCacheRepository.listByAsset(type);
-        Page<AssetVO> pageList = new Page<>();
-
-
-        int start = (pageNum - 1) * defaultQueryPageSize;
-        int end = pageNum * defaultQueryPageSize;
-
-        pageList.setPageNum(pageNum);
-        pageList.setPageSize(5);
-        pageList.setStartRow(start);
-        pageList.setEndRow(end);
-        pageList.setTotal(voList.size());
-        pageList.setReasonable(false);
-
-        if (end > voList.size()) {
-            List<AssetVO> selectlist = voList.subList(start, voList.size());
-            for (AssetVO assetVO : selectlist) {
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        } else {
-            List<AssetVO> selectlist = voList.subList(start, end);
-            for (AssetVO assetVO : selectlist) {
-                pageList.add(assetVO);
-            }
-            PageInfo<AssetVO> pageInfo = new PageInfo<>(pageList);
-            return PageInfoToPageDataConverter.convert(pageInfo);
-
-        }
+        List<AssetVO> voList = assetMapper.listAssetByCategory(type);
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
+        return PageInfoToPageDataConverter.convert(pageInfo);
     }
 
     @Override
@@ -116,13 +58,15 @@ public class AssetServiceImpl implements IAssetService {
         iAssetCacheRepository.deleteAll();
 
         List<String> categoryList = assetMapper.listAllCategory();
-        List<AssetPO> assetPOList = null;
+        List<AssetVO> assetVOList = null;
 
         for (String type : categoryList) {
-            iAssetCacheRepository.save(type);
-            assetPOList = assetMapper.listAssetByCategory(type);
-            iAssetCacheRepository.saveByCategory(assetPOList);
+            iAssetCacheRepository.saveCategory(type);
+            assetVOList = assetMapper.listAssetByCategory(type);
+            iAssetCacheRepository.saveAsset(type,assetVOList);
+
         }
+
         iAssetCacheRepository.saveAll();
     }
 

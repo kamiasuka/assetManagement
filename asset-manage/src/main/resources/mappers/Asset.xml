@@ -7,7 +7,7 @@
     <select id="listAllCategory" resultType="java.lang.String">
         select distinct type from asset_info;
     </select>
-    <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
+    <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where type = #{type} and review_status = '已通过'
     </select>
@@ -66,13 +66,13 @@
 
 
     <!--资产变更-->
-    <select id="listAllAdd" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
+    <select id="listAllAdd" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
+        select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
         from asset_add_info
     </select>
 
-    <select id="listAllChange" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
+    <select id="listAllChange" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
+        select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
         from asset_change_info
     </select>
 
