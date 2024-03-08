@@ -114,18 +114,13 @@
                         <el-table-column prop="approvalDate" label="审核通过日期" width="120"/>
                         <el-table-column prop="note" label="备注" width="120"/>
                         <el-table-column fixed="right" label="操作" width="140">
-
-
                                 <template #default>
                                     <div v-if="user.identity==='管理员'">
                                     <el-button type="success" size="small">编辑</el-button>
                                     <el-button type="danger" size="small">删除</el-button>
                                     </div>
                                 </template>
-
-
                         </el-table-column>
-
 
                     </el-table>
 

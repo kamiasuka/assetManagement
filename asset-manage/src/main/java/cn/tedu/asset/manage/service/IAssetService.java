@@ -10,6 +10,7 @@ import cn.tedu.asset.manage.pojo.vo.PageData;
 import java.util.List;
 
 public interface IAssetService {
+    PageData<AssetVO> getAsset(Integer pageNum);
 
     PageData<AssetVO> getAssetByType(String type,Integer pageNum);
 
@@ -22,4 +23,5 @@ public interface IAssetService {
     int addNew(AssetAddDTO assetAddDTO);
 
     void assetDelete(String code);
+
 }

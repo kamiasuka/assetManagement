@@ -4,7 +4,7 @@ public interface AssetCacheConsts {
     /**
      * 缓存数据的KEY的前缀：资产数据
      */
-    String KEY_PREFIX_ITEM = "asset:item:";
+    String ALL_ASSET = "asset:key";
 
     /**
      * 缓存中所有列表数据的Key集合的Key

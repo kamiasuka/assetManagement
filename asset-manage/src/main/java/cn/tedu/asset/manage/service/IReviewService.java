@@ -1,13 +1,15 @@
 package cn.tedu.asset.manage.service;
 
+import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 
 import java.util.List;
 
 public interface IReviewService {
-    List<AssetVO> listAllAdd();
+    PageData<AssetAddVO> listAllAdd(Integer pageNum);
 
-    List<AssetVO>  listAllChange();
+    PageData<AssetAddVO>  listAllChange(Integer pageNum);
 
     void addNewOn(String code);
 

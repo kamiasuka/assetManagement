@@ -2,7 +2,9 @@ package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
+import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,22 +29,26 @@ public class ReviewController {
      * 展示录入的资产
      * @return
      */
-    @GetMapping("listAllAdd")
+    @GetMapping("listAllAdd/{page}")
     @ApiOperation("展示所有录入资产")
-    public JsonResult listAllAdd(){
-        List<AssetVO> voList = iReviewService.listAllAdd();
-        return JsonResult.ok(voList);
+    public JsonResult listAllAdd(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetAddVO> pageData = iReviewService.listAllAdd(pageNum);
+        System.out.println("add"+pageData);
+        return JsonResult.ok(pageData);
     }
 
     /**
      * 展示变更的资产
      * @return
      */
-    @GetMapping("listAllChange")
+    @GetMapping("listAllChange/{page}")
     @ApiOperation("展示所有变更资产")
-    public JsonResult listAllChange(){
-        List<AssetVO> voList = iReviewService.listAllChange();
-        return JsonResult.ok(voList);
+    public JsonResult listAllChange(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetAddVO> pageData = iReviewService.listAllChange(pageNum);
+        System.out.println("change"+pageData);
+        return JsonResult.ok(pageData);
     }
 
     /**
