@@ -59,13 +59,13 @@
                                     <el-menu-item index="4-2">资产查询</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
-                                    <el-menu-item index="4-3">资产上报</el-menu-item>
+                                    <el-menu-item index="4-3">资产审核</el-menu-item>
                                 </el-menu-item-group>
-                                <el-menu-item-group class="b1" @click="router.push('/asset-report')">
-                                    <el-menu-item index="4-4">资产报损</el-menu-item>
-                                </el-menu-item-group>
+<!--                                <el-menu-item-group class="b1" @click="router.push('/asset-report')">-->
+<!--                                    <el-menu-item index="4-4">资产报损</el-menu-item>-->
+<!--                                </el-menu-item-group>-->
                                 <el-menu-item-group class="b1" @click="router.push('/asset-value-change')">
-                                    <el-menu-item index="4-5">资产修改</el-menu-item>
+                                    <el-menu-item index="4-5">资产变更</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-sub-menu index="5">

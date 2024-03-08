@@ -1,81 +1,92 @@
 <template>
     <el-tabs type="border-card">
-        <el-tab-pane label="价值变更列表">
-            <div class="mt-4">
-                变更日期：
-                <el-input>
-                    <el-form-item label="Activity time">
-                        <el-col :span="11">
-                            <el-date-picker
-                                    v-model="form.date1"
-                                    type="date"
-                                    placeholder="Pick a date"
-                                    style="width: 100%"
-                            />
-                        </el-col>
-                    </el-form-item></el-input>
-                是否合同：
-                <el-select v-model="value" class="m-2" placeholder="全部" size="large" style="width: 240px">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
-                </el-select>
+        <el-tab-pane label="资产变更列表">
+            <el-container>
+                <el-main>
+                    <div>
+                        <el-table :data="tableData" style="width: 100%">
+                            <el-table-column prop="code" label="资产编码" width="150"/>
+                            <el-table-column prop="name" label="资产名称" width="100"/>
+                            <el-table-column prop="type" label="资产分类" width="130"/>
+                            <el-table-column prop="dept" label="所属部门" width="100"/>
+                            <el-table-column prop="unit" label="所属单位" width="100"/>
+                            <el-table-column prop="life" label="使用年限" width="100"/>
+                            <el-table-column prop="amount" label="资产价值" width="100"/>
+                            <el-table-column prop="useStatus" label="使用状态" width="100"/>
+                            <el-table-column prop="reviewStatus" label="审核状态" width="100"/>
+                            <el-table-column prop="approvalDate" label="审核通过日期" width="250"/>
+                            <el-table-column prop="note" label="备注" width="200"/>
+                            <el-table-column fixed="right" label="操作" width="140">
+                                <template #default>
+                                    <div v-if="user.identity==='管理员'">
+                                        <el-button type="success" size="small">编辑</el-button>
+                                        <el-button type="danger" size="small">删除</el-button>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
 
-                <el-button type="primary">查询</el-button>
-                <el-button type="primary">刷新</el-button>
+                    <div style="position: fixed; bottom: 10px;">
+                        <el-pagination
+                            background layout="prev, pager, next"
+                            :total="Total"
+                            :page-size="pageSize"
+                            @current-change="handleCurrentChange"
+                        />
+                    </div>
+                </el-main>
+            </el-container>
 
-            </div>
-            <div class="mt-4">
-                <el-button type="warning">上报</el-button>
-            </div>
-            <el-table
-                    border
-                    stripe
-                    :data="tableData"
-                    style="width: 100%"
-            >
-                <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="资产编码" width="150" />
-                <el-table-column property="name" label="资产名称" width="150" />
-                <el-table-column label="申请日期" width="160">
-                    <template #default="scope">{{ scope.row.startdate }}</template>
-                </el-table-column>
-                <el-table-column property="unit" label="所属单位" width="150" />
-                <el-table-column property="status" label="审核状态" width="150">
-                    <template #default="scope">
-                        <el-button type="warning" v-if="scope.row.status==0">审核中</el-button>
-                        <el-button type="success" v-if="scope.row.status==1">已通过</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column label="通过日期" width="160">
-                    <template #default="scope">{{ scope.row.enddate }}</template>
-                </el-table-column>
-                <el-table-column property="operate" label="操作" width="150">
-
-                    <el-button text @click="dialogFormVisible = true">查看</el-button>
-
-                    <el-dialog v-model="dialogFormVisible" title="资产详情">
-                        <el-form label-width="100px">
-                            <el-form-item label="资产编码"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="资产名称"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="资产类型"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="所属部门"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="所属单位"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="使用年限"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                            <el-form-item label="资产价值"><el-input disabled style="width: 200px;"></el-input></el-form-item>
-                        </el-form>
-                        <template #footer>
-                                    <span class="dialog-footer">
-                                        <el-button @click="dialogFormVisible = false">确定</el-button>
-                                    </span>
-                        </template>
-                    </el-dialog>
-                </el-table-column>
-
-            </el-table>
         </el-tab-pane>
     </el-tabs>
 </template>
 
 <script setup>
+import {computed, onMounted, reactive, ref} from "vue";
+import axios from "axios";
+
+const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+
+const loadContents = () => {
+    //展示数据
+    const page = parseInt(pageNum.value);
+    axios.get('http://localhost:9002/v1/excel/listAll/' + page)
+        .then((response) => {
+            if (response.data.code == 2001) {
+                const responseData = response.data.data;
+                tableData.value = responseData.list;
+                Total.value = responseData.total;
+            }
+        })
+}
+const Total = ref();
+const tableData = ref([]);
+const pageSize = 12; // 每页显示的条目数
+const pageNum = ref(1); // 当前页码
+// 计算当前页的数据
+const handleCurrentChange = (val) => {
+    pageNum.value = val;
+    console.log(val);
+    loadContents();
+};
+onMounted(() => {
+    loadContents();
+})
+
+
+
+const form = reactive({
+    name: '',
+    region: '',
+    date1: '',
+    date2: '',
+    delivery: false,
+    type: [],
+    resource: '',
+    desc: '',
+})
+
 
 </script>
 

@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.dao.cache.repository;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 import com.github.pagehelper.Page;
 
 import java.io.Serializable;
@@ -11,12 +12,15 @@ import java.util.List;
 public interface IAssetCacheRepository {
     void deleteAll();
 
-    void save(String type);
+    void saveCategory(String type);
 
-    void saveByCategory(List<AssetPO> assetPOList);
+    void saveAsset(String type,List<AssetVO> assetVOList);
+    void saveAll();
 
-    List<AssetVO> listByAsset(String type);
+    List<PageData> listByAsset(String type);
 
     void updateCache(AssetUpdatePO assetUpdatePO);
+
+    List<AssetVO> listAll();
 
 }

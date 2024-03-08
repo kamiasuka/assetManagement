@@ -12,7 +12,7 @@ import java.util.List;
 public interface AssetMapper {
     List<String> listAllCategory();
 
-    List<AssetPO> listAssetByCategory(String type);
+    List<AssetVO> listAssetByCategory(String type);
 
     List<String> listByLevel(int level);
 
@@ -32,9 +32,9 @@ public interface AssetMapper {
     List<AssetPO> exportByType();
 
     //资产变更
-    List<AssetVO> listAllAdd();
+    List<AssetAddVO> listAllAdd();
 
-    List<AssetVO> listAllChange();
+    List<AssetAddVO> listAllChange();
 
     int assetUpdate(String code);//更新审核状态
 

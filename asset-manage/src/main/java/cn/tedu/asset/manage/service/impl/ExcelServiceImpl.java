@@ -27,7 +27,7 @@ import java.util.List;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
-    @Value("5")
+    @Value("12")
     private Integer defaultQueryPageSize;
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;
@@ -51,9 +51,6 @@ public class ExcelServiceImpl implements IExcelService {
     public PageData<AssetVO> pageListAll(Integer pageNum) {
         PageHelper.startPage(pageNum, defaultQueryPageSize);
         List<AssetVO> voList = assetMapper.exportVo();
-//        for (AssetVO assetVO : voList) {
-//            pageList.add(assetVO);
-//        }
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         return PageInfoToPageDataConverter.convert(pageInfo);
 
