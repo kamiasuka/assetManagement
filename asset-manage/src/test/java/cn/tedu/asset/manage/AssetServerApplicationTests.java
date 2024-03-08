@@ -3,6 +3,7 @@ package cn.tedu.asset.manage;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
+import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.service.IAssetService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ class AssetServerApplicationTests {
     private IAssetService iAssetService;
     @Test
     void getAssetByType() {
-        List<AssetPO> assetPOList = assetMapper.listAssetByCategory("办公用品");
+        List<AssetVO> assetPOList = assetMapper.listAssetByCategory("办公用品");
         System.out.println(assetPOList.toString());
     }
     /**
@@ -37,6 +38,12 @@ class AssetServerApplicationTests {
     @Test
     public void getStatistics(){
         iAssetService.getStatistics();
+    }
+
+    @Test
+    public void test(){
+        System.out.println(109/10);
+        System.out.println(109%10);
     }
 
 }

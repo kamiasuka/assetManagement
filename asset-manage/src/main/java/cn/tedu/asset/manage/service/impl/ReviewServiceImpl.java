@@ -2,15 +2,20 @@ package cn.tedu.asset.manage.service.impl;
 
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
+import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetAddVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
+import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IReviewService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,19 +23,26 @@ import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements IReviewService {
+    @Value("12")
+    private Integer defaultQueryPageSize;
+
     @Autowired(required = false)
     private AssetMapper assetMapper;
 
     @Override
-    public List<AssetVO> listAllAdd() {
-        List<AssetVO> list = assetMapper.listAllAdd();
-        return list;
+    public PageData<AssetAddVO> listAllAdd(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        List<AssetAddVO> list = assetMapper.listAllAdd();
+        PageInfo<AssetAddVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.convert(pageInfo);
     }
 
     @Override
-    public List<AssetVO> listAllChange() {
-        List<AssetVO> list = assetMapper.listAllChange();
-        return list;
+    public PageData<AssetAddVO> listAllChange(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        List<AssetAddVO> list = assetMapper.listAllChange();
+        PageInfo<AssetAddVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.convert(pageInfo);
     }
 
     @Override

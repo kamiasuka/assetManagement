@@ -16,6 +16,7 @@ public class AssetAddVO {
     private double amount;
     private String useStatus;
     private String reviewStatus;
-    private Date approvalDate;
+    private String submitDate;
+    private String approvalDate;
     private String note;
 }
