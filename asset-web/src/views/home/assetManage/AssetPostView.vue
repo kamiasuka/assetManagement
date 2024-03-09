@@ -36,10 +36,10 @@
                             <el-button type="success" v-if="scope.row.status=='已通过'">已通过</el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column property="submitDate" label="申请日期" width="180"/>
-                    <el-table-column property="approvalDate" label="通过日期" width="180"/>
-                    <!--                    <el-table-column property="note" label="备注" width="120"/>-->
-                    <el-table-column fixed="right" label="操作" width="200">
+                    <el-table-column property="submitDate" label="申请日期" width="170"/>
+                    <el-table-column property="approvalDate" label="通过日期" width="170"/>
+                    <el-table-column property="note" label="备注" width="120"/>
+                    <el-table-column fixed="right" label="操作" width="150">
                         <template #default="scope">
                             <div v-if="user.identity==='审核员'&& tableData.length >= 1">
                                 <el-button type="success" size="small" @click="handleClickAddOn(scope.row)">批准
@@ -77,24 +77,24 @@
                 </div>
                 <el-table :data="applytableData">
                     <el-table-column type="selection" width="55"/>
-                    <el-table-column property="code" label="资产编码" width="150"/>
+                    <el-table-column property="code" label="资产编码" width="140"/>
                     <el-table-column property="name" label="资产名称" width="100"/>
                     <el-table-column property="type" label="资产名称" width="100"/>
                     <el-table-column property="dept" label="资产名称" width="100"/>
                     <el-table-column property="unit" label="所属单位" width="100"/>
                     <el-table-column property="life" label="使用年限" width="90"/>
                     <el-table-column property="amount" label="资产价值(元)" width="120"/>
-                    <el-table-column property="useStatus" label="使用状态" width="100"/>
+                    <el-table-column property="useStatus" label="使用状态" width="80"/>
                     <el-table-column property="reviewStatus" label="审核状态" width="100">
                         <template #default="scope">
                             <el-button type="warning" v-if="scope.row.status=='审核中'">审核中</el-button>
                             <el-button type="success" v-if="scope.row.status=='已通过'">已通过</el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column property="submitDate" label="申请日期" width="180"/>
-                    <el-table-column property="approvalDate" label="通过日期" width="180"/>
-                    <!--                        <el-table-column property="note" label="备注" width="120"/>-->
-                    <el-table-column fixed="right" label="操作" width="200">
+                    <el-table-column property="submitDate" label="申请日期" width="170"/>
+                    <el-table-column property="approvalDate" label="通过日期" width="170"/>
+                    <el-table-column property="note" label="备注" width="120"/>
+                    <el-table-column fixed="right" label="操作" width="150">
                         <template #default="scope">
                             <div v-if="user.identity==='审核员'&& tableData.length >= 1">
                                 <el-button type="success" size="small" @click="handleClickChangeOn(scope.row)">批准
