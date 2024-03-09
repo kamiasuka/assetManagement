@@ -31,7 +31,7 @@ public class ExcelController {
     @GetMapping("listAll/{pageNum}")
     @ApiOperation("展示报表")
     public JsonResult listAll(@PathVariable Integer pageNum){
-        PageData<AssetVO> pageData = iExcelService.pageListAll(pageNum);
+        PageData<AssetVO> pageData = iExcelService.listAll(pageNum);
         return JsonResult.ok(pageData);
     }
 
@@ -47,7 +47,7 @@ public class ExcelController {
     @GetMapping("listAllByType")
     @ApiOperation("根据分类展示报表")
     public JsonResult listAllByType(){
-        List<AssetVO> list = iExcelService.listAll();
+        List<AssetVO> list = iExcelService.listAllByType();
         return JsonResult.ok(list);
     }
 

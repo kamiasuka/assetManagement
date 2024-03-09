@@ -6,12 +6,8 @@ import cn.tedu.asset.manage.Util.AssetCode;
 import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
-import cn.tedu.asset.manage.pojo.dto.AddUpdateDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetChangeDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetSearchDTO;
+import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
-import cn.tedu.asset.manage.pojo.dto.AssetStatisticDTO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
@@ -64,12 +60,9 @@ public class AssetServiceImpl implements IAssetService {
 
         for (String type : categoryList) {
             iAssetCacheRepository.saveCategory(type);
-
             assetVOList = assetMapper.listAssetByCategory(type);
-            iAssetCacheRepository.saveAsset(type,assetVOList);
-
+            iAssetCacheRepository. saveAsset(type,assetVOList);
         }
-
         iAssetCacheRepository.saveAll();
     }
 
@@ -151,13 +144,16 @@ public class AssetServiceImpl implements IAssetService {
     @Override
     public void assetDelete(String code) {
         log.debug("开始处理【资产删除】的业务，参数：{}", code);
+        AssetVO assetVO = assetMapper.selectByCode(code);
         AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
-        assetUpdatePO.setCode(code);
+        BeanUtils.copyProperties(assetVO,assetUpdatePO);
+
         assetUpdatePO.setReviewStatus("审核中");
-
-        assetMapper.assetUpdate(code);
-
+        assetUpdatePO.setNote("删除该资产");
+        assetUpdatePO.setSubmitDate(new Date());
         int num = assetMapper.assetUpdate(code);
+        assetMapper.ReviewAssetUpdate(assetUpdatePO);
+
         if (num != 1) {
             throw new ServiceException(StatusCode.OPERATION_FAILED, "资产删除申请提交失败！");
         }
@@ -170,7 +166,6 @@ public class AssetServiceImpl implements IAssetService {
         BeanUtils.copyProperties(addUpdateDTO, assetPO);
         assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
-        log.debug("assetPO类信息封装完毕:{}"+assetPO);
         assetMapper.updateAddInfo(assetPO);
     }
 

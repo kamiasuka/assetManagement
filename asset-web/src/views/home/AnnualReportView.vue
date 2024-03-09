@@ -38,7 +38,6 @@
                         <el-table-column prop="life" label="使用年限" width="100"/>
                         <el-table-column prop="amount" label="资产价值" width="100"/>
                         <el-table-column prop="useStatus" label="使用状态" width="100"/>
-                        <el-table-column prop="reviewStatus" label="审核状态" width="100"/>
                         <el-table-column prop="approvalDate" label="审核通过日期" width="200"/>
                         <el-table-column prop="note" label="备注" width="400"/>
                     </el-table>

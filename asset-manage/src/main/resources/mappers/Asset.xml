@@ -14,6 +14,11 @@
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
         from asset_info where type = #{type} and review_status = '已通过'
     </select>
+    <select id="selectByCode" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date
+        from asset_info where code = #{code}
+    </select>
+
     <select id="listByLevel" resultType="java.lang.String">
         select name from asset_category where level = #{level};
     </select>
@@ -81,7 +86,7 @@
     </select>
 
     <select id="listAllChange" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
+        select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date,note
         from asset_change_info
     </select>
 
@@ -101,14 +106,18 @@
         delete from asset_add_info
         where code = #{code}
     </delete>
+    <delete id="delete">
+        delete from asset_info
+        where code = #{code}
+    </delete>
 
     <insert id="ReviewAssetUpdate">
-        insert into asset_change_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date)
-        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{submitDate},#{approvalDate})
+        insert into asset_change_info(code, name, type, max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date,note)
+        values (#{code},#{name},#{type},#{maxType},#{dept},#{unit},#{life},#{amount},#{useStatus},#{reviewStatus},#{submitDate},#{approvalDate},#{note})
     </insert>
 
     <select id="getSubmitAsset" resultType="cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO">
-        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date,note
         from asset_change_info where  code = #{code} and review_status = '审核中'
     </select>
 
@@ -129,9 +138,19 @@
         where code = #{code}
     </update>
 
+    <update id="assetUpdateDeleteInfo">
+        update asset_change_info
+        set review_status='审核中',approval_date=NOW(),note = #{note}
+        where code = #{code}
+    </update>
+
     <select id="pageTest" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select *
         from asset_info group by id
+    </select>
+    <select id="download" resultType="cn.tedu.asset.manage.pojo.po.AssetPO">
+        select *
+        from asset_info group by code
     </select>
 
 </mapper>

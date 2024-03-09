@@ -13,11 +13,10 @@ public interface IExcelService {
 
     void exportByType(HttpServletResponse response);
 
-    List<AssetVO> listAll();
+    List<AssetVO> listAllByType();
 
     List<AssetVO> listAllNoReview();
 
-    PageData<AssetVO> pageListAll(Integer pageNum);
+    PageData<AssetVO> listAll(Integer pageNum);
 
-    PageData<AssetVO> pageTest(Integer pageNum);
 }
