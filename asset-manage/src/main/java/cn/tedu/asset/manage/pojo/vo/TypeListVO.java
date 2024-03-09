@@ -1,4 +1,4 @@
-package cn.tedu.asset.manage.controller;
+package cn.tedu.asset.manage.pojo.vo;
 
 import lombok.Data;
 

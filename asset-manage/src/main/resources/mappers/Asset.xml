@@ -7,7 +7,7 @@
     <select id="listAllCategory" resultType="java.lang.String">
         select distinct type from asset_info;
     </select>
-    <select id="listAllType" resultType="cn.tedu.asset.manage.controller.TypeListVO">
+    <select id="listAllType" resultType="cn.tedu.asset.manage.pojo.vo.TypeListVO">
         select distinct type from asset_info;
     </select>
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
@@ -103,7 +103,7 @@
     </insert>
 
     <select id="getSubmitAsset" resultType="cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO">
-        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date,submit_date
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
         from asset_change_info where  code = #{code} and review_status = '审核中'
     </select>
 

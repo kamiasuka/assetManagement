@@ -1,6 +1,6 @@
 package cn.tedu.asset.manage.dao.persist.mapper;
 
-import cn.tedu.asset.manage.controller.TypeListVO;
+import cn.tedu.asset.manage.pojo.vo.TypeListVO;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
