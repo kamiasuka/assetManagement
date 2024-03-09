@@ -6,7 +6,7 @@
                 <el-input style="width: 150px"></el-input>
                 资产名称:
                 <el-input style="width: 150px"></el-input>
-                通用类别：
+                审核状态：
                 <el-select v-model="value" class="m-2" placeholder="全部" size="large" style="width: 150px">
                     <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label"
                                :value="item.value"/>
@@ -41,7 +41,7 @@
                     <!--                    <el-table-column property="note" label="备注" width="120"/>-->
                     <el-table-column fixed="right" label="操作" width="200">
                         <template #default="scope">
-                            <div v-if="user.identity==='审核员'&& tableData.length > 1">
+                            <div v-if="user.identity==='审核员'&& tableData.length >= 1">
                                 <el-button type="success" size="small" @click="handleClickAddOn(scope.row)">批准
                                 </el-button>
                                 <el-button type="danger" size="small" @click="handleClickAddOff(scope.row)">驳回
@@ -69,10 +69,8 @@
                     <el-input style="width: 150px"></el-input>
                     资产名称:
                     <el-input style="width: 150px"></el-input>
-                    通用类别：
                     <el-select v-model="value" class="m-2" placeholder="全部" size="large" style="width: 150px">
-                        <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label"
-                                   :value="item.value"/>
+                        <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value"/>
                     </el-select>
                     <el-button type="primary">查询</el-button>
                     <el-button type="primary">刷新</el-button>
@@ -98,7 +96,7 @@
                     <!--                        <el-table-column property="note" label="备注" width="120"/>-->
                     <el-table-column fixed="right" label="操作" width="200">
                         <template #default="scope">
-                            <div v-if="user.identity==='审核员'&& tableData.length > 1">
+                            <div v-if="user.identity==='审核员'&& tableData.length >= 1">
                                 <el-button type="success" size="small" @click="handleClickChangeOn(scope.row)">批准
                                 </el-button>
                                 <el-button type="danger" size="small" @click="handleClickChangeOff(scope.row)">驳回
@@ -220,15 +218,39 @@ const loadContents2 = () => {
 const applytableData = ref([]);
 const handleCurrentChange2 = (val) => {
     pageNum.value = val;
-    console.log(val);
     loadContents2();
 };
 onMounted(() => {
     loadContents2();
 })
 const handleClickChangeOn = (row) => {
-    getDeptByCode(row);
-    // console.log("获取row:"+row);
+    let code = row.code;
+    if (confirm("是否批准?")) {
+        axios.get('http://localhost:9002/v1/assetReview/changeOn/' + code)
+            .then((response) => {
+                if (response.data.code == 2001) {
+                    ElMessage.success("操作成功！");
+                    location.reload();
+                } else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    }
+}
+
+const handleClickChangeOff =(row)=>{
+    let code = row.code;
+    if (confirm("是否驳回?")) {
+        axios.get('http://localhost:9002/v1/assetReview/changeOff/' + code)
+            .then((response) => {
+                if (response.data.code == 2001) {
+                    ElMessage.success("操作成功！");
+                    location.reload();
+                } else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    }
 }
 
 

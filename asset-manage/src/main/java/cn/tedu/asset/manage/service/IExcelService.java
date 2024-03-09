@@ -18,4 +18,6 @@ public interface IExcelService {
     List<AssetVO> listAllNoReview();
 
     PageData<AssetVO> pageListAll(Integer pageNum);
+
+    PageData<AssetVO> pageTest(Integer pageNum);
 }

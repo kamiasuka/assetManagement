@@ -1,8 +1,10 @@
 package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
+import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
+import cn.tedu.asset.manage.pojo.vo.TypeListVO;
 import cn.tedu.asset.manage.service.IExcelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +24,8 @@ import java.util.List;
 public class ExcelController {
     @Autowired
     private IExcelService iExcelService;
+    @Autowired
+    private AssetMapper assetMapper;
 
 
     @GetMapping("listAll/{pageNum}")
@@ -31,11 +35,20 @@ public class ExcelController {
         return JsonResult.ok(pageData);
     }
 
+
+    @GetMapping("listAllType")
+    @ApiOperation("查询所有子分类")
+    public JsonResult listAllType(){
+        List<TypeListVO> list = assetMapper.listAllType();
+        return JsonResult.ok(list);
+    }
+
+
     @GetMapping("listAllByType")
     @ApiOperation("根据分类展示报表")
     public JsonResult listAllByType(){
-//        List<AssetVO> list = iExcelService.listAll();
-        return JsonResult.ok();
+        List<AssetVO> list = iExcelService.listAll();
+        return JsonResult.ok(list);
     }
 
     @GetMapping("download")
