@@ -4,10 +4,11 @@ public interface AssetCacheConsts {
     /**
      * 缓存数据的KEY的前缀：资产数据
      */
-    String ALL_ASSET = "asset:key";
+    String KEY_ALL_ASSET = "AllAsset:key";
+    String KEY_ASSET = "asset:key";
 
     /**
-     * 缓存中所有列表数据的Key集合的Key
+     * 缓存中所有分类keys
      */
-    String KEY_ALL_KEYS = "assetCategory:keys";
+    String KEYS_ALL_CATEGORY = "AllCategory:keys";
 }

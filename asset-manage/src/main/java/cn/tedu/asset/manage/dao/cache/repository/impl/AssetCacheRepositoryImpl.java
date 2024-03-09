@@ -2,28 +2,20 @@ package cn.tedu.asset.manage.dao.cache.repository.impl;
 
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
-import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import com.alibaba.fastjson2.JSON;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Repository;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import static cn.tedu.asset.manage.Util.AssetCacheConsts.ALL_ASSET;
-import static cn.tedu.asset.manage.Util.AssetCacheConsts.KEY_ALL_KEYS;
+import static cn.tedu.asset.manage.Util.AssetCacheConsts.*;
 
 @Slf4j
 @Repository
@@ -37,7 +29,8 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     public void saveCategory(String type) {
         log.debug("开始处理【存储资产分类】的缓存预热,参数：" + type);
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
-        opsForList.leftPush(KEY_ALL_KEYS, type);
+        opsForList.leftPush(KEYS_ALL_CATEGORY, type);
+        //test
     }
 
     @Override
@@ -54,7 +47,7 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         List<AssetVO> voList = assetMapper.exportVo();
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
         String assetPOJson = JSON.toJSONString(voList);
-        opsForList.rightPush(ALL_ASSET, assetPOJson);
+        opsForList.rightPush(KEY_ALL_ASSET, assetPOJson);
 
     }
 
@@ -62,7 +55,7 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     public void deleteAll() {
         log.debug("开始处理【清理缓存】的业务");
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
-        List keys = opsForList.range(KEY_ALL_KEYS, 0, -1);
+        List keys = opsForList.range(KEYS_ALL_CATEGORY, 0, -1);
         redisTemplate.delete(keys);
 
     }

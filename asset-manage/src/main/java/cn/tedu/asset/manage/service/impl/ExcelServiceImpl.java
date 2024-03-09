@@ -12,6 +12,7 @@ import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IExcelService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,9 +26,11 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ExcelServiceImpl implements IExcelService {
@@ -42,25 +45,27 @@ public class ExcelServiceImpl implements IExcelService {
 
 
     @Override
-    public List<AssetVO> listAll() {
-        List<AssetPO> poList = assetMapper.export();
-        List<AssetVO> voList = new ArrayList<>();
+    public List<AssetVO> listAllByType() {
 
-        for (AssetPO assetPO : poList) {
-            AssetVO assetVO = new AssetVO();
-            BeanUtils.copyProperties(assetPO, assetVO);
-            voList.add(assetVO);
-        }
-        return voList;
+        return null;
     }
 
     @Override
-    public PageData<AssetVO> pageListAll(Integer pageNum) {
-        PageHelper.startPage(pageNum, defaultQueryPageSize);
-        List<AssetVO> voList = assetMapper.exportVo();
-        PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
-        return PageInfoToPageDataConverter.convert(pageInfo);
+    public PageData<AssetVO> listAll(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        Page<AssetVO> page = assetMapper.exportVo();
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
+        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
 
+        String key = "key_All_"+pageNum;
+        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+        String assetPOJson = JSON.toJSONString(pageData);
+        opsForValue.set(key, assetPOJson,86400, TimeUnit.SECONDS);
+
+        String json = opsForValue.get(key);
+        PageData<AssetVO> data = JSON.toJavaObject(json,PageData.class);
+
+        return data;
     }
 
 
@@ -111,31 +116,4 @@ public class ExcelServiceImpl implements IExcelService {
         }
     }
 
-
-    @Override
-    public PageData<AssetVO> pageTest(Integer pageNum) {
-        PageHelper.startPage(pageNum,defaultQueryPageSize);
-        Page<AssetVO> page = assetMapper.pageTest();
-        System.out.println(page);
-
-        PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
-        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
-
-        System.out.println("pageDate:"+pageData);
-        String key = "key_All_"+pageNum;
-        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
-        String assetPOJson = JSON.toJSONString(pageData);
-
-        opsForValue.set(key, assetPOJson);
-        System.out.println(assetPOJson);
-
-
-        String json = opsForValue.get(key);
-        System.out.println(json);
-
-        PageData data = JSON.toJavaObject(JSON.parseObject(json), PageData.class);
-        System.out.println("Date:"+data);
-
-        return data;
-    }
 }

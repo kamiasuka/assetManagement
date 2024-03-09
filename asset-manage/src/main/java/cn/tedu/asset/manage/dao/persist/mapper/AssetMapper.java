@@ -23,7 +23,7 @@ public interface AssetMapper {
 
     List<AssetPO> export();
 
-    List<AssetVO> exportVo();
+    Page<AssetVO> exportVo();
 
     List<AssetPO> exportNoReview();
 
@@ -58,6 +58,8 @@ public interface AssetMapper {
 
     int updateChangeOff(String code);
 
+    int updateChangeOffInfo(String code);
+
     int addUpdate(AssetPO assetPO);
 
     void addDelete(String code);
@@ -67,4 +69,12 @@ public interface AssetMapper {
     List<TypeListVO> listAllType();
 
     Page<AssetVO> pageTest();
+
+    int assetUpdateDeleteInfo(AssetUpdatePO assetUpdatePO);
+
+    AssetVO selectByCode(String code);
+
+    void delete(String code);
+
+    List<AssetPO> download();
 }
