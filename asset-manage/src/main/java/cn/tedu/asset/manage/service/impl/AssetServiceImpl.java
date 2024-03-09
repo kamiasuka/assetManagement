@@ -64,6 +64,7 @@ public class AssetServiceImpl implements IAssetService {
 
         for (String type : categoryList) {
             iAssetCacheRepository.saveCategory(type);
+
             assetVOList = assetMapper.listAssetByCategory(type);
             iAssetCacheRepository.saveAsset(type,assetVOList);
 

@@ -70,11 +70,17 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public void changeOn(String code) {
+        System.out.println(code);
         AssetUpdateDTO assetUpdateDTO = assetMapper.getSubmitAsset(code);
+        System.err.println(assetUpdateDTO);
+
         assetUpdateDTO.setReviewStatus("已通过");
         assetUpdateDTO.setApprovalDate(new Date());
+        System.err.println(assetUpdateDTO);
+
         int num = assetMapper.saveSubmitAsset(assetUpdateDTO);
         assetMapper.updateChangeInfo(code);
+        System.out.println(num);
         if (num != 1 ){
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
         }

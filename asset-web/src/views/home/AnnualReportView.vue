@@ -5,13 +5,15 @@
 
                 <el-button type="success" size="big" @click="exportExcel">全部导出</el-button>
 
+<!--
                 <el-button type="primary" @click="dialogFormVisible = true">分类导出</el-button>
                 <el-dialog v-model="dialogFormVisible" title="按资产分类导出" style="width: 700px">
                     <el-form :model="form">
                         <el-form-item label="分类级别" :label-width="formLabelWidth">
                             <el-select :data="typeList" placeholder="请选择分类">
-                                <el-option label="土地" value="land"/>
-                                <el-option label="通用设备" value="device"/>
+                                <el-option
+                                    v-for="item in typeList"  :label="item.label" :value="item.value">
+                                </el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
@@ -22,6 +24,7 @@
                             </span>
                     </template>
                 </el-dialog>
+-->
 
             </el-header>
             <el-main>
@@ -80,7 +83,6 @@ const pageNum = ref(1); // 当前页码
 // 计算当前页的数据
 const handleCurrentChange = (val) => {
     pageNum.value = val;
-    console.log(val);
     loadContents();
 };
 onMounted(() => {
@@ -94,20 +96,25 @@ const exportExcel = () => {
 }
 
 
-/*
+const dialogFormVisible = ref(false)
+const formLabelWidth = '140px'
+const typeList = ref([]);
 const loadTypeContents = () => {
     //展示数据
-    axios.get('http://localhost:9002/v1/excel/listAllByType/')
+    axios.get('http://localhost:9002/v1/excel/listAllType/')
         .then((response) => {
             if (response.data.code == 2001) {
-                tableData.value = response.data.data;
+                typeList.value = response.data.data;
             }
         })
 }
-const typeList = ref([]);
 onMounted(() => {
     loadTypeContents();
 })
+
+/*
+const typeList = ref([]);
+
 const dialogFormVisible = ref(false)
 const exportExcelByType = () => {
     if (confirm("是否导出?")) {
@@ -119,8 +126,7 @@ const exportExcelByType = () => {
 
             })
     }
-}
-*/
+}*/
 
 const form = reactive({
     name: '',

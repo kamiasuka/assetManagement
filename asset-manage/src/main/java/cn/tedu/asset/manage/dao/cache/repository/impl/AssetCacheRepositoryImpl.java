@@ -69,49 +69,15 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
 
     @Override
     public List<AssetVO> listAll() {
-        //?缓存里是根据资产分类存的数据，把所有资产数据装进一个list里返回？
-
         log.debug("开始处理【查询资产数据】的缓存数据访问");
-        ListOperations<String, String> opsForList = redisTemplate.opsForList();
-        List<String> assetJsonSet = opsForList.range(ALL_ASSET, 0, -1);
 
-        List<AssetVO> voList = new ArrayList<>();
-        for (String assetPOJson : assetJsonSet) {
-            AssetVO assetVO = JSON.toJavaObject(JSON.parseObject(assetPOJson), AssetVO.class);
-            voList.add(assetVO);
-        }
-        return voList;
+        return null;
     }
 
     @Override
     public List<PageData> listByAsset(String type) {
         log.debug("开始处理【根据type查询资产数据】的缓存数据访问，参数:" + type);
-        ListOperations<String, String> opsForList = redisTemplate.opsForList();
-
-        List<String> assetJsonSet = opsForList.range(type, 0, -1);
-        System.out.println(assetJsonSet);
-
-/*        *//** 缓存未命中 *//*
-        if (assetJsonSet.isEmpty()) {
-            log.debug("缓存未命中，访问数据库，参数:" + type);
-            List<AssetVO> poList = assetMapper.listAssetByCategory(type);
-            *//** 更新缓存 *//*
-            for (AssetVO assetVO : poList) {
-                String assetPOJson = JSON.toJSONString(assetVO);
-                opsForList.leftPush(assetVO.getType(), assetPOJson);
-            }
-            return poList;
-        }*/
-
-        List<PageData> list = new ArrayList<>();
-        for (String assetPOJson : assetJsonSet) {
-            PageData pageData1 = JSON.toJavaObject(JSON.parseObject(assetPOJson), PageData.class);
-            System.out.println(pageData1);
-            list.add(pageData1);
-
-        }
-        System.out.println(list);
-        return list;
+        return null;
     }
 
 
