@@ -30,6 +30,7 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         log.debug("开始处理【存储资产分类】的缓存预热,参数：" + type);
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
         opsForList.leftPush(KEYS_ALL_CATEGORY, type);
+        //test
     }
 
     @Override
