@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.asset.manage.dao.persist.mapper.DeptMapper">
+    <select id="listAll" resultType="cn.tedu.asset.manage.pojo.vo.DeptVO">
+        SELECT code,name,tel,unit FROM asset.dept;
+    </select>
+
+    <select id="getDeptByCode" resultType="cn.tedu.asset.manage.pojo.vo.DeptVO">
+        SELECT code,name,tel,unit FROM asset.dept WHERE code = #{code};
+    </select>
+
+    <insert id="insert">
+        INSERT INTO asset.dept(code,name,tel,unit)
+        VALUES(#{code},#{name},#{tel},#{unit})
+    </insert>
+
+    <update id="update">
+        UPDATE asset.dept
+        <set>
+            <if test="tel != null">tel=#{tel},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="unit != null">unit=#{unit},</if>
+        </set>
+        WHERE code=#{code}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM asset.dept WHERE code = #{code}
+    </delete>
+</mapper>
