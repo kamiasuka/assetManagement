@@ -9,13 +9,13 @@
                         placeholder="XX公司"
                         class="input-with-select"
                 >
-                        <template #append>
-                            <el-button :icon="Search"></el-button>
-                        </template>
+<!--                        <template #append>-->
+<!--                            <el-button :icon="Search"></el-button>-->
+<!--                        </template>-->
                 </el-input>
                 部门名称：
                 <el-input style="width: 180px" v-model="QueryByName"></el-input>
-                <el-button @click="clearFilter" type="primary">查询</el-button>
+                <el-button @click="queryFilter" type="primary">查询</el-button>
             </div>
             <el-table :data="tableData" stripe style="width: 100%">
                 <el-table-column prop="name" label="部门名称" width="200"></el-table-column>
@@ -232,8 +232,34 @@ const updateDept = ()=>{
         })
 }
 
+const queryFilter = ()=>{
+    let dataJson = {
+        unit : QueryByUnit.value,
+        name : QueryByName.value
+    };
+    let data = qs.stringify(dataJson);
+    console.log("data = "+data);
+    console.log(dataJson);
+    // console.log(data);
+    axios.post("http://localhost:9002/v1/dept/queryFilter/",data)
+        .then((response)=>{
+            if (response.data.code==2001){
+                ElMessage.success("查询成功");
+                tableData.value = response.data.data;
+                console.log(response.data.data);
+                console.log(tableData.value)
+                // location.reload();
+            }
+        })
+}
+// 进入页面时获取一次全部部门信息
+getAllDept();
+
 onMounted(()=>{
-    getAllDept();
+    // 根据输入框的值，来实时显示部门内容
+    if (QueryByName === null && QueryByUnit === null){
+        getAllDept();
+    }
 });
 
 </script>
