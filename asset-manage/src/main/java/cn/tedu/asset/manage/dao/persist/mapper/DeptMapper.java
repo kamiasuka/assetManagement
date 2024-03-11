@@ -1,5 +1,6 @@
 package cn.tedu.asset.manage.dao.persist.mapper;
 
+import cn.tedu.asset.manage.pojo.dto.DeptQFDTO;
 import cn.tedu.asset.manage.pojo.entity.Dept;
 import cn.tedu.asset.manage.pojo.vo.DeptVO;
 import org.springframework.stereotype.Component;
@@ -16,4 +17,6 @@ public interface DeptMapper {
     int delete(String code);
 
     DeptVO getDeptByCode(String code);
+
+    List<DeptVO> queryFilter(DeptQFDTO deptQFDTO);
 }
