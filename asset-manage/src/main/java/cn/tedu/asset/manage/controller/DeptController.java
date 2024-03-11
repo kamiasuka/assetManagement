@@ -1,10 +1,7 @@
 package cn.tedu.asset.manage.controller;
 
 import cn.tedu.asset.commom.response.JsonResult;
-import cn.tedu.asset.manage.pojo.dto.AssetAddDTO;
-import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
-import cn.tedu.asset.manage.pojo.dto.DeptAddDTO;
-import cn.tedu.asset.manage.pojo.dto.DeptUpdateDTO;
+import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.vo.DeptVO;
 import cn.tedu.asset.manage.service.IDeptService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -75,4 +72,18 @@ public class DeptController {
         int count = deptService.deptDelete(code);
         return JsonResult.ok();
     }
+
+    @PostMapping("/queryFilter")
+    @ApiOperation("5.条件查询")
+    @ApiOperationSupport(order = 500)
+    public JsonResult queryFilter(DeptQFDTO deptQFDTO){
+        log.debug("开始处理【条件查询】的请求{}",deptQFDTO);
+        if (deptQFDTO == null){
+            List<DeptVO> list = deptService.listAll();
+            return JsonResult.ok(list);
+        }
+        List<DeptVO> list = deptService.queryFilter(deptQFDTO);
+        return JsonResult.ok(list);
+    }
+
 }
