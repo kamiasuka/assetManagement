@@ -29,4 +29,14 @@
     <delete id="delete">
         DELETE FROM asset.dept WHERE code = #{code}
     </delete>
+
+    <select id="queryFilter" resultType="cn.tedu.asset.manage.pojo.vo.DeptVO">
+        SELECT code,name,tel,unit
+        FROM asset.dept
+        <where>
+            <if test="name != null and name != ''">and name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="unit != null and unit != ''">and unit LIKE CONCAT('%',#{unit},'%')</if>
+        </where>
+    </select>
+
 </mapper>
