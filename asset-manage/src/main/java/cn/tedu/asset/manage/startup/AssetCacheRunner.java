@@ -16,6 +16,6 @@ public class AssetCacheRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.debug("开始执行【重建资产数据】的数据预热");
-        //iAssetService.rebuildCache();
+        iAssetService.rebuildCache();
     }
 }

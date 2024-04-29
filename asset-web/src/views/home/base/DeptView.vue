@@ -158,7 +158,7 @@ const getDeptByCode = (row)=>{
     axios.get("http://localhost:9002/v1/dept/getDeptByCode/"+code)
         .then((response)=>{
             if (response.data.code==2001){
-                ElMessage.success("得到数据成功");
+                // ElMessage.success("得到数据成功");
                 deptUpdateInfo.value = response.data.data;
             }else {
                 ElMessage.error(response.data.msg);

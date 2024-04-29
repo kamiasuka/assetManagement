@@ -33,8 +33,7 @@ public class UploadAttachmentController {
             dirFile.mkdirs();
         }
         file.transferTo(new File(dirPath + datePath + fileName));
-        log.info("dirPath: {}", dirPath+datePath);
-
+        log.info("文件上传路劲为：dirPath: {}", dirPath+datePath);
 
         return JsonResult.ok(datePath + fileName);
 

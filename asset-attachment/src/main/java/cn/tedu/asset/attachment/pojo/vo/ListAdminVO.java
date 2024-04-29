@@ -10,11 +10,11 @@ public class ListAdminVO {
     private Long id;
     private String unit;
     private String name;
-    private String Type;
-    private String Tip;
-    private String atName;
-    private String Status;
-    private String Url;
+    private String type;
+    private String tip;
+    private String assetName;
+    private String useStatus;
+    private String url;
     @JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")
     private Date updatedTime;
 }

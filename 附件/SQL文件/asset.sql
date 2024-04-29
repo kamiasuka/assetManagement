@@ -34,7 +34,7 @@ CREATE TABLE asset_category
 (
     id        int primary key auto_increment COMMENT '主键',
     name      varchar(50) not null COMMENT '类别名称',
-    parent_id int unsigned DEFAULT 0 COMMENT '父组类别ID，如果无父级，则为0',
+    parent_id int unsigned DEFAULT 0 COMMENT '父级类别ID，如果无父级，则为0',
     level     int unsigned DEFAULT 1 COMMENT '级别，最顶级为1，次级为2，以此类推',
     is_parent int unsigned DEFAULT 0 COMMENT '是否包含子级，1=父级，0=不是父级'
 ) COMMENT '资产分类' CHARSET = utf8mb4;

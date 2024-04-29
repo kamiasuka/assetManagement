@@ -5,47 +5,47 @@
 <mapper namespace="cn.tedu.asset.attachment.mapper.ListMapper">
 
     <insert id="insertUnit">
-    INSERT INTO attachmentlist
-    (assetId,Type,atName,Tip,Url,updatedTime)
-    VALUES (#{assetId}, #{Type}, #{atName}, #{Tip},  #{Url}, #{updatedTime})
+    INSERT INTO attachment
+    (asset_code,type,asset_name,tip,url,updatedTime)
+    VALUES (#{assetCode}, #{type}, #{assetName}, #{tip},  #{url}, #{updatedTime})
 </insert>
 
     <delete id="deleteById">
         DELETE
-        FROM attachmentlist
+        FROM attachment
         WHERE id = #{id}
     </delete>
 
     <select id="selectForAdmin" resultType="cn.tedu.asset.attachment.pojo.vo.ListAdminVO">
-    SELECT al.id,
-           ai.unit AS unit,
-           al.Type AS Type,
-           al.Tip AS Tip,
-           al.atName AS atName,
-           ai.name AS name,
-           al.url AS Url,
-           al.updatedTime AS updatedTime,
-           ai.use_status AS status
-    FROM attachmentlist al
-    LEFT JOIN asset_info ai ON al.assetId = ai.id
-    ORDER BY al.id
+        SELECT al.id,
+               ai.unit,
+               al.Type,
+               al.tip,
+               al.asset_name AS assetName,
+               ai.name,
+               al.url AS Url,
+               al.updatedTime AS updatedTime,
+               ai.use_status AS useStatus
+        FROM attachment al
+                 LEFT JOIN asset_info ai ON al.asset_code = ai.code
+        ORDER BY al.id
 </select>
 
     <select id="selectImgUrlById" resultType="string">
-        SELECT Url
-        FROM attachmentlist
+        SELECT url
+        FROM attachment
         WHERE id = #{id}
     </select>
 
     <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.entity.AList">
         SELECT al.*, ai.unit AS unit,  ai.name AS name ,ai. use_status AS Status
-        FROM AttachmentList al
-        LEFT JOIN asset_info ai ON al.assetId = ai.id
+        FROM attachment al
+        LEFT JOIN asset_info ai ON al.asset_code = ai.code
         <where>
             <if test="unit != null and unit != ''">AND ai.unit LIKE CONCAT('%',#{unit},'%')</if>
             <if test="name != null and name != ''">AND ai.name LIKE CONCAT('%',#{name},'%')</if>
-            <if test="atName != null and atName != ''">AND al.atName LIKE CONCAT('%',#{atName},'%')</if>
-            <if test="type != null and type != ''">AND al.Type = #{type}</if>
+            <if test="atName != null and atName != ''">AND al.asset_name LIKE CONCAT('%',#{assetName},'%')</if>
+            <if test="type != null and type != ''">AND al.type = #{type}</if>
             <if test="updatedTime != null and updatedTime != ''">AND al.updatedTime LIKE CONCAT('%',#{updatedTime},'%')</if>
 <!--            <if test="status != null and status != ''">AND al.Status = #{status}</if>-->
         </where>
