@@ -19,4 +19,7 @@ public interface IReviewService {
 
     void changeOn(String code);
 
+    PageData<AssetAddVO> listAllAddLog(Integer pageNum);
+
+    PageData<AssetAddVO> listAllChangeLog(Integer pageNum);
 }

@@ -39,7 +39,11 @@ public class AssetServiceImpl implements IAssetService {
 
     @Override
     public PageData<AssetVO> getAsset(Integer pageNum) {
-        return null;
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        Page<AssetVO> page = assetMapper.getAsset();
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
+        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
+        return pageData;
     }
 
     @Override
@@ -132,6 +136,7 @@ public class AssetServiceImpl implements IAssetService {
         BeanUtils.copyProperties(assetChangeDTO, assetUpdatePO);
         assetUpdatePO.setReviewStatus("审核中");
         assetUpdatePO.setSubmitDate(new Date());
+        assetUpdatePO.setMaxType(assetChangeDTO.getMaxType());
 
         assetMapper.idempotent(assetUpdatePO.getCode());//幂等
         int ReviewNum = assetMapper.ReviewAssetUpdate(assetUpdatePO);

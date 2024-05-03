@@ -59,6 +59,10 @@
                             <el-form-item label="在用状态:">
                                 <el-input style="width: 300px;" v-model="assetUpdateInfo.useStatus"></el-input>
                             </el-form-item>
+                          <el-form-item label="备注:">
+                            <el-input style="width: 300px;" v-model="assetUpdateInfo.note"></el-input>
+                          </el-form-item>
+
                         </el-form>
                         <template #footer>
                             <div class="dialog-footer">
@@ -94,7 +98,7 @@ const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
 const loadContents = () => {
     //展示数据
     const page = parseInt(pageNum.value);
-    axios.get('http://localhost:9002/v1/excel/listAll/' + page)
+    axios.get('http://localhost:9002/v1/asset/listAllAsset/' + page)
         .then((response) => {
             if (response.data.code == 2001) {
                 const responseData = response.data.data;
@@ -142,16 +146,18 @@ const updateAsset = ()=>{
 
 const deleteByCode = (row) => {
     let code = row.code;
+  if (confirm("是否删除?")) {
     axios.get("http://localhost:9002/v1/asset/delete/"+code)
         .then((response)=>{
-            if (response.data.code==2001){
-                ElMessage.success("申请提交成功");
-                location.reload();
-            }
-            else {
-                ElMessage.error(response.data.msg);
-            }
+          if (response.data.code==2001){
+            ElMessage.success("申请提交成功");
+            location.reload();
+          }
+          else {
+            ElMessage.error(response.data.msg);
+          }
         })
+  }
 }
 
 

@@ -38,6 +38,10 @@
                 if (response.data.code==2001){
                     ElMessage.success("登录成功!");
                     let user = response.data.data;
+                    //获取jwt令牌
+                    // 将令牌存储到本地存储，以便后续使用
+                    localStorage.setItem('token',user.jwt);
+                  
                     localStorage.setItem('user',JSON.stringify(user));
                     location.href='/';   //跳转到首页  整个页面重新加载
                     const keys = Object.keys(localStorage);

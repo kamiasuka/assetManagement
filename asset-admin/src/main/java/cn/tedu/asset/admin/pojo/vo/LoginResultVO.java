@@ -24,4 +24,5 @@ public class LoginResultVO {
      * 身份
      */
     private String identity;
+    private String jwt;
 }

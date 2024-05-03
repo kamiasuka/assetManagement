@@ -36,7 +36,7 @@ public class AssetController {
     @ApiOperation("显示所有资产")
     public JsonResult listAllAsset(@PathVariable Integer page){
         Integer pageNum = page == null ? 1 : page;
-        PageData<AssetVO> pageData = iExcelService.listAll(pageNum);
+        PageData<AssetVO> pageData = iAssetService.getAsset(pageNum);
         return JsonResult.ok(pageData);
     }
 
@@ -54,12 +54,12 @@ public class AssetController {
     /**
      * 根据分类显示资产
      */
-    @GetMapping("getAsset/{type}&{page}")
+    @GetMapping("getAsset/tysb/{page}")
     @ApiOperation("根据分类显示资产")
-    public JsonResult getAssetByType(@PathVariable String type,@PathVariable Integer page){
-        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",type,page);
+    public JsonResult getAssetByType(@PathVariable String category,@PathVariable Integer page){
+        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",category,page);
         Integer pageNum = page == null ? 1 : page;
-        PageData<AssetVO> pageData = iAssetService.getAssetByType(type,pageNum);
+        PageData<AssetVO> pageData = iAssetService.getAssetByType(category,pageNum);
         return JsonResult.ok(pageData);
     }
 

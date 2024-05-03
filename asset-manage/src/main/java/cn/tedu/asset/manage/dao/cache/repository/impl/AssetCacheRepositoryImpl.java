@@ -47,7 +47,6 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
         ListOperations<String, String> opsForList = redisTemplate.opsForList();
         String assetPOJson = JSON.toJSONString(voList);
         opsForList.rightPush(KEY_ALL_ASSET, assetPOJson);
-
     }
 
     @Override
@@ -68,6 +67,7 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     @Override
     public List<PageData> listByAsset(String type) {
         log.debug("开始处理【根据type查询资产数据】的缓存数据访问，参数:" + type);
+
         return null;
     }
 

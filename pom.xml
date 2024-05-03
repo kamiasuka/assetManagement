@@ -44,6 +44,8 @@
         <elasticsearch-rest-high-level-client.version>7.6.2</elasticsearch-rest-high-level-client.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <hutool.version>5.8.15</hutool.version>
+        <jjwt.version>0.9.1</jjwt.version>
+
     </properties>
     <!--
          1 把整个项目的依赖在父模块管理
@@ -147,6 +149,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
                 <version>${spring-boot-version}</version>
+            </dependency>
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
 
         </dependencies>

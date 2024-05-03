@@ -67,39 +67,77 @@
                             <el-menu
                                     default-active="2"
                                     class="el-menu-vertical"
-                                    @open="handleOpen"
-                                    @close="handleClose"
-                                    unique-opened
-                            >
-                                <template v-for="category in categoryOne" :key="category.id">
-                                    <el-sub-menu :index="category.id" v-if="category.isParent===0">
-                                        <template #title>
-                                            <el-icon>
-                                                <document/>
-                                            </el-icon>
-                                            <span>{{ category.name }}</span>
-                                        </template>
-                                    </el-sub-menu>
+                                    unique-opened="true"
 
-                                    <el-sub-menu :index="category.id" v-if="category.isParent===1">
-                                        <template #title>
-                                            <el-icon>
-                                                <document/>
-                                            </el-icon>
-                                            <span>{{ category.name }}</span>
-                                        </template>
-                                        <el-sub-menu v-for="category2 in categoryTwo" :index="category2.id">
-                                            <template #title>{{ category2.name }}</template>
-                                            <!--                                                <el-menu-item index="1-1-1">三级分类</el-menu-item>-->
-                                        </el-sub-menu>
-                                    </el-sub-menu>
-                                </template>
+                            >
+<!--
+                              <template v-for="category in categoryOne" :key="category.id">
+                                <el-sub-menu :index="category.id.toString()" >
+                                  <template #title>
+                                    <el-icon>
+                                      <document />
+                                    </el-icon>
+                                    <span>{{ category.name }}</span>
+                                  </template>
+                                  <el-sub-menu
+                                      v-for="category2 in categoryTwo"
+                                      :index="category2.id.toString()"
+                                      :key="category2.id"
+                                  >
+                                    <template #title>{{ category2.name }}</template>
+                                    &lt;!&ndash; 这里你可以继续根据需要添加其他层级的分类或菜单项 &ndash;&gt;
+                                  </el-sub-menu>
+                                </el-sub-menu>
+                              </template>
+-->
+<!--                              <el-menu-item index="1" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>土地</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="2" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>房屋</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="3" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>构筑物</span>-->
+<!--                              </el-menu-item>-->
+                              <template #default="scope">
+                              <el-menu-item index="4" @click="loadContents">
+                                <el-icon><location /></el-icon>
+                                <span>通用设备</span>
+                              </el-menu-item>
+                              </template>
+<!--                              <el-menu-item index="5" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>专用设备</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="6" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>车辆</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="7" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>图书档案</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="8" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>动植物</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="9" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>无形资产</span>-->
+<!--                              </el-menu-item>-->
+<!--                              <el-menu-item index="10" @click="selectAsset">-->
+<!--                                <el-icon><location /></el-icon>-->
+<!--                                <span>在建工程</span>-->
+<!--                              </el-menu-item>-->
                             </el-menu>
                         </el-col>
                     </el-row>
                 </div>
 
-                </el-aside>
+            </el-aside>
                 <el-main>
                     <el-table :data="tableData">
                         <el-table-column fixed prop="id" label="资产编码" width="100"/>
@@ -121,12 +159,17 @@
                                     </div>
                                 </template>
                         </el-table-column>
-
                     </el-table>
-
-                <div style="margin: 20px 20px">
-                    <el-pagination background layout="prev, pager, next" :total="1000"/>
-                </div>
+<!--
+                  <div style="position: fixed; bottom: 10px;">
+                    <el-pagination
+                        background layout="prev, pager, next"
+                        :total="Total"
+                        :page-size="pageSize"
+                        @current-change="handleCurrentChange"
+                    />
+                  </div>
+-->
             </el-main>
 
         </el-container>
@@ -139,7 +182,7 @@ import {
     Document,
     Menu as IconMenu,
     Location,
-    Setting,
+    location,
     Check,
     Delete,
     Edit,
@@ -149,10 +192,12 @@ import {
 } from '@element-plus/icons-vue'
 import {onMounted, reactive, ref} from 'vue'
 import axios from "axios";
+import qs from "qs";
 
 //获取用户登录信息（session）
 const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
 
+/*
 const loadContents = () => {
     //展示数据
     axios.get('http://localhost:9002/v1/asset-category/listAllCategory')
@@ -160,10 +205,8 @@ const loadContents = () => {
             if (response.data.code == 2001) {
                 const filteredCategories1 = response.data.data.filter(item => item.level === 1);
                 categoryOne.value = filteredCategories1;
-
-                const filteredCategories2 = response.data.data.filter(item => item.level === 2);
-                categoryTwo.value = filteredCategories2;
-
+                // const filteredCategories2 = response.data.data.filter(item => item.level === 2);
+                // categoryTwo.value = filteredCategories2;
             }
         })
 }
@@ -172,79 +215,40 @@ const categoryTwo = ref([]);
 const categoryThree = ref([]);
 onMounted(() => {
     loadContents();
-    console.log(user.value.identity);
-    console.log(typeof user.value.identity);
 })
 
+*/
 
-const tableData = [
-    {
-        id: '1',
-        name: '逸一时误一世',
-        type: '无形资产',
-        dept: '下北泽部门',
-        unit: '仙贝有限公司',
-        life: '114',
-        amount: '514',
-        useStatus: '在用',
-        reviewStatus: '已通过',
-        approvalDate: '审核通过日期',
-        note: ''
-    },
-    {
-        id: '2',
-        name: '逸一时误一世',
-        type: '无形资产',
-        dept: '下北泽部门',
-        unit: '仙贝有限公司',
-        life: '114',
-        amount: '514',
-        useStatus: '在用',
-        reviewStatus: '已通过',
-        approvalDate: '审核通过日期',
-        note: ''
-    },
-    {
-        id: '3',
-        name: '逸一时误一世',
-        type: '无形资产',
-        dept: '下北泽部门',
-        unit: '仙贝有限公司',
-        life: '114',
-        amount: '514',
-        useStatus: '在用',
-        reviewStatus: '已通过',
-        approvalDate: '审核通过日期',
-        note: ''
-    },
-    {
-        id: '4',
-        name: '逸一时误一世',
-        type: '无形资产',
-        dept: '下北泽部门',
-        unit: '仙贝有限公司',
-        life: '114',
-        amount: '514',
-        useStatus: '在用',
-        reviewStatus: '已通过',
-        approvalDate: '审核通过日期',
-        note: ''
-    },
-]
 
-const dialogFormVisible = ref(false)
-const formLabelWidth = '140px'
 
-const form = reactive({
-    name: '',
-    region: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    desc: '',
-})
+const loadContents = () => {
+  //展示数据
+  const page = parseInt(pageNum.value);
+  axios.get('http://localhost:9002/v1/asset-category/getAsset/tysb/'+page )
+      .then((response) => {
+        if (response.data.code == 2001) {
+          const responseData = response.data.data;
+          tableData.value = responseData.list;
+          Total.value = responseData.total;
+        }
+      })
+}
+const tableData = ref([]);
+const Total = ref();
+const pageSize = 16; // 每页显示的条目数
+const pageNum = ref(1); // 当前页码
+// 计算当前页的数据
+
+const handleCurrentChange = (val) => {
+      pageNum.value = val;
+      loadContents();
+};
+
+
+onMounted(() => {
+  loadContents();
+});
+
 
 </script>
 

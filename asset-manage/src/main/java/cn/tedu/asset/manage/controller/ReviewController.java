@@ -37,6 +37,14 @@ public class ReviewController {
         return JsonResult.ok(pageData);
     }
 
+    @GetMapping("listAllAddLog/{page}")
+    @ApiOperation("展示所有录入资产")
+    public JsonResult listAllAddLog(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetAddVO> pageData = iReviewService.listAllAddLog(pageNum);
+        return JsonResult.ok(pageData);
+    }
+
     /**
      * 展示变更的资产
      * @return
@@ -46,6 +54,14 @@ public class ReviewController {
     public JsonResult listAllChange(@PathVariable Integer page){
         Integer pageNum = page == null ? 1 : page;
         PageData<AssetAddVO> pageData = iReviewService.listAllChange(pageNum);
+        return JsonResult.ok(pageData);
+    }
+
+    @GetMapping("listAllChangeLog/{page}")
+    @ApiOperation("展示所有变更资产")
+    public JsonResult listAllChangeLog(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetAddVO> pageData = iReviewService.listAllChangeLog(pageNum);
         return JsonResult.ok(pageData);
     }
 

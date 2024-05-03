@@ -8,12 +8,16 @@ import cn.tedu.asset.admin.pojo.entity.User;
 import cn.tedu.asset.admin.pojo.vo.LoginResultVO;
 import cn.tedu.asset.admin.pojo.vo.UserVO;
 import cn.tedu.asset.admin.service.IUserService;
+import cn.tedu.asset.commom.jwt.JwtUtils;
 import cn.tedu.asset.commom.ex.ServiceException;
 import cn.tedu.asset.commom.response.StatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -38,6 +42,15 @@ public class UserServiceImpl implements IUserService {
         LoginResultVO loginResultVO = new LoginResultVO();
         BeanUtils.copyProperties(userVO,loginResultVO);
         log.debug("登录成功，正在封装用户登录信息:{}",loginResultVO);
+        //创建令牌
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id",userVO.getId());
+        claims.put("username",userVO.getUsername());
+        claims.put("nickname",userVO.getNickname());
+        claims.put("identity",userVO.getIdentity());
+        String jwt = JwtUtils.generateJwt(claims);
+        loginResultVO.setJwt(jwt);
+        System.out.println("下发JWT："+jwt);
         return loginResultVO;
     }
 

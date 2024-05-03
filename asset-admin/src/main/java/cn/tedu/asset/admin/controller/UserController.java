@@ -25,10 +25,6 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    public UserController() {
-        log.info("创建控制器对象：UserController");
-    }
-
     @ApiOperation("用户登录")
     @ApiOperationSupport(order = 290)
     @PostMapping("/login")
@@ -73,7 +69,6 @@ public class UserController {
     public JsonResult getInfoById(@PathVariable Long id){
         log.debug("开始根据用户ID获取用户个人信息");
         UserVO userVO = userService.getInfoById(id);
-        log.debug("正在封装用户个人信息:{}",userVO);
         return JsonResult.ok(userVO);
     }
 

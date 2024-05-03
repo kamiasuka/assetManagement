@@ -38,9 +38,27 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
+    public PageData<AssetAddVO> listAllAddLog(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        List<AssetAddVO> list = assetMapper.listAllAddLog();
+        PageInfo<AssetAddVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.convert(pageInfo);
+    }
+
+
+
+    @Override
     public PageData<AssetAddVO> listAllChange(Integer pageNum) {
         PageHelper.startPage(pageNum,defaultQueryPageSize);
         List<AssetAddVO> list = assetMapper.listAllChange();
+        PageInfo<AssetAddVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.convert(pageInfo);
+    }
+
+    @Override
+    public PageData<AssetAddVO> listAllChangeLog(Integer pageNum) {
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        List<AssetAddVO> list = assetMapper.listAllChangeLog();
         PageInfo<AssetAddVO> pageInfo = new PageInfo<>(list);
         return PageInfoToPageDataConverter.convert(pageInfo);
     }
@@ -62,6 +80,12 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public void addNewOff(String code) {
+//        AssetAddVO addNew = assetMapper.getAddNew(code);
+//        AssetPO assetPO = new AssetPO();
+//        BeanUtils.copyProperties(addNew,assetPO);
+//        assetPO.setReviewStatus("已通过");
+//        assetPO.setApprovalDate(new Date());
+
         int num = assetMapper.updateAddOff(code);
         if (num != 1){
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
@@ -85,6 +109,8 @@ public class ReviewServiceImpl implements IReviewService {
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");
         }
     }
+
+
 
     @Override
     public void changeOff(String code) {

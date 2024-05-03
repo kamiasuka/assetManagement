@@ -77,4 +77,10 @@ public interface AssetMapper {
     void delete(String code);
 
     List<AssetPO> download();
+
+    Page<AssetVO> getAsset();
+
+    List<AssetAddVO> listAllAddLog();
+
+    List<AssetAddVO> listAllChangeLog();
 }

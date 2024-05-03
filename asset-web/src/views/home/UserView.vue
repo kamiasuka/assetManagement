@@ -36,22 +36,30 @@ import qs from "qs";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-console.log(localStorage.user);
+// console.log(localStorage.user);
 const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
 
 const userinfo = ref({id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}); //{id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}
 
+// const token = localStorage.token; // 获取存储的Token
+// if (token) {
+//   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+// }
+
+
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+console.log(localStorage.token);
+
 // 获取用户信息
 const getUserInfo = ()=>{
-    let userId = user.value.id;
+  let userId = user.value.id;
+  if (token!=null) {
+    axios.defaults.headers.common['Authorization'] = token;
+  }
   axios.get("http://localhost:9001/v1/users/getInfoById/"+userId)
       .then((response)=>{
           if (response.data.code=2001){
-              // ElMessage.success("已获取用户个人数据");
-              console.log(response.data.data);
               userinfo.value = response.data.data;
-              console.log(userinfo);
-              console.log(response.data.data);
           }
       })
 };

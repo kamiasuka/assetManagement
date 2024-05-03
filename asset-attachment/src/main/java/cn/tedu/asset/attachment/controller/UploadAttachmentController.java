@@ -36,7 +36,6 @@ public class UploadAttachmentController {
         log.info("文件上传路劲为：dirPath: {}", dirPath+datePath);
 
         return JsonResult.ok(datePath + fileName);
-
     }
 
     @PostMapping("remove")
