@@ -155,6 +155,7 @@ import axios from "axios";
 import qs from "qs";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Search} from '@element-plus/icons-vue';
+import router from "@/router";
 // let dialogTableVisible = ref(false);
 // let dialogFormVisible = ref(false);
 // const form = reactive({
@@ -211,7 +212,6 @@ const Total = ref();
 // const tableData = ref([]);
 const pageSize = 16; // 每页显示的条目数
 const pageNum = ref(1); // 当前页码
-
 const assetUpdateDialogVisible = ref(false);
 
 //修改按钮的点击事件
@@ -220,7 +220,11 @@ const handleClickOnEdit = (row) => {
     assetUpdateInfo.value = row;
 }
 
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
+onMounted(() => {
+  getAllAssets();
+});
 
 //发出更新数据的请求
 const updateAsset = ()=>{
@@ -228,64 +232,91 @@ const updateAsset = ()=>{
     let data = qs.stringify(assetUpdateInfo.value);
     // let data = (assetUpdateInfo.value);
     console.log(data);
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
     axios.post("http://localhost:9002/v1/asset/add-update/",data)
         .then((response)=>{
-            if (response.data.code==2001){
-                ElMessage.success("更新成功");
-                location.reload();
-
-            }
+          if (response.data.code==2001){
+            ElMessage.success("更新成功");
+            location.reload();
+          }
         })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
 }
 
 const getAllAssets = () => {
     const page = parseInt(pageNum.value)
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
     axios.get("http://localhost:9002/v1/assetReview/listAllAdd/" + page)
         .then((response) => {
-            if (response.data.code == 2001) {
-                ElMessage.success("成功获取所有录入资产!");
-                console.log(response.data.data);
-                const responseData = response.data.data;
-                tableData.value = responseData.list;
-                Total.value = responseData.total;
-            } else {
-                ElMessage.error(response.data.msg);
-            }
+          if (response.data.code == 2001) {
+            ElMessage.success("成功获取所有录入资产!");
+            console.log(response.data.data);
+            const responseData = response.data.data;
+            tableData.value = responseData.list;
+            Total.value = responseData.total;
+          } else {
+            ElMessage.error(response.data.msg);
+          }
         })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
+
 }
 
 const saveAsset = ()=>{
     let data = qs.stringify(assetAddInfo.value)
-    // console.log(data);
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
     axios.post("http://localhost:9002/v1/asset/add-new/",data)
         .then((response)=>{
-            if (response.data.code==2001){
-                ElMessage.success("提交成功");
-                location.reload();
-            }
+          if (response.data.code==2001){
+            ElMessage.success("提交成功");
+            location.reload();
+          }
         })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
 }
 
 const deleteByCode = (row)=>{
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+
     if (confirm("是否要删除该数据？")){
-        // console.log(row);
-        let code = row.code;
-        // console.log(code);
-        axios.get("http://localhost:9002/v1/asset/add-delete/"+code)
-            .then((response)=>{
-                if (response.data.code==2001){
-                    ElMessage.success("删除成功");
-                    location.reload();
-                }else {
-                    ElMessage.error(response.data.msg);
-                }
-            })
+      // console.log(row);
+      let code = row.code;
+      // console.log(code);
+      axios.get("http://localhost:9002/v1/asset/add-delete/"+code)
+          .then((response)=>{
+            if (response.data.code==2001){
+              ElMessage.success("删除成功");
+              location.reload();
+            }else {
+              ElMessage.error(response.data.msg);
+            }
+          })
     }
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
+
 }
 
-onMounted(() => {
-    getAllAssets();
-});
+
 
 
 </script>

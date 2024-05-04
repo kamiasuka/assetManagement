@@ -35,47 +35,56 @@ import {onMounted, ref} from 'vue'
 import qs from "qs";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import router from "@/router";
 
-// console.log(localStorage.user);
+
 const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
-
 const userinfo = ref({id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}); //{id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}
 
-// const token = localStorage.token; // 获取存储的Token
-// if (token) {
-//   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-// }
-
-
 const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
-console.log(localStorage.token);
+//const token = localStorage.getItem("token");
 
+onMounted(() => {
+  let userId = user.value.id;
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+    //console.log("axios请求头："+axios.defaults.headers.common);
+    axios.get("http://localhost:9001/v1/users/" + userId + "/getInfoById/")
+        .then((response) => {
+          if (response.data.code == 2001) {
+            userinfo.value = response.data.data;
+          } else if (response.data.code == 1000) {
+            ElMessage.error("未登录！请登录后再操作！");
+            router.push('/login')
+          } else if (response.data.code == 1004) {
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }
+        })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+});
 // 获取用户信息
 const getUserInfo = ()=>{
-  let userId = user.value.id;
-  if (token!=null) {
-    axios.defaults.headers.common['Authorization'] = token;
-  }
-  axios.get("http://localhost:9001/v1/users/getInfoById/"+userId)
-      .then((response)=>{
-          if (response.data.code=2001){
-              userinfo.value = response.data.data;
-          }
-      })
 };
 
 // 修改用户信息
 const save = ()=>{
     let data = qs.stringify(userinfo.value);
-    axios.post('http://localhost:9001/v1/users/'+userinfo.value.id+'/info/update',data)
-        .then((response)=>{
-            if (response.data.code==2001){
-                ElMessage.success("修改完成!");
-                //更新LocalStorage里面的用户数据
-                user.value.nickname = userinfo.value.nickname;
-                localStorage.user = JSON.stringify(user.value);
-            }
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+    axios.post('http://localhost:9001/v1/users/' + userinfo.value.id + '/info/update', data)
+        .then((response) => {
+          if (response.data.code == 2001) {
+            ElMessage.success("修改完成!");
+            //更新LocalStorage里面的用户数据
+            user.value.nickname = userinfo.value.nickname;
+            localStorage.user = JSON.stringify(user.value);
+          }
         })
+  }
 }
 
 // 修改密码
@@ -90,20 +99,23 @@ const savePwd= ()=>{
         };
         console.log(dataJson);
         let data = qs.stringify(dataJson);
-        axios.post('http://localhost:9001/v1/users/'+dataJson.id+'/password/update',data)
-            .then((response)=>{
-                if (response.data.code==2001){
-                    ElMessage.success("修改完成!");
-                    //刷新“旧密码”框的显示
-                    userinfo.value.password = newPwd2.value;
-                    //刷新输入框
-                    newPwd1.value="";
-                    newPwd2.value="";
-                }else{
-                    console.log(localStorage.user);
-                    ElMessage.error(response.data.msg);
-                }
+      if (token != null) {
+        axios.defaults.headers.common['Authorization'] = token;
+        axios.post('http://localhost:9001/v1/users/' + dataJson.id + '/password/update', data)
+            .then((response) => {
+              if (response.data.code == 2001) {
+                ElMessage.success("修改完成!");
+                //刷新“旧密码”框的显示
+                userinfo.value.password = newPwd2.value;
+                //刷新输入框
+                newPwd1.value = "";
+                newPwd2.value = "";
+              } else {
+                console.log(localStorage.user);
+                ElMessage.error(response.data.msg);
+              }
             })
+      }
     }else {
         newPwd1.value="";
         newPwd2.value="";
@@ -115,9 +127,7 @@ const savePwd= ()=>{
 }
 
 
-onMounted(() => {
-    getUserInfo();
-});
+
 
 </script>
 

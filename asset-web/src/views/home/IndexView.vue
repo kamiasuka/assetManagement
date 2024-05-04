@@ -57,6 +57,7 @@ import axios from 'axios';
 import qs from 'qs';
 import {ElMessage} from 'element-plus'
 import * as echarts from "echarts";
+import router from "@/router";
 
 const user = ref({username: "", password: "", nickname: ""});
 // const worthData = [
@@ -90,38 +91,40 @@ const colorData = [
 
 const typeData = ["土地", "房屋", "构筑物", "通用设备", "专用设备", "车辆",  "图书档案", "动植物", "无形资产", "在建工程"];
 // const numData = [5, 10, 25, 10, 10, 20, 5, 20, 36, 10, 10, 20];
-
 const worthData = ref([]);
 const numData = ref([]);
-
 const statistics = ref([]);//{worth:0.0,type:"",num:0}
-
-
 const cardArr = ref([]);
 const pieChartArr = ref([]);
 
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+
+onMounted(() => {
+  console.log("开始执行getStatistics方法 ")
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+    axios.get("http://localhost:9002/v1/asset/getStatistics")
+        .then((response) => {
+          console.log("发送axios请求")
+          if (response.data.code == 2001) {
+            // ElMessage.success("操作成功");
+            statistics.value = response.data.data;
+            for (let i = 0; i < typeData.length; i++) {
+              numData.value.push(statistics.value[i].num);
+              worthData.value.push(statistics.value[i].worth);
+            }
+          }
+          showIndexView();
+        })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+});
 
 // 获取资产最大级分类的统计信息
 const getStatistics = ()=>{
-    console.log("开始执行getStatistics方法 ")
-     axios.get("http://localhost:9002/v1/asset/getStatistics")
-        .then((response)=>{
-            console.log("发送axios请求")
-            if (response.data.code==2001){
-                // ElMessage.success("操作成功");
-                statistics.value = response.data.data;
-                for (let i = 0; i < typeData.length; i++){
-                    numData.value.push(statistics.value[i].num);
-                    worthData.value.push(statistics.value[i].worth);
-                }
-                console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                console.log(numData);
-                console.log(worthData);
-            }
 
-            showIndexView();
-
-        })
 }
 
 //绘制首页页面
@@ -295,9 +298,7 @@ const showPieChart = () => {
 }
 /*饼状图展示部分--结束*/
 
-onMounted(() => {
-    getStatistics();
-});
+
 
 
 

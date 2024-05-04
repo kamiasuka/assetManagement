@@ -15,7 +15,7 @@
                     <el-button style="position: relative;left: 50px;top: 10px;width: 100px" type="primary" @click="login()">登录</el-button>
                     <el-button style="position: relative;left: 50px;top: 10px" type="primary">重置</el-button>
                 </el-form-item>
-                <p>Copynight @ 2018-2023<span style="color: blue"> xx市企业资产管理系统</span>Passed By </p>
+                <p>Copynight @ 2018-2023<span style="color: blue"> xx市国有企业固定资产管理系统</span>Passed By </p>
             </el-form>
         </el-card>
     </div>
@@ -38,9 +38,10 @@
                 if (response.data.code==2001){
                     ElMessage.success("登录成功!");
                     let user = response.data.data;
+                    const token = user.jwt;
                     //获取jwt令牌
                     // 将令牌存储到本地存储，以便后续使用
-                    localStorage.setItem('token',user.jwt);
+                    localStorage.setItem('token',token);
                   
                     localStorage.setItem('user',JSON.stringify(user));
                     location.href='/';   //跳转到首页  整个页面重新加载

@@ -21,6 +21,7 @@ import javax.validation.constraints.Pattern;
 @Slf4j
 @RestController
 @RequestMapping("/v1/users")
+@CrossOrigin
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -30,7 +31,6 @@ public class UserController {
     @PostMapping("/login")
     public JsonResult login(UserLoginDTO userLoginDTO){
         LoginResultVO loginResultVO = userService.login(userLoginDTO);
-        System.out.println("loginResultVO="+loginResultVO);
         return JsonResult.ok(loginResultVO);
     }
 
@@ -63,7 +63,7 @@ public class UserController {
         return JsonResult.ok();
     }
 
-    @GetMapping("getInfoById/{id}")
+    @GetMapping("{id}/getInfoById")
     @ApiOperation("根据id获取用户信息")
     @ApiOperationSupport(order = 320)
     public JsonResult getInfoById(@PathVariable Long id){

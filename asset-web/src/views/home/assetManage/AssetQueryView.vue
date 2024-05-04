@@ -193,9 +193,12 @@ import {
 import {onMounted, reactive, ref} from 'vue'
 import axios from "axios";
 import qs from "qs";
+import router from "@/router";
+import {ElMessage} from "element-plus";
 
 //获取用户登录信息（session）
 const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
 /*
 const loadContents = () => {
@@ -224,14 +227,22 @@ onMounted(() => {
 const loadContents = () => {
   //展示数据
   const page = parseInt(pageNum.value);
-  axios.get('http://localhost:9002/v1/asset-category/getAsset/tysb/'+page )
-      .then((response) => {
-        if (response.data.code == 2001) {
-          const responseData = response.data.data;
-          tableData.value = responseData.list;
-          Total.value = responseData.total;
-        }
-      })
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+    axios.get('http://localhost:9002/v1/asset-category/getAsset/tysb/'+page )
+        .then((response) => {
+          if (response.data.code == 2001) {
+            const responseData = response.data.data;
+            tableData.value = responseData.list;
+            Total.value = responseData.total;
+          }
+        })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
+
 }
 const tableData = ref([]);
 const Total = ref();

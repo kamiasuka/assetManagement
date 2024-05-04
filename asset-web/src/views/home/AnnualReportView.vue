@@ -62,31 +62,42 @@
 <script setup>
 import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
+import {ElMessage} from "element-plus";
+import router from "@/router";
 
-const loadContents = () => {
-    //展示数据
-    const page = parseInt(pageNum.value);
-    axios.get('http://localhost:9002/v1/excel/listAll/' + page)
-        .then((response) => {
-            if (response.data.code == 2001) {
-                const responseData = response.data.data;
-                tableData.value = responseData.list;
-                Total.value = responseData.total;
-            }
-        })
-}
+const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+
 const Total = ref();
 const tableData = ref([]);
 const pageSize = 16; // 每页显示的条目数
 const pageNum = ref(1); // 当前页码
 // 计算当前页的数据
 const handleCurrentChange = (val) => {
-    pageNum.value = val;
-    loadContents();
+  pageNum.value = val;
+  loadContents();
 };
 onMounted(() => {
-    loadContents();
+  loadContents();
 })
+
+const loadContents = () => {
+    //展示数据
+    const page = parseInt(pageNum.value);
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
+    axios.get('http://localhost:9002/v1/excel/listAll/' + page)
+        .then((response) => {
+          if (response.data.code == 2001) {
+            const responseData = response.data.data;
+            tableData.value = responseData.list;
+            Total.value = responseData.total;
+          }
+        })
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+}
 
 const exportExcel = () => {
     if (confirm("是否全部导出?")) {
@@ -98,17 +109,23 @@ const exportExcel = () => {
 const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
 const typeList = ref([]);
-const loadTypeContents = () => {
+const loadTypeContents = () => {}
+
+onMounted(() => {
+  if (token != null) {
+    axios.defaults.headers.common['Authorization'] = token;
     //展示数据
     axios.get('http://localhost:9002/v1/excel/listAllType/')
         .then((response) => {
-            if (response.data.code == 2001) {
-                typeList.value = response.data.data;
-            }
+          if (response.data.code == 2001) {
+            typeList.value = response.data.data;
+          }
         })
-}
-onMounted(() => {
-    loadTypeContents();
+  }else {
+    ElMessage.error("登录超时，请重新登录！");
+    router.push('/login')
+  }
+
 })
 
 /*

@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class JwtUtils {
     private static String signKey = "asset";
-    private static Long expire = 36000*1000L;
+    private static Long expire = 3600*1000L;
 
     /**
      * 生成JWT令牌
