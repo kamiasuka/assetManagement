@@ -41,7 +41,7 @@ public class UserServiceImpl implements IUserService {
         }
         LoginResultVO loginResultVO = new LoginResultVO();
         BeanUtils.copyProperties(userVO,loginResultVO);
-        log.debug("登录成功，正在封装用户登录信息:{}",loginResultVO);
+        log.debug("登录成功");
         //创建令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put("id",userVO.getId());

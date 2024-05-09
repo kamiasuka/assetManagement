@@ -1,6 +1,7 @@
 package cn.tedu.asset.manage.service;
 
 import cn.tedu.asset.manage.pojo.dto.*;
+import cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 
@@ -14,7 +15,7 @@ public interface IAssetService {
     void rebuildCache();
 
     List<AssetStatisticDTO> getStatistics();
-    AssetVO searchAsset(AssetSearchDTO assetSearchDTO);
+    PageData<AssetAttachmentVO> searchAsset(SearchDTO searchDTO, Integer pageNum);
 
     void assetChange(AssetChangeDTO assetChangeDTO);
     int addNew(AssetAddDTO assetAddDTO);

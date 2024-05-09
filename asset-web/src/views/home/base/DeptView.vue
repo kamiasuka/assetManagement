@@ -159,12 +159,15 @@ const getDeptByCode = (row) => {
         .then((response) => {
           if (response.data.code == 2001) {
             deptUpdateInfo.value = response.data.data;
-          } else {
+          } else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
             ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -179,12 +182,15 @@ const getAllDept = () => {
         .then((response) => {
           if (response.data.code == 2001) {
             tableData.value = response.data.data;
-          } else {
+          } else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
             ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -200,10 +206,15 @@ const saveDept = () => {
             ElMessage.success("提交成功");
             goToTab("tab1");
             location.reload();
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -228,13 +239,16 @@ const deleteByCode = (row) => {
             if (response.data.code == 2001) {
               ElMessage.success("删除成功");
               location.reload();
-            } else {
+            } else if (response.data.code==1004){
+              ElMessage.error("登录超时，请重新登录！");
+              router.push('/login')
+            }else {
               ElMessage.error(response.data.msg);
             }
           })
     }
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -250,10 +264,15 @@ const updateDept = () => {
           if (response.data.code == 2001) {
             ElMessage.success("更新成功");
             location.reload();
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -273,10 +292,15 @@ const queryFilter = () => {
           if (response.data.code == 2001) {
             ElMessage.success("查询成功");
             tableData.value = response.data.data;
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 

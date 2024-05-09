@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.service;
 import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
 import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.AssetMaxCategoryVO;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface IAssetCategoryService {
 
     void deleteCategory(Integer id);
 
+    List<AssetMaxCategoryVO> getMaxCategory();
 }

@@ -12,7 +12,7 @@
     </select>
     <select id="listAssetByCategory" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,approval_date
-        from asset_info where code = #{type} and review_status = '已通过'
+        from asset_info where max_type = #{maxType} and review_status = '已通过'
     </select>
     <select id="selectByCode" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
         select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date
@@ -62,8 +62,19 @@
 
     <update id="updateAddInfo">
         update asset_add_info
-        set name = #{name},type = #{type},max_type = #{maxType},dept=#{dept},unit=#{unit},life=#{life},amount=#{amount},
-            use_status=#{useStatus},review_status=#{reviewStatus},approval_date=#{approvalDate}
+        <set>
+        <if test="name!=null">name = #{name},</if>
+        <if test="type!=null">type = #{type},</if>
+        <if test="maxType!=null">max_type = #{maxType},</if>
+        <if test="dept!=null">dept=#{dept},</if>
+        <if test="unit!=null">unit=#{unit},</if>
+        <if test="life!=null">life=#{life},</if>
+        <if test="amount!=null">amount=#{amount},</if>
+        <if test="useStatus!=null">use_status=#{useStatus},</if>
+        <if test="reviewStatus!=null">review_status=#{reviewStatus},</if>
+        <if test="submitDate!=null">submit_date=#{submitDate},</if>
+        <if test="approvalDate!=null">approval_date=#{approvalDate}</if>
+        </set>
         where code = #{code}
     </update>
 
@@ -85,9 +96,26 @@
         from asset_info where review_status = '已通过'
     </select>
 
+    <select id="getAssetAndUrl" resultType="cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO">
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date
+        from asset_info where review_status = '已通过'
+    </select>
+
+    <select id="searchAsset" parameterType="cn.tedu.asset.manage.pojo.dto.SearchDTO" resultType="cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO">
+        SELECT  ai.code,ai.name,ai.type,ai.max_type,ai.dept,ai.unit,ai.life,ai.amount,
+        ai.use_status,ai.review_status,ai.approval_date
+        FROM asset_info ai
+        <where>
+            <if test="code != null and code != ''">AND code LIKE CONCAT('%',#{code},'%')</if>
+            <if test="name != null and name != ''">AND name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="status != null and status != ''">AND use_status = #{status}</if>
+            <if test="dept != null and dept != ''">AND dept LIKE CONCAT('%',#{dept},'%')</if>
+        </where>
+    </select>
+
     <select id="listAllAdd" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
-        select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
-        from asset_add_info where review_status = '审核中'
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
+        from asset_add_info where review_status in ('审核中','未通过')
     </select>
     <select id="listAllAddLog" resultType="cn.tedu.asset.manage.pojo.vo.AssetAddVO">
         select code,name,type,dept,unit,life,amount,use_status,review_status,submit_date,approval_date
@@ -172,5 +200,7 @@
         select *
         from asset_info group by code
     </select>
+
+
 
 </mapper>

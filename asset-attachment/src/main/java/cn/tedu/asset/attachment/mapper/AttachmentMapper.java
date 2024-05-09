@@ -1,26 +1,26 @@
 package cn.tedu.asset.attachment.mapper;
 
 
-import cn.tedu.asset.attachment.pojo.dto.AssetDTO;
-import cn.tedu.asset.attachment.pojo.entity.AList;
+import cn.tedu.asset.attachment.pojo.dto.AttachmentPO;
 import cn.tedu.asset.attachment.pojo.vo.AssetVO;
 import cn.tedu.asset.attachment.pojo.vo.ListAdminVO;
 import cn.tedu.asset.attachment.pojo.vo.ListVO;
+import com.github.pagehelper.Page;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ListMapper {
-    int insertUnit(AList unit);
+public interface AttachmentMapper {
+    int insertUnit(AttachmentPO unit);
 
-    String selectImgUrlById(Long id);
+    String selectImgUrlById(String code);
 
-    void deleteById(Long id);
-
-    List<ListAdminVO> selectForAdmin();
+    int deleteById(String code);
 
     List<List> search3(ListVO listVO);
 
-    AssetVO findByName(AssetDTO assetDTO);
+    AssetVO findByName(String code);
+
+    Page<AttachmentPO> listAllAttachment();
 }

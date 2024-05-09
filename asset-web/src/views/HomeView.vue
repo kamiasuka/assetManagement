@@ -44,7 +44,7 @@
                                     <span>附件管理</span>
                                 </template>
                                 <el-menu-item-group  class="b1" @click="router.push('/attachment')">
-                                    <el-menu-item index="3-1">增加查询</el-menu-item>
+                                    <el-menu-item index="3-1">附件展示</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-sub-menu index="4">

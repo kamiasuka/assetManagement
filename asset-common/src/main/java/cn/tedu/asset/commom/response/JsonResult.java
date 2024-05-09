@@ -42,6 +42,7 @@ public class JsonResult {
     public static JsonResult ok(Object data){
         return new JsonResult(StatusCode.OPERATION_SUCCESS, data);
     }
+
     public static JsonResult fail(StatusCode statusCode,String msg){
         JsonResult jsonResult = new JsonResult();
         jsonResult.code = statusCode.getCode();

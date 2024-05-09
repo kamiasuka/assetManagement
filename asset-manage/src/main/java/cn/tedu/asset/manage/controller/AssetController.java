@@ -3,6 +3,7 @@ package cn.tedu.asset.manage.controller;
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.pojo.dto.*;
+import cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
@@ -29,6 +30,18 @@ public class AssetController {
     @Autowired
     private IAssetCacheRepository iAssetCacheRepository;
 
+
+    /**
+     * 显示所有资产(审核通过)
+     */
+    @GetMapping("listRedisAsset/{page}")
+    @ApiOperation("显示所有资产")
+    public JsonResult listRedisAsset(@PathVariable Integer page){
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetVO> pageData = iAssetCacheRepository.listAll(pageNum);
+        return JsonResult.ok(pageData);
+    }
+
     /**
      * 显示所有资产(审核通过)
      */
@@ -54,10 +67,10 @@ public class AssetController {
     /**
      * 根据分类显示资产
      */
-    @GetMapping("getAsset/tysb/{page}")
+    @GetMapping("getAsset/{category}/{page}")
     @ApiOperation("根据分类显示资产")
     public JsonResult getAssetByType(@PathVariable String category,@PathVariable Integer page){
-        log.debug("开始处理【根据分类加载资产】的请求，参数：{},页码：{}",category,page);
+        log.debug("开始处理【根据分类加载资产】的请求，参数："+category+" | page:"+page);
         Integer pageNum = page == null ? 1 : page;
         PageData<AssetVO> pageData = iAssetService.getAssetByType(category,pageNum);
         return JsonResult.ok(pageData);
@@ -76,22 +89,22 @@ public class AssetController {
     /**
      * 资产搜索
      */
-/*    @GetMapping("search/{keyword}")
+    @PostMapping("{page}/search")
     @ApiOperation("1.资产搜索")
-    public JsonResult searchAsset(
-            @PathVariable
-            @Pattern(regexp = "^(?! )\\S{1,20}(?<! )$", message = "关键词必须是1~20个字符，且首尾不可以是空格！")String keyword){
-        log.debug("开始处理【资产搜索】的请求,关键词：{}",keyword);
-        iAssetService.searchAsset(keyword);
-        return JsonResult.ok();
-    }*/
-    @GetMapping("search/{code}")
-    @ApiOperation("1.资产搜索")
-    public JsonResult search(@RequestBody AssetSearchDTO searchDTO){
-        log.debug("开始处理【资产搜索】的请求,关键词：{}",searchDTO);
-        iAssetService.searchAsset(searchDTO);
-        return JsonResult.ok();
+    public JsonResult searchAsset(SearchDTO searchDTO,@PathVariable Integer page){
+        log.debug("开始处理【资产搜索】的请求,searchDTO:"+searchDTO+"page:"+page);
+        Integer pageNum = page == null ? 1 : page;
+        PageData<AssetAttachmentVO> pageData = iAssetService.searchAsset(searchDTO, pageNum);
+        return JsonResult.ok(pageData);
     }
+
+//    @GetMapping("search/{code}")
+//    @ApiOperation("1.资产搜索")
+//    public JsonResult search(@RequestBody AssetSearchDTO searchDTO){
+//        log.debug("开始处理【资产搜索】的请求,关键词：{}",searchDTO);
+//        //iAssetService.searchAsset(searchDTO);
+//        return JsonResult.ok();
+//    }
 
 
     @PostMapping("add-new")
@@ -114,20 +127,8 @@ public class AssetController {
         iAssetService.addUpdate(addUpdateDTO);
         return JsonResult.ok();
     }
-
-    /**
-     * 资产变更
-     */
-    @PostMapping("update")
-    @ApiOperation("3.资产变更")
-    public JsonResult assetUpdate(AssetChangeDTO assetChangeDTO){
-        log.debug("开始处理【资产变更】的请求，参数：{}",assetChangeDTO);
-        iAssetService.assetChange(assetChangeDTO);
-        return JsonResult.ok();
-    }
-
     @GetMapping("add-delete/{code}")
-    @ApiOperation("2.资产录入时删除")
+    @ApiOperation("3.资产录入时删除")
     public JsonResult AddDelete(@PathVariable String code){
         log.debug("开始处理【资产录入时删除】的请求");
         iAssetService.addDelete(code);
@@ -135,10 +136,21 @@ public class AssetController {
     }
 
     /**
+     * 资产变更
+     */
+    @PostMapping("update")
+    @ApiOperation("4.资产变更")
+    public JsonResult assetUpdate(AssetChangeDTO assetChangeDTO){
+        log.debug("开始处理【资产变更】的请求，参数：{}",assetChangeDTO);
+        iAssetService.assetChange(assetChangeDTO);
+        return JsonResult.ok();
+    }
+
+    /**
      * 资产删除
      */
     @GetMapping("delete/{code}")
-    @ApiOperation("4.资产删除")
+    @ApiOperation("5.资产删除")
     @ApiOperationSupport(order = 400)
     public JsonResult assetDelete(@PathVariable String code){
         log.debug("开始处理【资产删除】的请求");

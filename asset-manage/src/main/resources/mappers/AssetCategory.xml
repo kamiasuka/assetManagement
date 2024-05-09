@@ -49,6 +49,11 @@
     <select id="countCategory" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM  asset_category WHERE parent_id=#{parent_id}
     </select>
+
+    <select id="selectMaxCategory" resultType="cn.tedu.asset.manage.pojo.vo.AssetMaxCategoryVO">
+        select id,name from asset_category where parent_id = 0
+    </select>
+
     <update id="updateIsParent">
         UPDATE asset_category SET
             is_parent=0

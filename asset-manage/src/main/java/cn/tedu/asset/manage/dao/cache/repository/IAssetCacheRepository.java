@@ -21,6 +21,6 @@ public interface IAssetCacheRepository {
 
     void updateCache(AssetUpdatePO assetUpdatePO);
 
-    List<AssetVO> listAll();
+    PageData<AssetVO> listAll(int page);
 
 }

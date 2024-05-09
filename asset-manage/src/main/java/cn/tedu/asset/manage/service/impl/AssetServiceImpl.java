@@ -9,12 +9,14 @@ import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.dto.*;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
+import cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import cn.tedu.asset.manage.service.IAssetService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +36,30 @@ public class AssetServiceImpl implements IAssetService {
     private IAssetCacheRepository iAssetCacheRepository;
     @Autowired(required = false)
     private AssetMapper assetMapper;
-    @Autowired
-    private IAssetService iAssetService;
 
     @Override
     public PageData<AssetVO> getAsset(Integer pageNum) {
-        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        PageHelper.startPage(pageNum, defaultQueryPageSize);
         Page<AssetVO> page = assetMapper.getAsset();
         PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
-        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
+        PageData<AssetVO> pageData = PageInfoToPageDataConverter.convert(pageInfo);
         return pageData;
     }
 
     @Override
-    public PageData<AssetVO> getAssetByType(String type, Integer pageNum) {
-        PageHelper.startPage(pageNum, defaultQueryPageSize);
-        List<AssetVO> voList = assetMapper.listAssetByCategory(type);
+    public PageData<AssetAttachmentVO> searchAsset(SearchDTO searchDTO, Integer pageNum) {
+        PageHelper.startPage(pageNum, 12);
+        log.debug("开始处理【资产搜索】的请求,关键词：{}", searchDTO);
+        Page<AssetAttachmentVO> page = assetMapper.searchAsset(searchDTO);
+        PageInfo<AssetAttachmentVO> pageInfo = new PageInfo<>(page);
+        PageData<AssetAttachmentVO> pageData = PageInfoToPageDataConverter.convert(pageInfo);
+        return pageData;
+    }
+
+    @Override
+    public PageData<AssetVO> getAssetByType(String maxType, Integer pageNum) {
+        PageHelper.startPage(pageNum, 12);
+        List<AssetVO> voList = assetMapper.listAssetByCategory(maxType);
         PageInfo<AssetVO> pageInfo = new PageInfo<>(voList);
         return PageInfoToPageDataConverter.convert(pageInfo);
     }
@@ -65,7 +75,7 @@ public class AssetServiceImpl implements IAssetService {
         for (String type : categoryList) {
             iAssetCacheRepository.saveCategory(type);
             assetVOList = assetMapper.listAssetByCategory(type);
-            iAssetCacheRepository. saveAsset(type,assetVOList);
+            iAssetCacheRepository.saveAsset(type, assetVOList);
         }
         iAssetCacheRepository.saveAll();
     }
@@ -106,12 +116,7 @@ public class AssetServiceImpl implements IAssetService {
         return list;
     }
 
-    @Override
-    public AssetVO searchAsset(AssetSearchDTO assetSearchDTO) {
-        log.debug("开始处理【资产搜索】的请求,关键词：{}", assetSearchDTO);
 
-        return null;
-    }
 
     @Override
     public int addNew(AssetAddDTO assetAddDTO) {
@@ -151,7 +156,7 @@ public class AssetServiceImpl implements IAssetService {
         log.debug("开始处理【资产删除】的业务，参数：{}", code);
         AssetVO assetVO = assetMapper.selectByCode(code);
         AssetUpdatePO assetUpdatePO = new AssetUpdatePO();
-        BeanUtils.copyProperties(assetVO,assetUpdatePO);
+        BeanUtils.copyProperties(assetVO, assetUpdatePO);
 
         assetUpdatePO.setReviewStatus("审核中");
         assetUpdatePO.setNote("删除该资产");
@@ -169,8 +174,8 @@ public class AssetServiceImpl implements IAssetService {
         log.debug("开始处理【资产录入时修改】的业务");
         AssetPO assetPO = new AssetPO();
         BeanUtils.copyProperties(addUpdateDTO, assetPO);
-        assetPO.setUseStatus("在用");
         assetPO.setReviewStatus("审核中");
+        assetPO.setSubmitDate(new Date());
         assetMapper.updateAddInfo(assetPO);
     }
 

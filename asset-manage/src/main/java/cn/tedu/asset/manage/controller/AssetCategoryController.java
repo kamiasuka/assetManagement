@@ -4,6 +4,7 @@ import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
 import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.AssetMaxCategoryVO;
 import cn.tedu.asset.manage.service.IAssetCategoryService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/asset-category")
+@RequestMapping("/v1/assetCategory")
 @Api(tags = "1. 资产分类管理")
 public class AssetCategoryController {
     @Autowired(required = false)
@@ -34,6 +35,16 @@ public class AssetCategoryController {
         log.debug("开始处理【显示所有资产分类】的请求");
         List<AssetCategoryVO> categoryList = categoryService.getAllCategory();
         return JsonResult.ok(categoryList);
+    }
+
+    @GetMapping("listMaxCategory")
+    @ApiOperation("资产分类展示")
+    @ApiOperationSupport(order = 100)
+    public JsonResult listMaxCategory() {
+        log.debug("开始处理【显示所有资产分类】的请求");
+        List<AssetMaxCategoryVO> maxCategoryList = categoryService.getMaxCategory();
+        System.out.println(maxCategoryList);
+        return JsonResult.ok(maxCategoryList);
     }
 
     /**

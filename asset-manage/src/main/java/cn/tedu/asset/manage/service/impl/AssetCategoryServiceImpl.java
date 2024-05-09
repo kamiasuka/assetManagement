@@ -7,6 +7,7 @@ import cn.tedu.asset.manage.pojo.dto.CategoryAddDTO;
 import cn.tedu.asset.manage.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.asset.manage.pojo.entity.AssetCategory;
 import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.AssetMaxCategoryVO;
 import cn.tedu.asset.manage.pojo.vo.CategoryStandardVO;
 import cn.tedu.asset.manage.service.IAssetCategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -175,5 +176,12 @@ public class AssetCategoryServiceImpl implements IAssetCategoryService {
         if (temp==1){
             categoryMapper.updateIsParent(assetCategory.getParentId());
         }
+    }
+
+    @Override
+    public List<AssetMaxCategoryVO> getMaxCategory() {
+        log.debug("开始处理【预热所有资产分类】的业务");
+        List<AssetMaxCategoryVO> listByCategory = categoryMapper.selectMaxCategory();
+        return listByCategory;
     }
 }

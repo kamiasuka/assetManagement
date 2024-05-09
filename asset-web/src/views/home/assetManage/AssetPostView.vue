@@ -21,8 +21,8 @@
       >
         <el-table-column>
           <el-table-column type="selection" width="55"/>
-          <el-table-column property="code" label="资产编码" width="150"/>
-          <el-table-column property="name" label="资产名称" width="100"/>
+          <el-table-column property="code" label="资产编码" width="120"/>
+          <el-table-column property="name" label="资产名称" width="150"/>
           <el-table-column property="type" label="资产分类" width="100"/>
           <el-table-column property="dept" label="所属部门" width="100"/>
           <el-table-column property="unit" label="所属单位" width="100"/>
@@ -377,10 +377,15 @@ const loadContents4 = () => {
             const responseData = response.data.data;
             applytableDataLog.value = responseData.list;
             Total.value = responseData.total;
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -406,13 +411,16 @@ const handleClickChangeOn = (row) => {
             if (response.data.code == 2001) {
               ElMessage.success("操作成功！");
               location.reload();
-            } else {
+            } else if (response.data.code==1004){
+              ElMessage.error("登录超时，请重新登录！");
+              router.push('/login')
+            }else {
               ElMessage.error(response.data.msg);
             }
           })
     }
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -429,13 +437,16 @@ const handleClickChangeOff = (row) => {
             if (response.data.code == 2001) {
               ElMessage.success("操作成功！");
               location.reload();
+            } else if (response.data.code==1004){
+              ElMessage.error("登录超时，请重新登录！");
+              router.push('/login')
             } else {
               ElMessage.error(response.data.msg);
             }
           })
     }
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 

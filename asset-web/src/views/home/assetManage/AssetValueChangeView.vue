@@ -111,10 +111,15 @@ const loadContents = () => {
             const responseData = response.data.data;
             tableData.value = responseData.list;
             Total.value = responseData.total;
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -151,12 +156,15 @@ const updateAsset = () => {
           if (response.data.code == 2001) {
             ElMessage.success("申请提交成功");
             location.reload();
-          } else {
+          }else if (response.data.code==1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
             ElMessage.error(response.data.msg);
           }
         })
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 
@@ -173,13 +181,16 @@ const deleteByCode = (row) => {
             if (response.data.code == 2001) {
               ElMessage.success("申请提交成功");
               location.reload();
-            } else {
+            } else if (response.data.code==1004){
+              ElMessage.error("登录超时，请重新登录！");
+              router.push('/login')
+            }else {
               ElMessage.error(response.data.msg);
             }
           })
     }
   } else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 }

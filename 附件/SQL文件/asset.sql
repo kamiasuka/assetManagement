@@ -73,7 +73,8 @@ CREATE TABLE asset_change_info
     use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30) COMMENT '审核状态，包括审核中，已通过，未通过',
     submit_date   datetime       DEFAULT NULL COMMENT '提交日期日期',
-    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
+    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期',
+    note          varchar(255)       DEFAULT NULL COMMENT '备注'
 ) COMMENT '资产信息' CHARSET = utf8mb4;
 
 
@@ -93,7 +94,8 @@ CREATE TABLE asset_add_info
     use_status    varchar(30)    DEFAULT '在用' COMMENT '使用状态，包括在用，闲置，在修，报废',
     review_status varchar(30)    DEFAULT '审核中' COMMENT '审核状态，包括审核中，已通过',
     submit_date   datetime       DEFAULT NULL COMMENT '提交日期日期',
-    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期'
+    approval_date datetime       DEFAULT NULL COMMENT '审核通过日期',
+    note          varchar(255)       DEFAULT NULL COMMENT '备注'
 ) COMMENT '资产录入信息' CHARSET = utf8mb4;
 
 # 修改日志记录表

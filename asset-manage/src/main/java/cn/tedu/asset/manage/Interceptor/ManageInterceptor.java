@@ -4,6 +4,7 @@ import cn.tedu.asset.commom.jwt.JwtUtils;
 import cn.tedu.asset.commom.response.JsonResult;
 import cn.tedu.asset.commom.response.StatusCode;
 import com.alibaba.fastjson2.JSON;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,9 +24,9 @@ public class ManageInterceptor implements HandlerInterceptor {
         //获取请求url
         String url = request.getRequestURL().toString();
         log.info("请求的url: {}", url);
-        //判断请求url中是否包含login，如果包含，说明是登录操作，放行
-        if (url.contains("login")) {
-            log.info("登录操作, 放行...");
+        //请求url包含login或者下载，放行
+        if (url.contains("login") || url.contains("download") || url.contains("doc")) {
+            log.info("登录(下载)操作, 放行...");
             return true;
         }
         //如果请求为 OPTIONS 请求，则返回 true,否则需要通过jwt验证
@@ -49,9 +50,9 @@ public class ManageInterceptor implements HandlerInterceptor {
 
         //解析token，如果解析失败，返回错误结果
         try {
-            System.out.println("解析token令牌:"+jwt);
+            System.out.println("解析前端发送的token令牌:"+jwt);
             JwtUtils.parseJWT(jwt);
-        } catch (Exception e) {//jwt解析失败
+        } catch (RuntimeException e) {//jwt解析失败
             e.printStackTrace();
             log.info("解析令牌失败, 返回未登录错误信息");
             String message = "解析令牌失败, 返回未登录错误信息!";

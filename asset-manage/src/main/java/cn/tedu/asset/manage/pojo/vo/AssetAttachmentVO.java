@@ -1,9 +1,11 @@
-package cn.tedu.asset.manage.pojo.dto;
+package cn.tedu.asset.manage.pojo.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class AddUpdateDTO {
+public class AssetAttachmentVO implements Serializable {
     private String code;
     private String name;
     private String type;
@@ -13,4 +15,7 @@ public class AddUpdateDTO {
     private int life;
     private double amount;
     private String useStatus;
+    private String reviewStatus;
+    private String approvalDate;
+    private String url;
 }

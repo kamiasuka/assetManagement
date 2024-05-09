@@ -100,24 +100,28 @@ const pieChartArr = ref([]);
 const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
 onMounted(() => {
-  console.log("开始执行getStatistics方法 ")
+  console.log("获取首页展示数据")
   if (token != null) {
     axios.defaults.headers.common['Authorization'] = token;
     axios.get("http://localhost:9002/v1/asset/getStatistics")
         .then((response) => {
           console.log("发送axios请求")
           if (response.data.code == 2001) {
-            // ElMessage.success("操作成功");
             statistics.value = response.data.data;
             for (let i = 0; i < typeData.length; i++) {
               numData.value.push(statistics.value[i].num);
               worthData.value.push(statistics.value[i].worth);
             }
+          }else if (response.data.code == 1004){
+            ElMessage.error("登录超时，请重新登录！");
+            router.push('/login')
+          }else {
+            ElMessage.error(response.data.msg);
           }
           showIndexView();
         })
   }else {
-    ElMessage.error("登录超时，请重新登录！");
+    ElMessage.error("系统未登录！");
     router.push('/login')
   }
 });
@@ -138,7 +142,6 @@ const showIndexView = ()=>{
             num: numData.value[i]
         });
     }
-
     console.log(cardArr);
 
     console.log("开始封装pieChartArr");

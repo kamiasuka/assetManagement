@@ -1,5 +1,7 @@
 package cn.tedu.asset.manage.dao.persist.mapper;
 
+import cn.tedu.asset.manage.pojo.dto.SearchDTO;
+import cn.tedu.asset.manage.pojo.vo.AssetAttachmentVO;
 import cn.tedu.asset.manage.pojo.vo.TypeListVO;
 import cn.tedu.asset.manage.pojo.dto.AssetUpdateDTO;
 import cn.tedu.asset.manage.pojo.po.AssetPO;
@@ -83,4 +85,6 @@ public interface AssetMapper {
     List<AssetAddVO> listAllAddLog();
 
     List<AssetAddVO> listAllChangeLog();
+
+    Page<AssetAttachmentVO> searchAsset(SearchDTO searchDTO);
 }

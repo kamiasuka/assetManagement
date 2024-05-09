@@ -2,6 +2,7 @@ package cn.tedu.asset.manage.dao.persist.mapper;
 
 import cn.tedu.asset.manage.pojo.entity.AssetCategory;
 import cn.tedu.asset.manage.pojo.vo.AssetCategoryVO;
+import cn.tedu.asset.manage.pojo.vo.AssetMaxCategoryVO;
 import cn.tedu.asset.manage.pojo.vo.CategoryStandardVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface AssetCategoryMapper {
 
 
     List<AssetCategoryVO> listByCategoryOne();
+
+    List<AssetMaxCategoryVO> selectMaxCategory();
 }

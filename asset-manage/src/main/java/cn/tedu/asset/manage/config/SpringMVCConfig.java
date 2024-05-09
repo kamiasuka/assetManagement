@@ -17,5 +17,4 @@ public class SpringMVCConfig implements WebMvcConfigurer {
                 .maxAge(3600);  //一小时内同一请求直接放行
     }
 
-
 }

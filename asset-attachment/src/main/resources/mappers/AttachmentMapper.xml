@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.asset.attachment.mapper.AttachmentMapper">
+
+    <insert id="insertUnit">
+    INSERT INTO attachment
+    (attachment_code,asset_code,type,asset_name,tip,url,updatedTime)
+    VALUES (#{attachmentCode},#{assetCode}, #{type}, #{assetName}, #{tip},  #{url}, #{updatedTime})
+</insert>
+
+    <delete id="deleteById">
+        DELETE
+        FROM attachment
+        WHERE attachment_code = #{code}
+    </delete>
+
+    <select id="listAllAttachment" resultType="cn.tedu.asset.attachment.pojo.dto.AttachmentPO">
+        select attachment_code as attachmentCode,asset_code as assetCode, asset_name as assetName,type,tip,url,updatedTime
+        from attachment
+        where asset_code is not null
+</select>
+
+    <select id="selectImgUrlById" resultType="string">
+        SELECT url
+        FROM attachment
+        WHERE attachment_code = #{code}
+    </select>
+
+    <select id="search3" parameterType="cn.tedu.asset.attachment.pojo.vo.ListVO" resultType="cn.tedu.asset.attachment.pojo.dto.AttachmentPO">
+        SELECT am.*, ai.unit AS unit,  ai.name AS name ,ai. use_status AS Status
+        FROM attachment am
+        LEFT JOIN asset_info ai ON am.asset_code = ai.code
+        <where>
+            <if test="unit != null and unit != ''">AND ai.unit LIKE CONCAT('%',#{unit},'%')</if>
+            <if test="name != null and name != ''">AND ai.name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="atName != null and atName != ''">AND am.asset_name LIKE CONCAT('%',#{assetName},'%')</if>
+            <if test="type != null and type != ''">AND am.type = #{type}</if>
+            <if test="updatedTime != null and updatedTime != ''">AND am.updatedTime LIKE CONCAT('%',#{updatedTime},'%')</if>
+            <if test="status != null and status != ''">AND am.Status = #{status}</if>
+        </where>
+        ORDER BY am.id
+    </select>
+
+<select id="findByName" resultType="cn.tedu.asset.attachment.pojo.vo.AssetVO">
+    SELECT * FROM asset_info WHERE code = #{code};
+</select>
+
+
+</mapper>
+

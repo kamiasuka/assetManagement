@@ -59,7 +59,6 @@ public class GlobalExceptionHandler {
     public JsonResult doHandleRuntimeException(RuntimeException ex){
         String message = ex.getMessage();
         log.error("RuntimeException: " + message);
-
         return new JsonResult(StatusCode.OPERATION_FAILED, message);
     }
 

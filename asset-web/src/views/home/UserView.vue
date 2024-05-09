@@ -21,10 +21,18 @@
         </el-tab-pane>
         <el-tab-pane label="修改密码">
             <el-form label-width="100px" style="margin: 50px 150px">
-                <el-form-item label="旧密码:"><el-input v-model="userinfo.password" style="width: 200px"></el-input></el-form-item>
-                <el-form-item label="新密码:"><el-input v-model="newPwd1" style="width: 200px"></el-input></el-form-item>
-                <el-form-item label="确认新密码:"><el-input v-model="newPwd2" style="width: 200px"></el-input></el-form-item>
-                <el-form-item><el-button type="primary" @click="savePwd()">保存</el-button></el-form-item>
+                <el-form-item label="旧密码:">
+                    <el-input v-model="userinfo.password" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码:">
+                    <el-input v-model="newPwd1" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item label="确认新密码:">
+                    <el-input v-model="newPwd2" style="width: 200px"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="savePwd()">保存</el-button>
+                </el-form-item>
             </el-form>
         </el-tab-pane>
     </el-tabs>
@@ -38,97 +46,115 @@ import {ElMessage} from "element-plus";
 import router from "@/router";
 
 
-const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
-const userinfo = ref({id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}); //{id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}
+const user = ref(localStorage.user ? JSON.parse(localStorage.user) : null);
+const userinfo = ref({
+    id: "",
+    username: "",
+    password: "",
+    nickname: "",
+    identity: "",
+    tel: "",
+    email: "",
+    dept: "",
+    unit: ""
+}); //{id:"",username:"",password:"",nickname:"",identity:"",tel:"",email:"",dept:"",unit:""}
 
 const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 //const token = localStorage.getItem("token");
 
 onMounted(() => {
-  let userId = user.value.id;
-  if (token != null) {
-    axios.defaults.headers.common['Authorization'] = token;
-    //console.log("axios请求头："+axios.defaults.headers.common);
-    axios.get("http://localhost:9001/v1/users/" + userId + "/getInfoById/")
-        .then((response) => {
-          if (response.data.code == 2001) {
-            userinfo.value = response.data.data;
-          } else if (response.data.code == 1000) {
-            ElMessage.error("未登录！请登录后再操作！");
-            router.push('/login')
-          } else if (response.data.code == 1004) {
-            ElMessage.error("登录超时，请重新登录！");
-            router.push('/login')
-          }
-        })
-  }else {
-    ElMessage.error("登录超时，请重新登录！");
-    router.push('/login')
-  }
+    let userId = user.value.id;
+    if (token != null) {
+        axios.defaults.headers.common['Authorization'] = token;
+        axios.get("http://localhost:9001/v1/users/" + userId + "/getInfoById/")
+            .then((response) => {
+                if (response.data.code == 2001) {
+                    userinfo.value = response.data.data;
+                } else if (response.data.code == 1000) {
+                    ElMessage.error("未登录！请登录后再操作！");
+                    router.push('/login')
+                } else if (response.data.code == 1004) {
+                    ElMessage.error("登录超时，请重新登录！");
+                    router.push('/login')
+                } else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    } else {
+        ElMessage.error("系统未登录！");
+        router.push('/login')
+    }
 });
 // 获取用户信息
-const getUserInfo = ()=>{
+const getUserInfo = () => {
 };
 
 // 修改用户信息
-const save = ()=>{
+const save = () => {
     let data = qs.stringify(userinfo.value);
-  if (token != null) {
-    axios.defaults.headers.common['Authorization'] = token;
-    axios.post('http://localhost:9001/v1/users/' + userinfo.value.id + '/info/update', data)
-        .then((response) => {
-          if (response.data.code == 2001) {
-            ElMessage.success("修改完成!");
-            //更新LocalStorage里面的用户数据
-            user.value.nickname = userinfo.value.nickname;
-            localStorage.user = JSON.stringify(user.value);
-          }
-        })
-  }
-}
+    if (token != null) {
+        axios.defaults.headers.common['Authorization'] = token;
+        axios.post('http://localhost:9001/v1/users/' + userinfo.value.id + '/info/update', data)
+            .then((response) => {
+                if (response.data.code == 2001) {
+                    ElMessage.success("修改完成!");
+                    //更新LocalStorage里面的用户数据
+                    user.value.nickname = userinfo.value.nickname;
+                    localStorage.user = JSON.stringify(user.value);
+                } else if (response.data.code == 1004) {
+                    ElMessage.error("登录超时，请重新登录！");
+                    router.push('/login')
+                } else {
+                    ElMessage.error(response.data.msg);
+                }
+            })
+    } else {
+        ElMessage.error("系统未登录！");
+        router.push('/login')
+    }
 
 // 修改密码
-const newPwd1 = ref("");//  新密码
-const newPwd2 = ref("");//确认新密码
+    const newPwd1 = ref("");//  新密码
+    const newPwd2 = ref("");//确认新密码
 // todo 修改密码业务
-const savePwd= ()=>{
-    if (newPwd1.value === newPwd2.value){
-        let dataJson = {
-            id: userinfo.value.id,
-            newPassword: newPwd2.value
-        };
-        console.log(dataJson);
-        let data = qs.stringify(dataJson);
-      if (token != null) {
-        axios.defaults.headers.common['Authorization'] = token;
-        axios.post('http://localhost:9001/v1/users/' + dataJson.id + '/password/update', data)
-            .then((response) => {
-              if (response.data.code == 2001) {
-                ElMessage.success("修改完成!");
-                //刷新“旧密码”框的显示
-                userinfo.value.password = newPwd2.value;
-                //刷新输入框
-                newPwd1.value = "";
-                newPwd2.value = "";
-              } else {
-                console.log(localStorage.user);
-                ElMessage.error(response.data.msg);
-              }
-            })
-      }
-    }else {
-        newPwd1.value="";
-        newPwd2.value="";
-        ElMessage.error("新密码不一致，请重新输入");
-    }
+    const savePwd = () => {
+        if (newPwd1.value === newPwd2.value) {
+            let dataJson = {
+                id: userinfo.value.id,
+                newPassword: newPwd2.value
+            };
+            console.log(dataJson);
+            let data = qs.stringify(dataJson);
+            if (token != null) {
+                axios.defaults.headers.common['Authorization'] = token;
+                axios.post('http://localhost:9001/v1/users/' + dataJson.id + '/password/update', data)
+                    .then((response) => {
+                        if (response.data.code == 2001) {
+                            ElMessage.success("修改完成!");
+                            //刷新“旧密码”框的显示
+                            userinfo.value.password = newPwd2.value;
+                            //刷新输入框
+                            newPwd1.value = "";
+                            newPwd2.value = "";
+                        } else if (response.data.code == 1004) {
+                            ElMessage.error("登录超时，请重新登录！");
+                            router.push('/login')
+                        } else {
+                            ElMessage.error(response.data.msg);
+                        }
+                    })
+            }
+        } else {
+            newPwd1.value = "";
+            newPwd2.value = "";
+            ElMessage.error("新密码不一致，请重新输入");
+        }
 //更新LocalStorage里面的用户数据
-    localStorage.user = JSON.stringify(user.value);
+        localStorage.user = JSON.stringify(user.value);
+
+    }
 
 }
-
-
-
-
 </script>
 
 <style scoped>

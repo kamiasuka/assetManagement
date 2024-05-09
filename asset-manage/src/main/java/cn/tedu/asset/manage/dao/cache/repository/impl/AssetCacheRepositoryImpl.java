@@ -1,19 +1,26 @@
 package cn.tedu.asset.manage.dao.cache.repository.impl;
 
+import cn.tedu.asset.manage.Util.PageInfoToPageDataConverter;
 import cn.tedu.asset.manage.dao.cache.repository.IAssetCacheRepository;
 import cn.tedu.asset.manage.dao.persist.mapper.AssetMapper;
 import cn.tedu.asset.manage.pojo.po.AssetUpdatePO;
 import cn.tedu.asset.manage.pojo.vo.AssetVO;
 import cn.tedu.asset.manage.pojo.vo.PageData;
 import com.alibaba.fastjson2.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static cn.tedu.asset.manage.Util.AssetCacheConsts.*;
 
@@ -24,6 +31,9 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     private RedisTemplate redisTemplate;
     @Autowired(required = false)
     private AssetMapper assetMapper;
+    @Value("16")
+    private Integer defaultQueryPageSize;
+
 
     @Override
     public void saveCategory(String type) {
@@ -58,10 +68,22 @@ public class AssetCacheRepositoryImpl implements IAssetCacheRepository {
     }
 
     @Override
-    public List<AssetVO> listAll() {
+    public PageData<AssetVO> listAll(int pageNum) {
         log.debug("开始处理【查询资产数据】的缓存数据访问");
+        PageHelper.startPage(pageNum,defaultQueryPageSize);
+        Page<AssetVO> page = assetMapper.exportVo();
+        PageInfo<AssetVO> pageInfo = new PageInfo<>(page);
+        PageData<AssetVO> pageData =  PageInfoToPageDataConverter.convert(pageInfo);
 
-        return null;
+        String key = "key_All_"+pageNum;
+        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+        String assetPOJson = JSON.toJSONString(pageData);
+        opsForValue.set(key, assetPOJson,86400, TimeUnit.SECONDS);
+
+        String json = opsForValue.get(key);
+        PageData<AssetVO> data = JSON.toJavaObject(json,PageData.class);
+
+        return data;
     }
 
     @Override

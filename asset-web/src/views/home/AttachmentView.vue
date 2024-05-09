@@ -1,148 +1,70 @@
 <template>
     <el-tabs type="border-card">
         <el-tab-pane label="附件列表">
-            <el-row :gutter="10" class="search">
-                <el-col :span="4.5" style="font-size: 14px;" >
-                    所属单位：
-                    <el-input
-                            size="normal"
-                            style="width: 200px"
-                            v-model="searchlist.unit"
-                            placeholder="全部"
-                            class="input-with-select">
-                    </el-input></el-col>
-
-                    <el-col :span="4.5" style="font-size: 14px;" >
-                        所属资产：
-                        <el-input
-                                size="normal"
-                                style="width: 200px"
-                                v-model="searchlist.name"
-                                placeholder="全部"
-                                class="input-with-select">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="4" style="font-size: 14px;" >
-                    附件名称：
-                    <el-input placeholder="全部" style="width: 180px" size="normal" v-model="searchlist.atName" ></el-input>
-                </el-col>
-                <el-col :span="5" style="font-size: 14px;"   >
-
-                        <div class="block">
-                            <span class="demonstration">创建时间：</span>
-                            <el-date-picker
-                                    v-model="timedate"
-                                    placeholder="全部"
-                                    :size="size"
-                            />
-                        </div>
-                </el-col>
-                <el-col :span="3.5" style="font-size: 14px;">
-                    附件类型：
-                    <el-select v-model="value2" class="m-2" placeholder="Select" size="normal" style="width: 130px">
-                        <el-option
-                                v-for="item in options2"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"/>
-                    </el-select>
-                </el-col>
-<!--                <el-col :span="4" style="font-size: 14px;">-->
-<!--                    使用状态：-->
-<!--                    <el-select v-model="value" class="m-2" placeholder="Select" size="normal" style="width: 130px">-->
-<!--                        <el-option-->
-<!--                                v-for="item in options"-->
-<!--                                :key="item.value"-->
-<!--                                :label="item.label"-->
-<!--                                :value="item.value"-->
-<!--                        />-->
-<!--                    </el-select>-->
-<!--                </el-col>-->
-                <el-col :span="3" >
-                    <el-button  type="primary" size="name" @click="search">查询</el-button>
-                    <el-button type="primary" size="name" @click="searchAll">查询所有</el-button>
-                </el-col>
-            </el-row>
-            <el-table :data="currentPageData" #default="scope"  style="width: 100%; margin-top: 5px;"  :row-height="50"  >
-                <el-table-column :span="2" prop="unit" label="单位" width="80" class="black"></el-table-column>
-                <el-table-column :span="4" prop="name" label="资产所属" width="200" class="black"></el-table-column>
-                <el-table-column :span="2" prop="type" label="类型" width="180"> <template #default="{ row }">
-                    {{ getText(row.type) }}
-                </template>
-                </el-table-column>
-                <el-table-column :span="2" prop="atName" label="名称" width="180" class="black"></el-table-column>
-                <el-table-column :span="4" prop="status" label="使用状态" width="180" class="black">
+            <div class="mt-4">
+                <el-button type="primary" @click="reflush">刷新</el-button>
+            </div>
+            <el-table :data="tableData" #default="scope" style="width: 100%; margin-top: 5px;" :row-height="50">
+                <el-table-column :span="2" prop="attachmentCode" label="附件编码" width="200" class="black"></el-table-column>
+                <el-table-column :span="2" prop="type" label="附件資產類型" width="180" class="black"></el-table-column>
+                <el-table-column :span="4" prop="assetCode" label="附件所属资产编码" width="200" class="black"></el-table-column>
+                <el-table-column :span="2" prop="assetName" label="附件所属资产名" width="180"></el-table-column>
+<!--<el-table-column :span="4" prop="status" label="使用状态" width="180" class="black">
                     <template #default="{ row }">
-                        <el-button :type="row.status === '在用' ? 'success' : 'danger'"  :style="{ 'pointer-events': 'none' }" >
+                        <el-button :type="row.status === '在用' ? 'success' : 'danger'"
+                                   :style="{ 'pointer-events': 'none' }">
                             {{ row.status === '在用' ? '已启用' : '未启用' }}
                         </el-button>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
+                <el-table-column :span="4" prop="updatedTime" label="更新时间" width="220" class="black"></el-table-column>
                 <el-table-column :span="2" prop="tip" label="备注" width="300" class="black"></el-table-column>
-                <el-table-column :span="4" prop="updatedTime" label="更新时间" width="220" class="black">
-                </el-table-column>
                 <el-table-column :span="8" prop="address" label="操作" width="300" class="black">
                     <template #default="scope">
                         <a :href="'http://localhost:9004/' + scope.row.url" target="_blank">
-                        <el-button type="success">查看</el-button>
+                            <el-button style="width: 70px; height: 30px;margin-left: 20px" type="success">查看附件</el-button>
                         </a>
-<!--                        <el-button style=";margin-left: 20px" type="primary"  @click="openEditDialog(scope.row)">编辑</el-button>-->
-<!--                        <el-button style=";margin-left: 20px" type="primary"  @click="dialogTableVisible = true">编辑</el-button>-->
-
-                        <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger"  @click="del(scope.$index,scope.row)">
-                        删除附件
-                    </el-button>
+                        <el-button style="width: 70px; height: 30px;margin-left: 20px" type="danger" @click="del(scope.row)">删除附件</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-
-
-
-            <div class="pagination-wrapper">
-            <el-pagination
-                    style="margin-left: 1200px;margin-top: 30px"
-                    background
-                    layout="prev, pager, next"
-                    :total="arr.length"
-                    :page-size="pageSize"
-                    @current-change="handleCurrentChange"
-
-            />
+            <div style="position: fixed; bottom: 10px;">
+                <el-pagination
+                        background layout="prev, pager, next"
+                        :total="Total"
+                        :page-size="pageSize"
+                        @current-change="handleCurrentChange"
+                />
             </div>
         </el-tab-pane>
         <el-tab-pane label="附件添加">
             <el-form label-width="100px" style="margin: 50px 150px">
-                <el-form-item  label="附件名称:">
-                    <el-input v-model="attachmentlist.atName" style="width: 400px;" ></el-input>
+                <el-form-item label="附件名称:">
+                    <el-input v-model="attachmentAddInfo.assetName" style="width: 400px;"></el-input>
                 </el-form-item>
-                <el-form-item  label="资产编码:">
-                    <el-input v-model="attachmentlist.code" style="width: 400px;" >
+                <el-form-item label="资产编码:">
+                    <el-input v-model="attachmentAddInfo.assetCode" style="width: 400px;">
                     </el-input>
                 </el-form-item>
-                    <el-form-item label="附件类型:">
-                        <el-select v-model="value3" class="m-2" placeholder="Select"  style="width: 400px;">
-                            <el-option
-                                    v-for="item in options3"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"/>
-                        </el-select>
-
-                    </el-form-item>
-                <el-form-item  label="附件备注:">
+                <el-form-item label="附件类型:">
+                    <el-select v-model="attachmentAddInfo.type" class="m-2" placeholder="Select" style="width: 400px;">
+                        <el-option
+                                v-for="item in options3"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"/>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="附件备注:">
                     <el-input
                             style="width: 400px;"
-                            v-model="textarea"
+                            v-model="attachmentAddInfo.tip"
                             :rows="2"
                             type="textarea"
                             placeholder=""
                     />
                 </el-form-item>
                 <el-form-item label="添加附件:">
-<!--                    <img v-if="attachmentlist.id!=null&&fileList.length==0"-->
-<!--                         :src="'http://localhost:8080'+content.imgUrl"-->
-<!--                         style="width: 148px;height: 148px;"> -->
-                    <!--   上传组件开始   -->
                     <el-upload
                             v-model:file-list="fileList"
                             name="file"
@@ -152,301 +74,190 @@
                             :on-preview="handlePictureCardPreview"
                             :on-remove="handleRemove"
                     >
-                        <el-icon><Plus /></el-icon>
+                        <el-icon>
+                            <Plus/>
+                        </el-icon>
                     </el-upload>
-
                     <el-dialog v-model="dialogVisible">
-                        <img w-full :src="dialogImageUrl" alt="Preview Image" />
+                        <img w-full :src="dialogImageUrl" alt="Preview Image"/>
                     </el-dialog>
                     <!--   上传组件结束   -->
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button style=""  @click="saveAttachment" type="primary">保存</el-button>
-                    <el-button style="" type="" >返回</el-button>
+                    <el-button style="" @click="saveAttachment" type="primary">保存</el-button>
+                    <el-button style="" type="">返回</el-button>
                 </el-form-item>
             </el-form>
         </el-tab-pane>
     </el-tabs>
-
-
-
-
-
-
 </template>
 
 <script setup>
-    import { Search } from '@element-plus/icons-vue';
-    import {onMounted, ref,reactive,computed,watch } from 'vue';
-    import axios from "axios";
-    import {ElMessage} from "element-plus";
-    import router from "@/router";
+import {Search} from '@element-plus/icons-vue';
+import {onMounted, ref, reactive, computed, watch} from 'vue';
+import axios from "axios";
+import {ElMessage} from "element-plus";
+import router from "@/router";
+import qs from "qs";
+const reflush = () => {
+    location.reload();
+}
 
+const options3 = [
+    {value: '资产新增', label: '资产新增',},
+    {value: '资产变更', label: '资产变更',},
+    {value: '资产报废', label: '资产报废',},
+]
 
+const Total = ref();
+const tableData = ref([]);
+const pageSize = 16; // 每页显示的条目数
+const pageNum = ref(1); // 当前页码
+// 计算当前页的数据
+const handleCurrentChange = (val) => {
+    pageNum.value = val;
+    loadContents();
+};
+onMounted(() => {
+    loadContents();
+})
 
-    // 使用 `ref` 来声明响应式数据
-    const selectedOption = ref('全部'); // Assuming `selectedOption` is a reactive variable
-
-    // 使用 `methods` 来声明方法
-    const handleDropdownItemClick = (action) => {
-        selectedOption.value = action;
-    };
-
-    const value = ref('')
-    const options = [
-        {value: '',  label: '全部'},
-        {value: '1', label: '已启用',},
-        {value: '2', label: '未启用',},
-    ]
-
-    const value2 = ref('')
-    const options2 = [
-        {value: '',  label: '全部'},
-        {value: '1', label: '资产新增',},
-        {value: '2', label: '资产报损',},
-        {value: '3', label: '资产闲置',},
-        {value: '4', label: '资产变卖'}
-    ]
-    const value3 = ref('')
-    const options3 = [
-        {value: '1', label: '资产新增',},
-        {value: '2', label: '资产报损',},
-        {value: '3', label: '资产闲置',},
-        {value: '4', label: '资产变卖'}
-    ]
-    const getText = (type) => {
-        const option = options2.find(option => option.value === type);
-        return option ? option.label : '';
-    };
-
-
-    //列表关联数据库
-    const arr = ref([]);
-    onMounted(()=>{
-        if (!isMounted.value) {
-            isMounted.value = true;
-        }
-        axios.get("http://localhost:9004"+"/v1/asset-attachment/admin").then((response)=>{
-            if (response.data.code==2001){
-                arr.value = response.data.data;
+const loadContents = () => {
+    //展示数据
+    const page = parseInt(pageNum.value);
+    axios.get('http://localhost:9004/v1/asset-attachment/listAll/' + page)
+        .then((response) => {
+            if (response.data.code == 2001) {
+                const responseData = response.data.data;
+                tableData.value = responseData.list;
+                console.log("tableData:"+tableData);
+                Total.value = responseData.total;
+            }  else {
+                ElMessage.error(response.data.msg);
             }
         })
-    })
-    const isMounted = ref(false);
+}
 
-    const searchlist = ref({
-        unit: '',
-        type: '',
-        atName: '',
-        // status:'',
-        time: '',
-        name:'',
-    });
-    const arr2 = ref([]);
+//添加附件相关
+const fileList = ref([])
 
-    const timedate =ref({});
-    const formattedDate = ref('');
-    watch(timedate, (newValue) => {
-        let datetime = new Date(newValue);
-        let year = datetime.getFullYear();
-        let month = (datetime.getMonth() + 1).toString().padStart(2, "0");
-        let day = datetime.getDate().toString().padStart(2, "0");
-        formattedDate.value = `${year}-${month}-${day}`;
-    });
-    const search = () => {
+const attachmentAddInfo = ref([{
+    assetName: '',
+    assetCode: '',
+    type: '',
+    tip: '',
+    url: ''
+}]);
 
-
-        let updatedTime = formattedDate.value !== '1970-01-01' ? formattedDate.value : '';
-
-        const searchData = {
-
-            atName: searchlist.value.atName,
-            // status: value.value,
-            name: searchlist.value.name,
-            type: value2.value,
-            updatedTime:updatedTime,
-            unit: searchlist.value.unit
-
-        };
-
-        console.log(searchData);
-
-        axios.post('http://localhost:9004/v1/asset-attachment/search', searchData)
-            .then(response => {
-
-                console.log('来自后端的响应:', response.data);
-
-                if (response.data.code==2001){
-                    arr.value = response.data.data;
-                }
-                ElMessage.success("查询成功");
-
-            })
-            .catch(error => {
-
-                console.error('发送数据到后端时出错:', error);
-            });
-    };
-
-    const searchAll = () => {
-        // 将搜索条件对象中的所有属性值设置为空字符串
-        for (const key in searchlist.value) {
-            searchlist.value[key] = '';
-        }
-        // 重置时间查询结果
-        timedate.value = {};
-        formattedDate.value = '';
-        // 执行搜索
-        search();
-    };
-
-    //添加附件相关
-    const attachmentlist = ref({
-        atName: '',
-        code: '',
-    });
-
-    const textarea = ref('');
-
-    const saveAttachment = () => {
-        if (!attachmentlist.value.atName || !attachmentlist.value.code || !value3.value || !textarea.value) {
-            ElMessage.error("请填写完整的附件信息");
-            return;
-        }
-
-        const data = {
-            atName: attachmentlist.value.atName,
-            code: attachmentlist.value.code,
-            type: value3.value,
-            tip: textarea.value,
-            assetId: '',
-            url: fileList.value.length > 0 ? fileList.value[0].response.data : ''
-        };
-        console.log(data);
-
-
-        axios.post('http://localhost:9004/v1/asset-attachment/check', {code:data.code})
-            .then(response => {
-                if (response.data.code === 2001 && response.data.data) {
-                    console.log("Response from /check endpoint:", response.data);
-                    data.assetId = response.data.data;
-                    console.log("Asset ID:", data.assetId);
-
-                    axios.post('http://localhost:9004/v1/asset-attachment/create', data)
-                        .then(response => {
-                            if (response.data.code === 2001) {
-                                ElMessage.success("附件添加成功");
-                                attachmentlist.value.atName ='';
-                                attachmentlist.value.code = '';
-                                value2.value = '';
-                                textarea.value = '';
-                                fileList.value = [];
-                            } else {
-                                ElMessage.error("附件添加失败");
-                            }
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error("Error adding attachment:", error);
+const saveAttachment = () => {
+    if (!attachmentAddInfo.value.assetName || !attachmentAddInfo.value.assetCode || !attachmentAddInfo.value || !attachmentAddInfo.value) {
+        ElMessage.error("请填写完整的附件信息");
+        return;
+    }
+    //取出图片路径
+    if (fileList.value.length > 0) {
+        let imgUrl = fileList.value[0].response.data;
+        //把上传成功的图片路径存到user对象里面
+        attachmentAddInfo.value.url = imgUrl;
+    }
+    let code = attachmentAddInfo.value.assetCode;
+    let data = qs.stringify(attachmentAddInfo.value);
+    axios.get('http://localhost:9004/v1/asset-attachment/check/' + code)
+        .then(response => {
+            if (response.data.code === 2001) {
+                console.log("attachmentAddInfo: "+data)
+                axios.post('http://localhost:9004/v1/asset-attachment/create', data)
+                    .then(response => {
+                        if (response.data.code === 2001) {
+                            ElMessage.success("附件添加成功");
+                            attachmentAddInfo.value.assetName = '';
+                            attachmentAddInfo.value.assetCode = '';
+                            attachmentAddInfo.value.type = '';
+                            attachmentAddInfo.value.tip = '';
+                            fileList.value = [];
+                        } else {
                             ElMessage.error("附件添加失败");
-                        });
-                } else {
-                    ElMessage.error("请填入正确的资产编码");
+                        }
+                        //location.reload();
+                    })
+                    .catch(error => {
+                        console.error("Error adding attachment:", error);
+                        ElMessage.error("附件添加失败");
+                    });
+            } else {
+                ElMessage.error("请填入正确的资产编码");
+            }
+        })
+        .catch(error => {
+            console.error("Error checking asset:", error);
+            ElMessage.error("请输入正确资产");
+        });
+};
+
+/*上传组件开始*/
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const handleRemove = (uploadFile, uploadFiles) => {
+    axios.post('http://localhost:9004/v1/remove?imgUrl=' + uploadFile.response.data)
+        .then((response) => {
+            if (response.data.code == 2001) {
+                ElMessage.success("服务器文件删除完成!");
+            }else {
+                ElMessage.error(response.data.msg);
+            }
+        })
+}
+
+const handlePictureCardPreview = (uploadFile) => {
+    dialogImageUrl.value = uploadFile.url
+    dialogVisible.value = true
+}
+/*上传组件结束*/
+
+const del = (row) => {
+    let code = row.attachmentCode;
+    if (confirm("您确认删除吗?")) {
+        axios.post('http://localhost:9004/v1/asset-attachment/' + code + "/delete")
+            .then((response) => {
+                if (response.data.code == 2001) {
+                    ElMessage.success("删除完成")
+                    location.reload();
+                }else {
+                    ElMessage.error(response.data.msg);
                 }
-            })
-            .catch(error => {
-                console.error("Error checking asset:", error);
-                ElMessage.error("请输入正确资产");
-            });
-    };
-
-    const dialogFormVisible = ref(false)
-    const formLabelWidth = '140px'
-
-    /*上传组件开始*/
-    const fileList = ref([])
-    const dialogImageUrl = ref('')
-    const dialogVisible = ref(false)
-    const handleRemove = (uploadFile, uploadFiles) => {
-
-        axios.post('http://localhost:9004/v1/remove?imgUrl='+uploadFile.response.data)
-            .then((response)=>{
-                if (response.data.code==2001){
-                    ElMessage.success("服务器文件删除完成!");
-                }
-            })
-
+            }
+        )
     }
-    const handlePictureCardPreview = (uploadFile) => {
-        dialogImageUrl.value = uploadFile.url
-        dialogVisible.value = true
-    }
-    /*上传组件结束*/
-
-    const del =(i,attachmentlist)=>{
-        if(confirm("您确认删除吗?")){
-            axios.post("http://localhost:9004"+'/v1/asset-attachment/'+attachmentlist.id+"/delete").then((response)=>{
-                    if (response.data.code==2001){
-                        ElMessage.success("删除完成")
-                        arr.value.splice(i,1)
-                    }
-                }
-            )
-        }
-    }
-
-    const edit = (c)=>{
-        localStorage.from = 'admin';//设置从哪个页面去的修改页面
-        router.push('/personal/post?id='+c.id);
-    }
-
-
-    const pageSize = 12; // 每页显示的条目数
-    const currentPage = ref(1); // 当前页码
-
-    // 计算当前页的数据
-    const currentPageData = computed(() => {
-        const startIndex = (currentPage.value - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        return arr.value.slice(startIndex, endIndex);
-    });
-
-    // 处理页码改变的方法
-    const handleCurrentChange = (val) => {
-        currentPage.value = val;
-    };
-
-
-
-    //123123
-
-
-
+}
 
 
 </script>
 
-<style >
-    .search{
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-    }
-    .m-2{
-        width: 100px;
-    }
-    .table{
-        height: 20px;
-    }
-    .pagination-wrapper{
-        position: fixed;
-        bottom: 50px;
-        left: 280px; /* 调整左边距 */
-    }
-    .black {
-            color: black;
-    }
+<style>
+.search {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.m-2 {
+    width: 100px;
+}
+
+.table {
+    height: 20px;
+}
+
+.pagination-wrapper {
+    position: fixed;
+    bottom: 50px;
+    left: 280px; /* 调整左边距 */
+}
+
+.black {
+    color: black;
+}
 
 </style>
 
