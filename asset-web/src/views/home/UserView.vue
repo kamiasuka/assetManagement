@@ -112,7 +112,7 @@ const save = () => {
         ElMessage.error("系统未登录！");
         router.push('/login')
     }
-
+}
 // 修改密码
     const newPwd1 = ref("");//  新密码
     const newPwd2 = ref("");//确认新密码
@@ -151,8 +151,6 @@ const save = () => {
         }
 //更新LocalStorage里面的用户数据
         localStorage.user = JSON.stringify(user.value);
-
-    }
 
 }
 </script>

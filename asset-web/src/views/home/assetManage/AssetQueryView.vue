@@ -202,10 +202,9 @@ const status = [
 ]
 
 const dept = [
-    {value: '在用', label: '在用',},
-    {value: '闲置', label: '闲置',},
-    {value: '在修', label: '在修',},
-    {value: '报废', label: '报废',},
+    {value: '开发部门', label: '开发部门',},
+    {value: '测试部门', label: '测试部门',},
+    {value: '行政部门', label: '行政部门',},
 ]
 
 const searchlist = ref({

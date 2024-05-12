@@ -85,7 +85,6 @@ public class ReviewServiceImpl implements IReviewService {
 //        BeanUtils.copyProperties(addNew,assetPO);
 //        assetPO.setReviewStatus("已通过");
 //        assetPO.setApprovalDate(new Date());
-
         int num = assetMapper.updateAddOff(code);
         if (num != 1){
             throw new ServiceException(StatusCode.OPERATION_FAILED,"操作失败！");

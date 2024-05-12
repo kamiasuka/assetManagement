@@ -92,7 +92,7 @@
 
     <!--资产变更-->
     <select id="getAsset" resultType="cn.tedu.asset.manage.pojo.vo.AssetVO">
-        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date,note
         from asset_info where review_status = '已通过'
     </select>
 

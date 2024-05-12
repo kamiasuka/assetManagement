@@ -8,14 +8,14 @@
 
                     <el-col >
                         <el-menu
-                                active-text-color="#ffd04b"
-                                background-color="#304156"
-                                class="el-menu-vertical-demo"
-                                default-active="1-1"
-                                text-color="#D5D5D5"
-                                @open="handleOpen"
-                                @close="handleClose"
-                                unique-opened="true"
+                            active-text-color="#ffd04b"
+                            background-color="#304156"
+                            class="el-menu-vertical-demo"
+                            default-active="1-1"
+                            text-color="#D5D5D5"
+                            @open="handleOpen"
+                            @close="handleClose"
+                            unique-opened="true"
                         >
                             <el-sub-menu index="1" >
                                 <template #title  >
@@ -34,9 +34,9 @@
                                 <el-menu-item-group class="b1" @click="router.push('/dept')">
                                     <el-menu-item index="2-1">部门管理</el-menu-item>
                                 </el-menu-item-group>
-<!--                                <el-menu-item-group  class="b1" @click="router.push('/asset-life')">-->
-<!--                                    <el-menu-item index="2-3">使用年限</el-menu-item>-->
-<!--                                </el-menu-item-group>-->
+                                <!--                                <el-menu-item-group  class="b1" @click="router.push('/asset-life')">-->
+                                <!--                                    <el-menu-item index="2-3">使用年限</el-menu-item>-->
+                                <!--                                </el-menu-item-group>-->
                             </el-sub-menu>
                             <el-sub-menu index="3">
                                 <template #title>
@@ -61,22 +61,48 @@
                                 <el-menu-item-group class="b1" @click="router.push('/asset-post')" >
                                     <el-menu-item index="4-3">资产审核</el-menu-item>
                                 </el-menu-item-group>
-<!--                                <el-menu-item-group class="b1" @click="router.push('/asset-report')">-->
-<!--                                    <el-menu-item index="4-4">资产报损</el-menu-item>-->
-<!--                                </el-menu-item-group>-->
                                 <el-menu-item-group class="b1" @click="router.push('/asset-value-change')">
                                     <el-menu-item index="4-5">资产变更</el-menu-item>
                                 </el-menu-item-group>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-sale')">
+                                    <el-menu-item index="4-6">资产变卖</el-menu-item>
+                                </el-menu-item-group>
                             </el-sub-menu>
+
+
                             <el-sub-menu index="5">
+                                <template #title>
+                                    <el-icon><location /></el-icon>
+                                    <span>资产使用</span>
+                                </template>
+                                <el-menu-item-group class="b1" @click="router.push('/asset-lease')">
+                                    <el-menu-item index="5-1">资产出租</el-menu-item>
+                                </el-menu-item-group>
+
+                            </el-sub-menu>
+
+                            <el-sub-menu index="6">
+                                <template #title>
+                                    <el-icon><location /></el-icon>
+                                    <span>收入管理</span>
+                                </template>
+                                <el-menu-item-group class="b1" @click="router.push('/income')">
+                                    <el-menu-item index="6-1">收益管理</el-menu-item>
+                                </el-menu-item-group>
+                                <el-menu-item-group class="b1" @click="router.push('/contract')">
+                                    <el-menu-item index="6-2">合同管理</el-menu-item>
+                                </el-menu-item-group>
+                            </el-sub-menu>
+                            <el-sub-menu index="7">
                                 <template #title>
                                     <el-icon><location /></el-icon>
                                     <span>资产年表</span>
                                 </template>
                                 <el-menu-item-group class="b1" @click="router.push('/annual-report')">
-                                    <el-menu-item index="5-1">年度报表</el-menu-item>
+                                    <el-menu-item index="7-1">年度报表</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
+
                         </el-menu>
                     </el-col>
                 </el-row>
@@ -122,17 +148,6 @@
                     </el-col>
                 </el-header>
                 <div class="div-tags">
-<!--                    <router-link v-if="!isHomePageTagGenerated" :to="{ path: '/' }" style="text-decoration: none !important;" class="router">-->
-<!--                        <el-tag class="tag1">-->
-<!--                            系统首页-->
-<!--                        </el-tag>-->
-<!--                    </router-link>-->
-<!--                    <router-link :to="{ path: '/' }" style="text-decoration: none !important;" class="router">-->
-<!--                        <el-tag class="tag1">-->
-<!--                            系统首页-->
-<!--                        </el-tag>-->
-<!--                    </router-link>-->
-
                     <router-link v-for="(tag, index) in generatedTags" :key="index" :to="tag.link" style="text-decoration: none !important;" class="router">
                         <el-tag v-if="!tag.isHomePage" closable @close="removeTag(tag)" class="tag1">
                             {{ tag.name }}
@@ -151,143 +166,152 @@
 </template>
 
 <script setup>
-    import router from '@/router';
-    import { ArrowRight, HomeFilled, User,Icon } from '@element-plus/icons-vue';
-    import { onMounted, ref, watch,computed } from 'vue';
-    import axios from 'axios';
-    import { useRoute } from 'vue-router';
-    const breadcrumbs = ref([]);
+import router from '@/router';
+import { ArrowRight, HomeFilled, User,Icon } from '@element-plus/icons-vue';
+import { onMounted, ref, watch,computed } from 'vue';
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+const breadcrumbs = ref([]);
 
-    const isHomePageTagGenerated = ref(false);
+const isHomePageTagGenerated = ref(false);
 
 
-    const getBreadcrumbLink = (breadcrumb) => {
-        return getBreadcrumbLinkInternal(breadcrumb);
-    };
+const getBreadcrumbLink = (breadcrumb) => {
+    return getBreadcrumbLinkInternal(breadcrumb);
+};
 
-    const getBreadcrumbLinkInternal = (breadcrumb) => {
-        // 返回相应的链接
-        switch (breadcrumb) {
-            case '部门管理':
-                return '/dept';
-            case '增加查询':
-                return '/attachment';
-            case '资产分类':
-                return '/asset-category';
-            case '资产录入':
-                return '/asset-manage';
-            case '使用年限':
-                return '/asset-life';
-            case '资产查询':
-                return '/asset-query';
-            case '资产上报':
-                return '/asset-post';
-            case '资产报损':
-                return '/asset-report';
-            case '资产修改':
-                return '/asset-value-change';
-            case '年度报表':
-                return '/annual-report';
-            case '个人中心':
-                return '/user';
-            default:
-                return null;
-            // 添加其他面包屑链接，如果需要的话
+const getBreadcrumbLinkInternal = (breadcrumb) => {
+    // 返回相应的链接
+    switch (breadcrumb) {
+        case '部门管理':
+            return '/dept';
+        case '附件查询':
+            return '/attachment';
+        case '资产分类':
+            return '/asset-category';
+        case '资产录入':
+            return '/asset-manage';
+        case '使用年限':
+            return '/asset-life';
+        case '资产查询':
+            return '/asset-query';
+        case '资产审核':
+            return '/asset-post';
+        case '资产报损':
+            return '/asset-report';
+        case '资产变更':
+            return '/asset-value-change';
+        case '年度报表':
+            return '/annual-report';
+        case '个人中心':
+            return '/user';
+        case '资产出借':
+            return '/asset-lease';
+        case '资产变卖':
+            return '/asset-sale';
+        case '收益管理':
+            return '/income';
+        case '合同管理':
+            return '/contract';
+
+        default:
+            return null;
+        // 添加其他面包屑链接，如果需要的话
+    }
+};
+
+const route = useRoute();
+
+watch(
+    () => route.matched,
+    (matched) => {
+        breadcrumbs.value = matched.flatMap(route => route.meta?.breadcrumb || []);
+    },
+    { immediate: true }
+);
+
+
+
+
+const wd = ref('');
+const search = ()=>{
+    router.push('/list?wd='+wd.value);
+}
+
+const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
+const logout = ()=>{
+    if (confirm("您确认退出登录吗?")){
+        localStorage.clear();
+        user.value=null;
+        router.push('/login');
+    }
+}
+
+
+//标签页相关//event.preventDefault();
+const generatedTags = ref([]);
+
+
+
+const removeTag = (tag) => {
+    event.preventDefault();
+    // 判断是否是系统首页标签
+    if (tag.isHomePage) return;
+
+    const index = generatedTags.value.indexOf(tag);
+    if (index !== -1) {
+        generatedTags.value.splice(index, 1);
+        // 获取上一个标签的路由并跳转
+        const prevTag = generatedTags.value[index - 1];
+        if (prevTag) {
+            router.push(prevTag.link);
         }
-    };
-
-    const route = useRoute();
-
-    watch(
-        () => route.matched,
-        (matched) => {
-            breadcrumbs.value = matched.flatMap(route => route.meta?.breadcrumb || []);
-        },
-        { immediate: true }
-    );
+    }
+};
 
 
 
 
-    const wd = ref('');
-    const search = ()=>{
-        router.push('/list?wd='+wd.value);
+const getTagLink = (tag) => {
+    return tag.link;
+};
+
+const generateTagsFromBreadcrumbs = () => {
+    const currentBreadcrumb = breadcrumbs.value[breadcrumbs.value.length - 1];
+    // 判断是否是首页标签
+    const isHomePage = currentBreadcrumb === '系统首页';
+
+    if (isHomePage) {
+        // 如果是系统首页标签，不再生成新标签
+        isHomePageTagGenerated.value = true;
+        return;
     }
 
-    const user = ref(localStorage.user?JSON.parse(localStorage.user):null);
-    const logout = ()=>{
-        if (confirm("您确认退出登录吗?")){
-            localStorage.clear();
-            user.value=null;
-            router.push('/login');
-        }
+    const currentTag = {
+        name: currentBreadcrumb,
+        link: getBreadcrumbLinkInternal(currentBreadcrumb),
+        isHomePage: false,
+    };
+
+    // 判断是否生成重复的标签
+    if (!generatedTags.value.some(tag => tag.link === currentTag.link)) {
+        // 保留当前标签
+        generatedTags.value.push(currentTag);
     }
-
-
-    //标签页相关//event.preventDefault();
-    const generatedTags = ref([]);
+};
 
 
 
-    const removeTag = (tag) => {
-        event.preventDefault();
-        // 判断是否是系统首页标签
-        if (tag.isHomePage) return;
-
-        const index = generatedTags.value.indexOf(tag);
-        if (index !== -1) {
-            generatedTags.value.splice(index, 1);
-            // 获取上一个标签的路由并跳转
-            const prevTag = generatedTags.value[index - 1];
-            if (prevTag) {
-                router.push(prevTag.link);
-            }
-        }
-    };
+onMounted(() => {
+    generateTagsFromBreadcrumbs();
+    // const role = user.value.nickname;
+});
 
 
-
-
-    const getTagLink = (tag) => {
-        return tag.link;
-    };
-
-    const generateTagsFromBreadcrumbs = () => {
-        const currentBreadcrumb = breadcrumbs.value[breadcrumbs.value.length - 1];
-        // 判断是否是首页标签
-        const isHomePage = currentBreadcrumb === '系统首页';
-
-        if (isHomePage) {
-            // 如果是系统首页标签，不再生成新标签
-            isHomePageTagGenerated.value = true;
-            return;
-        }
-
-        const currentTag = {
-            name: currentBreadcrumb,
-            link: getBreadcrumbLinkInternal(currentBreadcrumb),
-            isHomePage: false,
-        };
-
-        // 判断是否生成重复的标签
-        if (!generatedTags.value.some(tag => tag.link === currentTag.link)) {
-            // 保留当前标签
-            generatedTags.value.push(currentTag);
-        }
-    };
-
-
-
-    onMounted(() => {
-        generateTagsFromBreadcrumbs();
-        // const role = user.value.nickname;
-    });
-
-
-    // 监听路由变化
-    watch(() => route.fullPath, () => {
-        generateTagsFromBreadcrumbs();
-    });
+// 监听路由变化
+watch(() => route.fullPath, () => {
+    generateTagsFromBreadcrumbs();
+});
 
 
 
@@ -297,81 +321,81 @@
 
 <style scoped>
 
-    .logoBox {
-        position: absolute;
-        top: -3px;
-        left: 25px;
-        font-size: 24px;
-        color: #fff;
-    }
+.logoBox {
+    position: absolute;
+    top: -3px;
+    left: 25px;
+    font-size: 24px;
+    color: #fff;
+}
 
-    .box {
-        width: 100vw;
-        height: 100vh;
-    }
-    .header {
-        padding: 0;
-        height: 60px;
-        background-color: #fff;
-        display: flex;
-        align-items: center;
-        border-top: 0.8px solid #D7D7D7;
-        border-right: 0.8px solid #D7D7D7;
-        border-left: 0.8px solid #D7D7D7;
-    }
-    .el-aside {
-        overflow: hidden;
-        width: 230px;
-        background: #304156 ;
-        padding-top: 58px;
-    }
-    .div-tags{
-        padding: 0;
-        height: 35px;
-        background-color: #fff;
-        display: flex;
-        align-items: center;
-        border: 0.8px solid #D7D7D7;
-        border-radius: 1px;
-        box-shadow:  0 5px 5px -5px rgba(0, 0, 0, 0.4);
-    }
-    .b1{
-        background-color: #1F2D3D;
-        --el-menu-hover-bg-color:#1a2334;
+.box {
+    width: 100vw;
+    height: 100vh;
+}
+.header {
+    padding: 0;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border-top: 0.8px solid #D7D7D7;
+    border-right: 0.8px solid #D7D7D7;
+    border-left: 0.8px solid #D7D7D7;
+}
+.el-aside {
+    overflow: hidden;
+    width: 230px;
+    background: #304156 ;
+    padding-top: 58px;
+}
+.div-tags{
+    padding: 0;
+    height: 35px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border: 0.8px solid #D7D7D7;
+    border-radius: 1px;
+    box-shadow:  0 5px 5px -5px rgba(0, 0, 0, 0.4);
+}
+.b1{
+    background-color: #1F2D3D;
+    --el-menu-hover-bg-color:#1a2334;
 
-    }
-    .el-menu-item is-active{
-        height: 64px;
-    }
+}
+.el-menu-item is-active{
+    height: 64px;
+}
 
-    .hoverable-icon:hover {
-        /* 在这里设置鼠标悬停时的样式 */
-        /* 例如，改变背景色或添加阴影效果 */
-        background-color: #eee;
-        box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
-    }
-    .hoverable-icon{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 50px;
-        cursor: pointer;
+.hoverable-icon:hover {
+    /* 在这里设置鼠标悬停时的样式 */
+    /* 例如，改变背景色或添加阴影效果 */
+    background-color: #eee;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
+}
+.hoverable-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 50px;
+    cursor: pointer;
 
-    }
-    .tag1{
-        --el-tag-bg-color:#fff;
-        margin: 5px;
-    }
+}
+.tag1{
+    --el-tag-bg-color:#fff;
+    margin: 5px;
+}
 
-    .tag1:hover {
-        background-color: #f0f0f0; /* 悬浮时的背景颜色 */
-    }
-    .el-tag{
-        height:26px;
-        width: 95px;
-        font-size: 13px;
-    }
+.tag1:hover {
+    background-color: #f0f0f0; /* 悬浮时的背景颜色 */
+}
+.el-tag{
+    height:26px;
+    width: 95px;
+    font-size: 13px;
+}
 
 
 

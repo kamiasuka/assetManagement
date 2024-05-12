@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.asset.manage.dao.persist.mapper.AddModuleMapper">
+    <!-- //////////////////////////////资产出借//////////////////////////-->
+    <select id="getLeaseAsset" resultType="cn.tedu.asset.manage.pojo.entity.AssetLease">
+        select lease_type as leaseType,total_time as totalTime,lessee,revenue_money as revenueMoney,lease_date as leaseDate,asset_code as assetCode,
+               asset_name as assetName,contract_number as contractNumber,approval_status as approvalStatus,approval_date as approvalDate
+        from asset_lease
+    </select>
+    <select id="getPostLeaseAsset" resultType="cn.tedu.asset.manage.pojo.entity.AssetLease">
+        select lease_type as leaseType,total_time as totalTime,lessee,revenue_money as revenueMoney,lease_date as leaseDate,asset_code as assetCode,
+               asset_name as assetName,contract_number as contractNumber,approval_status as approvalStatus,approval_date as approvalDate
+        from asset_lease where approval_status = '未审核'
+    </select>
+<!--   提交租借申请 -->
+    <insert id="submitleaseAsset">
+        insert into asset_lease(lease_type,total_time,lessee,revenue_money,lease_date,asset_code,
+                                asset_name,contract_number,approval_status,approval_date)
+        values (#{leaseType},#{totalTime},#{lessee},#{revenueMoney},#{leaseDate},#{assetCode},#{assetName},
+                #{contractNumber},#{approvalStatus},#{approvalDate})
+    </insert>
+    <!-- 批准租借操作 -->
+    <update id="saveLeaseResult">
+        update asset_lease set approval_status = '已审核',approval_date = NOW() where asset_code = #{code}
+    </update>
+    <update id="updateLeaseAsset">
+        update asset_info set note = '租借中',lease = 1
+        where code = #{code};
+    </update>
+    <update id="leasePostOff">
+        update  asset_lease set approval_status = '已审核',approval_date = NOW() where asset_code = #{code}
+    </update>
+
+
+    <!--  ////////////////////////////////资产变卖////////////////////////  -->
+    <select id="getAsset" resultType="cn.tedu.asset.manage.pojo.vo.AssetVOO">
+        select code,name,type,max_type,dept,unit,life,amount,use_status,review_status,approval_date,note,lease
+        from asset_info where review_status = '已通过' and lease = 0
+    </select>
+
+
+    <select id="getSaleAsset" resultType="cn.tedu.asset.manage.pojo.vo.AssetSaleVO">
+        SELECT revenue_money as revenueMoney,sale_time as saleTime, receiver, asset_code as assetCode,
+               asset_name as assetName,asset_value as assetValue,contract_number as contractNumber,approval_status  as approvalStatus,approval_date as approvalDate
+        FROM asset_sale
+    </select>
+<!--   获取变卖列表来审核 -->
+    <select id="getSalePostAsset" resultType="cn.tedu.asset.manage.pojo.vo.AssetSaleVO">
+        SELECT revenue_money as revenueMoney,sale_time as saleTime, receiver, asset_code as assetCode,
+               asset_name as assetName,asset_value as assetValue,contract_number as contractNumber,approval_status  as approvalStatus,approval_date as approvalDate
+        FROM asset_sale where approval_status = '未审核'
+    </select>
+<!--提交变卖申请-->
+    <insert id="submitSaleAsset">
+        insert into asset_sale(revenue_money,sale_time, receiver, asset_code,asset_name,
+                               asset_value ,contract_number,approval_status)
+        values (#{revenueMoney},#{saleTime},#{receiver},#{assetCode},#{assetName},#{assetValue},#{contractNumber},#{approvalStatus})
+    </insert>
+    <!-- 批准变卖操作 -->
+    <select id="getSaleAssetInfo" resultType="cn.tedu.asset.manage.pojo.entity.AssetSale">
+        select *
+        from asset_sale where asset_code = #{code}
+    </select>
+
+    <update id="saveResult">
+        update  asset_sale set approval_status = '已通过',approval_date = NOW() where asset_code = #{code}
+    </update>
+
+    <delete id="deleteAsset">
+        delete from asset_info
+        where code = #{code};
+    </delete>
+
+    <update id="salePostOff">
+        update  asset_sale set approval_status = '已审核',approval_date = NOW() where asset_code = #{code}
+    </update>
+
+<!--////////////////////////合同管理//////////////////-->
+    <select id="getContractSale" resultType="cn.tedu.asset.manage.pojo.vo.ContractVO">
+        select contract_number as contractNumber,contract_type as contractType,party_a
+            as partyA,party_b as partyB,signing_date as signingDate,termination_date as terminationDate
+        from contract where contract_type = '变卖合同'
+    </select>
+
+    <select id="getContractLease" resultType="cn.tedu.asset.manage.pojo.vo.ContractVO">
+        select contract_number as contractNumber,contract_type as contractType,party_a
+                               as partyA,party_b as partyB,signing_date as signingDate,termination_date as terminationDate
+        from contract where contract_type = '租借合同'
+    </select>
+
+    <insert id="submitSaleContract">
+        INSERT INTO contract (contract_number, contract_type, party_a, party_b, signing_date)
+        VALUES (#{contractNumber}, #{contractType}, #{partyA}, #{partyB}, NOW())
+        </insert>
+
+    <insert id="submitLeaseContract">
+        INSERT INTO contract (contract_number, contract_type, party_a, party_b, signing_date, termination_date)
+        VALUES (#{contractNumber}, #{contractType}, #{partyA}, #{partyB}, NOW(), #{terminationDate})
+    </insert>
+
+    <select id="income" resultType="cn.tedu.asset.manage.pojo.vo.InComeVO">
+        select bill_number as billNumber,income_type as incomeType,asset_code as assetCode,asset_name as assetName,
+               income_amount as incomeAmount,entry_status as entryStatus,entry_time as entryTime
+        from in_come
+    </select>
+
+    <select id="getAssetByCode" resultType="cn.tedu.asset.manage.pojo.entity.AssetLease">
+        select lease_type as leaseType,total_time as totalTime,lessee,revenue_money as revenueMoney,lease_date as leaseDate,asset_code as assetCode,
+               asset_name as assetName,contract_number as contractNumber,approval_status as approvalStatus,approval_date as approvalDate
+        from asset_lease
+    </select>
+
+    <insert id="insert">
+        INSERT INTO financial_records
+        (billNumber, incomeType, assetCode, assetName, incomeAmount, entryStatus, entryTime)
+        VALUES
+            (#{billNumber}, #{incomeType}, #{assetCode}, #{assetName}, #{incomeAmount}, '已入账', NOW());
+</insert>
+
+
+</mapper>

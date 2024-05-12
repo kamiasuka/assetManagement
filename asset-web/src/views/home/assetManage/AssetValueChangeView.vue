@@ -36,7 +36,6 @@
               width="500"
           >
             <!-- :before-close="handleClose"-->
-
             <el-form label-width="100px" style="margin: 0px 0px">
               <el-form-item label="资产名称:">
                 <el-input style="width: 300px;" v-model="assetUpdateInfo.name"></el-input>
@@ -44,9 +43,9 @@
               <el-form-item label="资产分类:">
                 <el-input style="width: 300px;" v-model="assetUpdateInfo.type"></el-input>
               </el-form-item>
-              <!--                            <el-form-item label="所属最大分类:">-->
-              <!--                                <el-input style="width: 300px;" v-model="assetUpdateInfo.maxType"></el-input>-->
-              <!--                            </el-form-item>-->
+              <!-- <el-form-item label="所属最大分类:">-->
+              <!--     <el-input style="width: 300px;" v-model="assetUpdateInfo.maxType"></el-input>-->
+              <!-- </el-form-item>-->
               <el-form-item label="所属部门:">
                 <el-input style="width: 300px;" v-model="assetUpdateInfo.dept"></el-input>
               </el-form-item>
@@ -146,6 +145,7 @@ const handleClickOnEdit = (row) => {
   assetUpdateDialogVisible.value = true;
   assetUpdateInfo.value = row;
 }
+
 const updateAsset = () => {
   assetUpdateDialogVisible.value = false;
   let data = qs.stringify(assetUpdateInfo.value);

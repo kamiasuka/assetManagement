@@ -151,10 +151,10 @@ const attachmentAddInfo = ref([{
 }]);
 
 const saveAttachment = () => {
-    if (!attachmentAddInfo.value.assetName || !attachmentAddInfo.value.assetCode || !attachmentAddInfo.value || !attachmentAddInfo.value) {
+/*    if (!attachmentAddInfo.value.assetName || !attachmentAddInfo.value.assetCode || !attachmentAddInfo.value || !attachmentAddInfo.value) {
         ElMessage.error("请填写完整的附件信息");
         return;
-    }
+    }*/
     //取出图片路径
     if (fileList.value.length > 0) {
         let imgUrl = fileList.value[0].response.data;

@@ -21,13 +21,13 @@ public class AssetCacheRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.debug("开始执行【重建资产数据】的数据预热");
-        iAssetService.rebuildCache();
-        final Runnable task = new Runnable() {
-            public void run() {
-                iAssetService.rebuildCache();
-            }
-        };
-        // 设定周期性执行任务，首次延迟为0，周期为10小时
-        scheduler.scheduleAtFixedRate(task, 0, 10, TimeUnit.HOURS);
+        //iAssetService.rebuildCache();
+//        final Runnable task = new Runnable() {
+//            public void run() {
+//                iAssetService.rebuildCache();
+//            }
+//        };
+//        // 设定周期性执行任务，首次延迟为0，周期为10小时
+//        scheduler.scheduleAtFixedRate(task, 0, 10, TimeUnit.HOURS);
     }
 }

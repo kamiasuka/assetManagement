@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public LoginResultVO login(UserLoginDTO userLoginDTO) {
+//        String password = userLoginDTO.getPassword();
+//        String md5password = DigestUtils.md5DigestAsHex(password.getBytes());
+//        log.info("对密码进行MD5加密");
         UserVO userVO = userMapper.getByUsername(userLoginDTO.getUsername());
         if (userVO==null){
             System.out.println(("用户名并不存在"));

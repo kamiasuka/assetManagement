@@ -1,6 +1,7 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="【资产审核】录入申请">
+<!--
       <div class="mt-4">
         资产编码:
         <el-input style="width: 150px"></el-input>
@@ -13,6 +14,7 @@
         <el-button type="primary">查询</el-button>
         <el-button type="primary" @click="reflush">刷新</el-button>
       </div>
+-->
       <el-table
           border
           stripe
@@ -98,8 +100,6 @@
         />
       </div>
     </el-tab-pane>
-
-
     <el-tab-pane label="【资产审核】变更申请">
       <div class="common-layout">
         <div class="mt-4">

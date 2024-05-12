@@ -2,7 +2,6 @@
     <div class="common-layout">
         <el-container>
             <el-header style="padding-top: 20px">
-
                 <el-button type="success" size="big" @click="exportExcel">全部导出</el-button>
 
 <!--
@@ -66,7 +65,6 @@ import {ElMessage} from "element-plus";
 import router from "@/router";
 
 const token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
-
 const Total = ref();
 const tableData = ref([]);
 const pageSize = 16; // 每页显示的条目数

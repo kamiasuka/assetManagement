@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +42,14 @@ public class UserTest {
                 .getBody();
 
         System.out.println(claims);
+    }
+
+    @Test
+    public void md5(){
+        String password ="2309";
+        String md5password = DigestUtils.md5DigestAsHex(password.getBytes());
+        System.out.println(md5password);
+
     }
 
 }
