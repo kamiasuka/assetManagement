@@ -7,7 +7,6 @@ import java.util.Date;
 @Data
 public class InCome {
     private Long id;
-    private String billNumber;
     private String incomeType;
     private String assetCode;
     private String assetName;

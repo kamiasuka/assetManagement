@@ -31,15 +31,15 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public LoginResultVO login(UserLoginDTO userLoginDTO) {
-//        String password = userLoginDTO.getPassword();
-//        String md5password = DigestUtils.md5DigestAsHex(password.getBytes());
-//        log.info("对密码进行MD5加密");
+        String password = userLoginDTO.getPassword();
+        String md5password = DigestUtils.md5DigestAsHex(password.getBytes());
+        log.info("对密码进行MD5加密");
         UserVO userVO = userMapper.getByUsername(userLoginDTO.getUsername());
         if (userVO==null){
             System.out.println(("用户名并不存在"));
             throw new ServiceException(StatusCode.USERNAME_ERROR);
         }
-        if (!userLoginDTO.getPassword().equals(userVO.getPassword())){
+        if (!md5password.equals(userVO.getPassword())){
             System.out.println(("输入的密码不正确"));
             throw new ServiceException(StatusCode.PASSWORD_ERROR);
         }

@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>asset-server</artifactId>
+        <artifactId>asset-management</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -96,6 +96,7 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -108,6 +109,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        </pluginManagement>
     </build>
 
 </project>

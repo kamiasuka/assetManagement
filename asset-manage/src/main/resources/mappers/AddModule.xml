@@ -101,7 +101,7 @@
     </insert>
 
     <select id="income" resultType="cn.tedu.asset.manage.pojo.vo.InComeVO">
-        select bill_number as billNumber,income_type as incomeType,asset_code as assetCode,asset_name as assetName,
+        select income_type as incomeType,asset_code as assetCode,asset_name as assetName,
                income_amount as incomeAmount,entry_status as entryStatus,entry_time as entryTime
         from in_come
     </select>
@@ -109,14 +109,12 @@
     <select id="getAssetByCode" resultType="cn.tedu.asset.manage.pojo.entity.AssetLease">
         select lease_type as leaseType,total_time as totalTime,lessee,revenue_money as revenueMoney,lease_date as leaseDate,asset_code as assetCode,
                asset_name as assetName,contract_number as contractNumber,approval_status as approvalStatus,approval_date as approvalDate
-        from asset_lease
+        from asset_lease where asset_code = #{code}
     </select>
 
     <insert id="insert">
-        INSERT INTO financial_records
-        (billNumber, incomeType, assetCode, assetName, incomeAmount, entryStatus, entryTime)
-        VALUES
-            (#{billNumber}, #{incomeType}, #{assetCode}, #{assetName}, #{incomeAmount}, '已入账', NOW());
+        INSERT INTO in_come (income_type, asset_code, asset_name, income_amount, entry_status, entry_time)
+        VALUES (#{incomeType}, #{assetCode}, #{assetName}, #{incomeAmount}, '已入账', NOW());
 </insert>
 
 

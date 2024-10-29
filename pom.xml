@@ -18,7 +18,7 @@
     </parent>
 
     <groupId>org.example</groupId>
-    <artifactId>asset-server</artifactId>
+    <artifactId>asset-management</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
